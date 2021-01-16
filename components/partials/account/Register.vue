@@ -2,11 +2,24 @@
     <form>
         <div class="ps-form__content">
             <h5>Register An Account</h5>
-            <div class="form-group">
+
+             <div class="form-group">
                 <v-text-field
                     v-model="username"
                     :error-messages="usernameErrors"
                     @input="$v.username.$touch()"
+                    placeholder="Username"
+                    class="ps-text-field"
+                    outlined
+                    height="50"
+                />
+            </div>
+            
+            <div class="form-group">
+                <v-text-field
+                    v-model="email"
+                    :error-messages="emailErrors"
+                    @input="$v.email.$touch()"
                     placeholder="Email Address"
                     class="ps-text-field"
                     outlined
@@ -22,6 +35,7 @@
                     class="ps-text-field"
                     outlined
                     height="50"
+                    type="password"
                 />
             </div>
             <div class="form-group submit">
@@ -33,32 +47,6 @@
                     Register
                 </button>
             </div>
-        </div>
-        <div class="ps-form__footer">
-            <p>Connect with:</p>
-
-            <ul class="ps-list--social">
-                <li>
-                    <a href="#" class="facebook">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="google">
-                        <i class="fa fa-google-plus"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="twitter">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="instagram">
-                        <i class="fa fa-instagram"></i>
-                    </a>
-                </li>
-            </ul>
         </div>
     </form>
 </template>
@@ -81,26 +69,49 @@ export default {
             if (!this.$v.password.$dirty) return errors;
             !this.$v.password.required && errors.push('This field is required');
             return errors;
-        }
+        },
+
+        emailErrors() {
+            const errors = [];
+            if (!this.$v.email.$dirty) return errors;
+            !this.$v.email.required && errors.push('This field is required');
+            !this.$v.email.email && errors.push('This must be an email');
+            return errors;
+        },
     },
     data() {
         return {
             username: null,
-            password: null
+            password: null,
+            email: null,
         };
     },
     validations: {
         username: { required },
-        password: { required }
+        password: { required },
+        email: { required, email },
     },
     methods: {
-        handleSubmit() {
+        async handleSubmit() {
             this.$v.$touch();
             if (!this.$v.$invalid) {
                 this.$router.push('/account/login');
             }
-        }
-    }
+
+            const params = {
+                username: this.username,
+                email: this.email,
+                password: this.password,
+            };
+
+            const response = await this.$store.dispatch(
+                'auth/register',
+                params
+            );
+
+            this.$router.push('/account/login');
+        },
+    },
 };
 </script>
 

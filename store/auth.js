@@ -1,3 +1,6 @@
+import Repository, { serializeQuery } from '~/repositories/Repository.js';
+import { baseUrl } from '~/repositories/Repository';
+
 export const state = () => ({
     isLoggedIn: false
 });
@@ -5,7 +8,7 @@ export const state = () => ({
 export const mutations = {
     setIsLoggedIn(state, payload) {
         state.isLoggedIn = payload;
-    }
+    },
 };
 
 export const actions = {
@@ -15,9 +18,34 @@ export const actions = {
             isLoggedIn: state.isLoggedIn
         };
 
-        this.$cookies.set('auth', cookieParams, {
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7
-        });
+        this.$router.push('/');
+
+        // this.$cookies.set('auth', cookieParams, {
+        //     path: '/',
+        //     maxAge: 60 * 60 * 24 * 7
+        // });
+    },
+
+    async register({ commit }, payload) {
+        const response = await Repository.post(
+            `${baseUrl}/auth/local/register`, payload
+        )
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }));
+        return response;
+    },
+
+    async login({ commit }, payload) {
+        const response = await Repository.post(
+            `${baseUrl}/auth/local`, payload
+        )
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }))
+
+        return response;
     }
 };

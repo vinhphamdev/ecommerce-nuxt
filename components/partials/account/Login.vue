@@ -38,31 +38,6 @@
                 </button>
             </div>
         </div>
-        <div class="ps-form__footer">
-            <p>Connect with:</p>
-            <ul class="ps-list--social">
-                <li>
-                    <a href="#" class="facebook">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="google">
-                        <i class="fa fa-google-plus"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="twitter">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="instagram">
-                        <i class="fa fa-instagram"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
     </form>
 </template>
 
@@ -84,27 +59,34 @@ export default {
             if (!this.$v.password.$dirty) return errors;
             !this.$v.password.required && errors.push('This field is required');
             return errors;
-        }
+        },
     },
     data() {
         return {
             username: null,
-            password: null
+            password: null,
         };
     },
     validations: {
         username: { required },
-        password: { required }
+        password: { required },
     },
     methods: {
-        handleSubmit() {
+        async handleSubmit() {
             this.$v.$touch();
-            if (!this.$v.$invalid) {
-                this.$store.dispatch('auth/setAuthStatus', true);
-                this.$router.push('/');
+            if (this.$v.$invalid) {
+                return false;
             }
-        }
-    }
+
+            const params = {
+                identifier: this.username,
+                password: this.password,
+            };
+
+            const response = await this.$store.dispatch('auth/login', params);
+            this.$store.dispatch('auth/setAuthStatus', true);
+        },
+    },
 };
 </script>
 

@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 
 const token = Cookies.get('id_token');
-const baseDomain = 'http://45.76.97.89:3000';
+const baseDomain = 'https://strapi-poc.gophuot.vn';
 
 export const customHeaders = {
     'Content-Type': 'application/json',
