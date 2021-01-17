@@ -45,8 +45,8 @@
                     v-swiper:carousel="carouselSetting"
                 >
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="product in products">
-                            <product-default :product="product" />
+                        <div class="swiper-slide" v-for="vendor in vendors">
+                            <product-vendor :product="vendor" />
                         </div>
                     </div>
                     <!--Carousel controls-->
@@ -60,27 +60,24 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { carouselFullwidth } from '~/utilities/carousel-helpers.js';
-import ProductDefault from '../../../elements/product/ProductDefault';
+import ProductVendor from '../../../elements/product/ProductVendor';
 import { getColletionBySlug } from '../../../../utilities/product-helper';
 import CarouselArrows from '~/components/elements/commons/CarouselArrows';
 
 export default {
-    components: { CarouselArrows, ProductDefault },
+    components: { CarouselArrows, ProductVendor },
     props: {
         collectionSlug: {
             type: String,
-            default: ''
-        }
+            default: '',
+        },
     },
     computed: {
-        ...mapState({
-            collections: state => state.collection.collections
+        ...mapGetters({
+            vendors: 'shop/getAllVendors',
         }),
-        products() {
-            return getColletionBySlug(this.collections, this.collectionSlug);
-        }
     },
     data() {
         return {
@@ -88,10 +85,13 @@ export default {
                 ...carouselFullwidth,
                 navigation: {
                     nextEl: '.ps-clothings .swiper-next',
-                    prevEl: '.ps-clothings .swiper-prev'
-                }
-            }
+                    prevEl: '.ps-clothings .swiper-prev',
+                },
+            },
         };
-    }
+    },
+    async created() {
+        await this.$store.dispatch('shop/getAllVendors');
+    },
 };
 </script>

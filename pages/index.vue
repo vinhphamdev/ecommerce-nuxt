@@ -11,8 +11,9 @@
         <!-- <home-default-top-categories /> -->
 
         <!-- <template v-if="collections !== null"> -->
+            <clothings collection-slug="clothings" />
+
             <conumer-electronics collection-slug="consumer-electronics" />
-            <!-- <clothings collection-slug="clothings" /> -->
             <!-- <garden-and-kitchen collection-slug="garden-and-kitchen" /> -->
         <!-- </template> -->
 
