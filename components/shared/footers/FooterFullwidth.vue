@@ -2,7 +2,7 @@
     <footer class="ps-footer">
         <div class="ps-container">
             <FooterWidgets />
-            <FooterLinks />
+            <!-- <FooterLinks /> -->
             <FooterCopyright />
         </div>
     </footer>
@@ -16,7 +16,7 @@ export default {
     components: {
         FooterWidgets,
         FooterCopyright,
-        FooterLinks
-    }
+        FooterLinks,
+    },
 };
 </script>

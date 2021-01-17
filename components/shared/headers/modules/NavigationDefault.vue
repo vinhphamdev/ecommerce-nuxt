@@ -20,17 +20,17 @@
                             {{ $t('header.navigationExtra.sellOnMartfury') }}
                         </nuxt-link>
                     </li>
-                    <li>
+                    <!-- <li>
                         <nuxt-link to="/account/order-tracking">
                             {{ $t('header.navigationExtra.trackYourOrder') }}
                         </nuxt-link>
-                    </li>
-                    <li>
+                    </li> -->
+                    <!-- <li>
                         <CurrencyDropdown />
-                    </li>
-                    <li>
+                    </li> -->
+                    <!-- <li>
                         <LanguageSwicher />
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
@@ -48,8 +48,8 @@ export default {
         MenuCategories,
         MenuDefault,
         LanguageSwicher,
-        CurrencyDropdown
-    }
+        CurrencyDropdown,
+    },
 };
 </script>
 

@@ -1,24 +1,28 @@
 <template lang="html">
     <main id="homepage-1">
         <home-banner />
-        <site-feautures-fullwidth />
+        <!-- <site-feautures-fullwidth /> -->
         <home-default-deal-of-day
             v-if="collections !== null"
             collection-slug="deal-of-the-day"
         />
         <home-ads-columns />
-        <home-default-top-categories />
-        <template v-if="collections !== null">
+
+        <!-- <home-default-top-categories /> -->
+
+        <!-- <template v-if="collections !== null"> -->
             <conumer-electronics collection-slug="consumer-electronics" />
-            <clothings collection-slug="clothings" />
-            <garden-and-kitchen collection-slug="garden-and-kitchen" />
-        </template>
-        <home-ads />
-        <download-app />
-        <new-arrivals
+            <!-- <clothings collection-slug="clothings" /> -->
+            <!-- <garden-and-kitchen collection-slug="garden-and-kitchen" /> -->
+        <!-- </template> -->
+
+
+        <!-- <home-ads /> -->
+        <!-- <download-app /> -->
+        <!-- <new-arrivals
             v-if="collections !== null"
             collection-slug="new-arrivals-products"
-        />
+        /> -->
         <newsletters layout="fullwidth"/>
     </main>
 </template>
@@ -62,7 +66,7 @@ export default {
         NewArrivals,
         HomeDefaultTopCategories,
         Clothings,
-        ConumerElectronics
+        ConumerElectronics,
     },
 
     transition: 'zoom',
@@ -70,8 +74,8 @@ export default {
 
     computed: {
         ...mapState({
-            collections: state => state.collection.collections
-        })
+            collections: (state) => state.collection.collections,
+        }),
     },
 
     async created() {
@@ -80,9 +84,9 @@ export default {
             'consumer-electronics',
             'clothings',
             'garden-and-kitchen',
-            'new-arrivals-products'
+            'new-arrivals-products',
         ];
         await this.$store.dispatch('collection/getCollectionsBySlugs', queries);
-    }
+    },
 };
 </script>

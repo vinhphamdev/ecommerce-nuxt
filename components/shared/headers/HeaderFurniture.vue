@@ -73,11 +73,11 @@ export default {
         MenuDefault,
         SearchHeader,
         MenuCategories,
-        HeaderActions2
+        HeaderActions2,
     },
     mounted() {
         window.addEventListener('scroll', stickyHeader);
-    }
+    },
 };
 </script>
 

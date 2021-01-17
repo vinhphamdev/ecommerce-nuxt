@@ -40,11 +40,11 @@ export default {
         MenuCategories,
         NavigationDefault,
         HeaderActions,
-        SearchHeader
+        SearchHeader,
     },
     mounted() {
         window.addEventListener('scroll', stickyHeader);
-    }
+    },
 };
 </script>
 

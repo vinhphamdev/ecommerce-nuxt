@@ -1,17 +1,30 @@
-import data from '~/static/data/products.json';
+import Repository from '~/repositories/Repository';
+import { baseUrl } from '~/repositories/Repository';
 
 export const state = () => ({
-    products: data.data
+    products: []
 });
 
 export const getters = {
     getAllProducts: state => {
         return state.products;
     },
-    getFeaturedProducts: state =>
-        state.products.filter(el => el.feature === true)
 };
 
 export const mutations = {};
 
-export const actions = {};
+export const actions = {
+
+    async getAllProducts({ commit, state }) {
+        const response = await Repository.get(
+            `${baseUrl}/products`
+        )
+            .then(response => {
+                state.products = response.data;
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }));
+        return response;
+    }
+
+};

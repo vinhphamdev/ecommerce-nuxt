@@ -4,7 +4,7 @@
             <h2>
                 Millions Of Shoppers Can’t Wait To See What You Have In Store
             </h2>
-            <nuxt-link to="/vendor/store-list" class="ps-btn ps-btn--lg">
+            <nuxt-link to="/vendor/vendor-registration-form" class="ps-btn ps-btn--lg">
                 Start Selling
             </nuxt-link>
         </div>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-    name: 'VendorBanner'
+    name: 'VendorBanner',
 };
 </script>
 

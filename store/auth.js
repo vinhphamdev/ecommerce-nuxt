@@ -2,30 +2,26 @@ import Repository, { serializeQuery } from '~/repositories/Repository.js';
 import { baseUrl } from '~/repositories/Repository';
 
 export const state = () => ({
-    isLoggedIn: false
+    isLoggedIn: false,
+    // token: localStorage.getItem('token') || ''
+    token: ''
 });
 
 export const mutations = {
-    setIsLoggedIn(state, payload) {
-        state.isLoggedIn = payload;
+    setToken(state, payload) {
+        // localStorage.setItem('token', payload);
+        state.token = payload;
+        state.isLoggedIn = true;
     },
+
+    logout(state) {
+        // localStorage.setItem('token', '');
+        state.token = '';
+        state.isLoggedIn = false;
+    }
 };
 
 export const actions = {
-    setAuthStatus({ commit, state }, payload) {
-        commit('setIsLoggedIn', payload);
-        const cookieParams = {
-            isLoggedIn: state.isLoggedIn
-        };
-
-        this.$router.push('/');
-
-        // this.$cookies.set('auth', cookieParams, {
-        //     path: '/',
-        //     maxAge: 60 * 60 * 24 * 7
-        // });
-    },
-
     async register({ commit }, payload) {
         const response = await Repository.post(
             `${baseUrl}/auth/local/register`, payload
@@ -47,5 +43,26 @@ export const actions = {
             .catch(error => ({ error: JSON.stringify(error) }))
 
         return response;
+    },
+
+    async vendorRegistration({ commit, state }, payload) {
+        const response = await Repository.post(
+            `${baseUrl}/vendors`, payload, {
+            headers: {
+                'Authorization': `Bearer ${state.token}`
+            }
+        }
+        )
+            .then(
+                response => {
+                    return response.data
+                }
+            )
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }))
+
+        return response;
     }
+
 };

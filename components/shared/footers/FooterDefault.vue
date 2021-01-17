@@ -14,7 +14,7 @@ import FooterCopyright from '~/components/shared/footers/modules/FooterCopyright
 import FooterLinks from '~/components/shared/footers/modules/FooterLinks';
 export default {
     name: 'FooterDefault',
-    components: { FooterWidgets, FooterCopyright, FooterLinks }
+    components: { FooterWidgets, FooterCopyright, FooterLinks },
 };
 </script>
 

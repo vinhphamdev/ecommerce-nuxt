@@ -39,7 +39,7 @@
                 </ul>
             </div>
             <div class="ps-section__content">
-                <carousel-arrows type="simple" />
+                <!-- <carousel-arrows type="simple" />
                 <div
                     class="ps-carousel"
                     v-swiper:consumerElectronicCarousel="carouselSetting"
@@ -49,18 +49,25 @@
                             <product-default :product="product" />
                         </div>
                     </div>
-                    <!--Carousel controls-->
                     <div
                         class="swiper-pagination swiper-pagination-bullets"
                     ></div>
-                </div>
+                </div> -->
+
+                 <div class="row">
+                     <template v-for="product in products">
+                         <div class="col-md-2">
+                            <product-default :product="product" />
+                         </div>
+                     </template>
+                 </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { carouselFullwidth } from '~/utilities/carousel-helpers.js';
 import ProductDefault from '../../../elements/product/ProductDefault';
 import { getColletionBySlug } from '../../../../utilities/product-helper';
@@ -71,17 +78,13 @@ export default {
     props: {
         collectionSlug: {
             type: String,
-            default: ''
-        }
+            default: '',
+        },
     },
     computed: {
-        ...mapState({
-            collections: state => state.collection.collections
+        ...mapGetters({
+            products: 'shop/getAllProducts',
         }),
-
-        products() {
-            return getColletionBySlug(this.collections, this.collectionSlug);
-        }
     },
     data() {
         return {
@@ -89,10 +92,13 @@ export default {
                 ...carouselFullwidth,
                 navigation: {
                     nextEl: '.ps-garden-kitchen .swiper-next',
-                    prevEl: '.ps-garden-kitchen .swiper-prev'
-                }
-            }
+                    prevEl: '.ps-garden-kitchen .swiper-prev',
+                },
+            },
         };
-    }
+    },
+    async created() {
+        const response = await this.$store.dispatch('shop/getAllProducts');
+    },
 };
 </script>
