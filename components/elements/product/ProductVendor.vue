@@ -24,17 +24,6 @@
         
             </div>
         </div>
-        <v-dialog v-model="quickviewDialog" width="1200">
-            <div class="ps-dialog">
-                <a
-                    class="ps-dialog__close"
-                    @click.prevent="quickviewDialog = false"
-                >
-                    <i class="icon icon-cross"></i>
-                </a>
-                <product-quickview :product="product" />
-            </div>
-        </v-dialog>
     </div>
 </template>
 <script>
@@ -57,18 +46,16 @@ export default {
     },
 
     data: () => ({
-        productRating: 5,
         productModal: false,
         productPreload: true,
         isImageLoaded: false,
-        quickviewDialog: false,
     }),
 };
 </script>
 <style lang="scss" scope>
-.thumbnail-product {
-    width: 188px;
-    height: 188px;
-    object-fit: cover;
-}
+// .thumbnail-product {
+//     width: 188px;
+//     height: 188px;
+//     object-fit: cover;
+// }
 </style>
