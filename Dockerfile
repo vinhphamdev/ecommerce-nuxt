@@ -13,6 +13,7 @@ RUN npm run build
 
 COPY . .
 
+ENV HOST 0.0.0.0
 EXPOSE 4002
 
 CMD ["npm", "start"]
