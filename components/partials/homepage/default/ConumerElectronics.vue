@@ -54,13 +54,13 @@
                     ></div>
                 </div> -->
 
-                 <div class="row">
+                 <v-row>
                      <template v-for="product in products">
-                         <div class="col-md-2">
+                         <v-col cols="6" md="2">
                             <product-default :product="product" />
-                         </div>
+                         </v-col>
                      </template>
-                 </div>
+                 </v-row>
             </div>
         </div>
     </div>
