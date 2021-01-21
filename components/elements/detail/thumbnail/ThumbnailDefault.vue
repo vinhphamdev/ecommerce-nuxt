@@ -15,7 +15,7 @@
                                     class="swiper-slide"
                                     v-for="image in product.images"
                                 >
-                                    <img :src="`${baseURL}${image.url}`" />
+                                    <img :src="image.url" />
                                 </div>
                             </div>
                             <div class="swiper-nav">
@@ -66,11 +66,11 @@ export default {
     name: 'ThumbnailDefault',
     computed: {
         ...mapState({
-            product: state => state.product.product,
+            product: (state) => state.product.product,
             baseURL() {
                 return baseUrl;
-            }
-        })
+            },
+        }),
     },
     data() {
         return {
@@ -79,8 +79,8 @@ export default {
                 slidesPerView: 1,
                 navigation: {
                     nextEl: '.swiper-next',
-                    prevEl: '.swiper-prev'
-                }
+                    prevEl: '.swiper-prev',
+                },
             },
             swiperOptionThumbs: {
                 direction: 'vertical',
@@ -88,9 +88,9 @@ export default {
                 spaceBetween: 10,
                 slidesPerView: 3,
                 centeredSlides: false,
-                slideToClickedSlide: false
+                slideToClickedSlide: false,
             },
-            activeSlide: 0
+            activeSlide: 0,
         };
     },
     methods: {
@@ -98,8 +98,8 @@ export default {
             this.activeSlide = index;
             this.swiperVariants.activeIndex = index;
             this.swiperGallery.slideTo(index, 500, false);
-        }
-    }
+        },
+    },
 };
 </script>
 
