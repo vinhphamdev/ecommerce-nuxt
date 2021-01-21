@@ -102,12 +102,13 @@ export default {
         },
 
         addItemToCart(payload) {
+            console.log(payload);
             this.$store.dispatch('cart/addProductToCart', payload);
             this.getCartProduct(this.cartItems);
             this.$notify({
                 group: 'addCartSuccess',
                 title: 'Success!',
-                text: `${this.product.title} has been added to your cart!`,
+                text: `${this.product.name} has been added to your cart!`,
             });
         },
 

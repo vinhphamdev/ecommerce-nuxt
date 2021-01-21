@@ -39,21 +39,6 @@
                 </ul>
             </div>
             <div class="ps-section__content">
-                <!-- <carousel-arrows type="simple" />
-                <div
-                    class="ps-carousel"
-                    v-swiper:consumerElectronicCarousel="carouselSetting"
-                >
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="product in products">
-                            <product-default :product="product" />
-                        </div>
-                    </div>
-                    <div
-                        class="swiper-pagination swiper-pagination-bullets"
-                    ></div>
-                </div> -->
-
                  <v-row>
                      <template v-for="product in products">
                          <v-col cols="6" md="2">
