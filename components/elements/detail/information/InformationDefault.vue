@@ -29,13 +29,13 @@ export default {
         Rating,
         ModuleProductDetailDesc,
         ModuleProductDetailSpecification,
-        ModuleProductDetailSharing
+        ModuleProductDetailSharing,
     },
     computed: {
         ...mapState({
-            product: state => state.product.product
-        })
-    }
+            product: (state) => state.product.product,
+        }),
+    },
 };
 </script>
 

@@ -131,7 +131,7 @@
 
 <script>
 export default {
-    name: 'DescriptionFullContent'
+    name: 'DescriptionFullContent',
 };
 </script>
 

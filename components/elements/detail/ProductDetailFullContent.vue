@@ -65,13 +65,13 @@ export default {
         InformationFullContent,
         InformationExtended,
         ThumbnailCountDown,
-        DefaultDescription
+        DefaultDescription,
     },
     computed: {
         product() {
             return extended;
-        }
-    }
+        },
+    },
 };
 </script>
 

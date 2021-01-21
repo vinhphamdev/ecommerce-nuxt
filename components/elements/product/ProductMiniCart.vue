@@ -2,10 +2,10 @@
     <div class="ps-product--cart-mobile">
         <div class="ps-product__thumbnail">
             <nuxt-link :to="`/product/${product.id}`">
-                <img
+                <!-- <img
                     :src="`${baseUrl}${product.thumbnail.url}`"
                     alt="martfury"
-                />
+                /> -->
             </nuxt-link>
         </div>
         <div class="ps-product__content">
@@ -38,20 +38,20 @@ export default {
     props: {
         product: {
             type: Object,
-            default: () => {}
-        }
+            default: () => {},
+        },
     },
     computed: {
         ...mapState({
-            total: state => state.cart.total,
-            cartItems: state => state.cart.cartItems,
-            cartProducts: state => state.product.cartProducts,
-            currency: state => state.app.currency
+            total: (state) => state.cart.total,
+            cartItems: (state) => state.cart.cartItems,
+            cartProducts: (state) => state.product.cartProducts,
+            currency: (state) => state.app.currency,
         }),
         quantity() {
             if (this.cartItems !== null) {
                 const cartItem = this.cartItems.find(
-                    item => item.id === this.product.id
+                    (item) => item.id === this.product.id
                 );
                 if (cartItem !== undefined) {
                     return cartItem.quantity;
@@ -64,13 +64,13 @@ export default {
         },
         baseUrl() {
             return baseUrl;
-        }
+        },
     },
     methods: {
         async loadCartProducts() {
             const cookieCart = this.$cookies.get('cart', { parseJSON: true });
             let queries = [];
-            cookieCart.cartItems.forEach(item => {
+            cookieCart.cartItems.forEach((item) => {
                 queries.push(item.id);
             });
             if (this.cartItems.length > 0) {
@@ -87,13 +87,13 @@ export default {
         },
         handleRemoveProductFromCart(product) {
             const cartItem = this.cartItems.find(
-                item => item.id === product.id
+                (item) => item.id === product.id
             );
             this.$store.dispatch('cart/removeProductFromCart', cartItem);
             this.$store.commit('cart/setLoading', true);
             this.loadCartProducts();
-        }
-    }
+        },
+    },
 };
 </script>
 

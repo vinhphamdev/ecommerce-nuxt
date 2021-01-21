@@ -49,30 +49,30 @@ export default {
         RelatedProduct,
         CustomerBought,
         BreadCrumb,
-        ProductDetailFullwidth
+        ProductDetailFullwidth,
     },
 
     computed: {
         ...mapState({
-            collections: state => state.collection.collections,
-            product: state => state.product.product
-        })
+            collections: (state) => state.collection.collections,
+            product: (state) => state.product.product,
+        }),
     },
     data() {
         return {
             productId: this.$route.params.id,
             breadCrumb: null,
-            pageLoading: true
+            pageLoading: true,
         };
     },
     async created() {
         const queries = [
             'customer_bought',
             'shop-recommend-items',
-            'widget_same_brand'
+            'widget_same_brand',
         ];
         setTimeout(
-            function() {
+            function () {
                 this.pageLoading = false;
             }.bind(this),
             2000
@@ -88,20 +88,20 @@ export default {
         this.breadCrumb = [
             {
                 text: 'Home',
-                url: '/'
+                url: '/',
             },
             {
                 text: 'Shop',
-                url: '/shop'
+                url: '/shop',
             },
             {
-                text: product.title
-            }
+                text: product.title,
+            },
         ];
     },
     mounted() {
         this.$store.commit('app/setAppDrawer', false);
-    }
+    },
 };
 </script>
 

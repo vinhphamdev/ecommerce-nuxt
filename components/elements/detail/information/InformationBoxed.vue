@@ -23,14 +23,14 @@ export default {
         Rating,
         ModuleProductDetailDesc,
         ModuleProductDetailSpecification,
-        ModuleProductDetailSharing
+        ModuleProductDetailSharing,
     },
     props: {
         product: {
             type: Object,
-            default: {}
-        }
-    }
+            default: {},
+        },
+    },
 };
 </script>
 
