@@ -10,10 +10,6 @@
                     </a>
                 </nuxt-link>
             </p>
-            <div class="ps-product__rating">
-                <rating />
-                <span>(1 review)</span>
-            </div>
         </div>
         <h4 class="ps-product__price">
             ${{ product.price.toFixed(2) }}
@@ -22,10 +18,8 @@
 </template>
 
 <script>
-import Rating from '~/components/elements/Rating';
 export default {
     name: 'ModuleProductInfo',
-    components: { Rating },
     props: {
         product: {
             type: Object,
