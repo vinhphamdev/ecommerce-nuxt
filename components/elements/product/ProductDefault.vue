@@ -20,17 +20,6 @@
                         <i class="icon-bag2"></i>
                     </a>
                 </li>
-                <li>
-                    <a
-                        to="#"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Quick View"
-                        @click.prevent="quickviewDialog = true"
-                    >
-                        <i class="icon-eye"></i>
-                    </a>
-                </li>
             </ul>
         </div>
         <div class="ps-product__container">
@@ -57,17 +46,6 @@
                 <p class="ps-product__price">${{ product.price }}</p>
             </div>
         </div>
-        <v-dialog v-model="quickviewDialog" width="1200">
-            <div class="ps-dialog">
-                <a
-                    class="ps-dialog__close"
-                    @click.prevent="quickviewDialog = false"
-                >
-                    <i class="icon icon-cross"></i>
-                </a>
-                <product-quickview :product="product" />
-            </div>
-        </v-dialog>
     </div>
 </template>
 <script>
@@ -107,7 +85,6 @@ export default {
         productModal: false,
         productPreload: true,
         isImageLoaded: false,
-        quickviewDialog: false,
     }),
     methods: {
         handleAddToCart() {
@@ -121,7 +98,7 @@ export default {
             this.$notify({
                 group: 'addCartSuccess',
                 title: 'Success!',
-                text: `${this.product.title} has been added to your cart!`,
+                text: `${this.product.name} has been added to your cart!`,
             });
         },
 

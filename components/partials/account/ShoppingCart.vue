@@ -17,21 +17,6 @@
             <div class="ps-section__footer">
                 <div class="row justify-content-end">
                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 ">
-                        <figure>
-                            <figcaption>Coupon Discount</figcaption>
-                            <div class="form-group">
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    placeholder=""
-                                />
-                            </div>
-                            <div class="form-group">
-                                <button class="ps-btn ps-btn--outline">
-                                    Apply
-                                </button>
-                            </div>
-                        </figure>
                     </div>
                     <div
                         class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 "
@@ -53,7 +38,7 @@
                                                 :to="`/product/${product.id}`"
                                                 class="ps-product__title"
                                             >
-                                                {{ product.title }}
+                                                {{ product.name }}
                                                 <br />
                                                 x
                                                 {{ cartItems[index].quantity }}
@@ -89,12 +74,12 @@ export default {
     components: { TableShoppingCart, ProductShoppingCart },
     computed: {
         ...mapState({
-            cartItems: state => state.cart.cartItems,
-            total: state => state.cart.total,
-            amount: state => state.cart.amount,
-            cartProducts: state => state.product.cartProducts
-        })
-    }
+            cartItems: (state) => state.cart.cartItems,
+            total: (state) => state.cart.total,
+            amount: (state) => state.cart.amount,
+            cartProducts: (state) => state.product.cartProducts,
+        }),
+    },
 };
 </script>
 
