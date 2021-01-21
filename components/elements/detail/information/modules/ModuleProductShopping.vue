@@ -27,14 +27,6 @@
         <a class="ps-btn" href="#" @click.prevent="">
             Buy Now
         </a>
-        <div class="ps-product__actions">
-            <a href="#">
-                <i class="icon-heart"></i>
-            </a>
-            <a href="#">
-                <i class="icon-chart-bars"></i>
-            </a>
-        </div>
     </div>
 </template>
 
@@ -46,17 +38,17 @@ export default {
     props: {
         product: {
             type: Object,
-            default: () => {}
-        }
+            default: () => {},
+        },
     },
     computed: {
         ...mapState({
-            cartItems: state => state.cart.cartItems
-        })
+            cartItems: (state) => state.cart.cartItems,
+        }),
     },
     data() {
         return {
-            quantity: 1
+            quantity: 1,
         };
     },
     methods: {
@@ -72,30 +64,30 @@ export default {
 
         handleAddToCart(isBuyNow) {
             const cartItemsOnCookie = this.$cookies.get('cart', {
-                parseJSON: true
+                parseJSON: true,
             });
             let existItem;
             if (cartItemsOnCookie) {
                 existItem = cartItemsOnCookie.cartItems.find(
-                    item => item.id === this.product.id
+                    (item) => item.id === this.product.id
                 );
             }
 
             let item = {
                 id: this.product.id,
                 quantity: this.quantity,
-                price: this.product.price
+                price: this.product.price,
             };
             if (existItem !== undefined) {
                 if (this.quantity + existItem.quantity > 10) {
                     this.$notify({
                         group: 'addCartSuccess',
                         title: 'Waring!',
-                        text: `Can't add more than 10 items`
+                        text: `Can't add more than 10 items`,
                     });
                     if (isBuyNow && isBuyNow === true) {
                         setTimeout(
-                            function() {
+                            function () {
                                 this.$router.push('/account/checkout');
                             }.bind(this),
                             500
@@ -115,13 +107,13 @@ export default {
             this.$notify({
                 group: 'addCartSuccess',
                 title: 'Success!',
-                text: `${this.product.title} has been added to your cart!`
+                text: `${this.product.title} has been added to your cart!`,
             });
         },
 
         async getCartProduct(products) {
             let listOfIds = [];
-            products.forEach(item => {
+            products.forEach((item) => {
                 listOfIds.push(item.id);
             });
             await this.$store.dispatch('product/getCartProducts', listOfIds);
@@ -129,10 +121,10 @@ export default {
 
         async loadCartProducts() {
             const cartItemsOnCookie = this.$cookies.get('cart', {
-                parseJSON: true
+                parseJSON: true,
             });
             let queries = [];
-            cartItemsOnCookie.cartItems.forEach(item => {
+            cartItemsOnCookie.cartItems.forEach((item) => {
                 queries.push(item.id);
             });
             if (this.cartItems.length > 0) {
@@ -140,8 +132,8 @@ export default {
             } else {
                 this.$store.commit('product/setCartProducts', null);
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

@@ -2,10 +2,10 @@
     <div class="ps-product--cart-mobile">
         <div class="ps-product__thumbnail">
             <nuxt-link :to="`/product/${product.id}`">
-                <!-- <img
-                    :src="`${baseUrl}${product.thumbnail.url}`"
+                <img
+                    :src="product.images[0].url"
                     alt="martfury"
-                /> -->
+                />
             </nuxt-link>
         </div>
         <div class="ps-product__content">
@@ -17,11 +17,11 @@
                 <i class="icon-cross"></i>
             </a>
             <nuxt-link :to="`/product/${product.id}`" class="ps-product__title">
-                {{ product.title }}
+                {{ product.name }}
             </nuxt-link>
             <p>
                 <strong>Sold by:</strong>
-                {{ product.vendor }}
+                {{ product.vendor.name }}
             </p>
             <small v-if="quantity !== null">
                 {{ quantity }} x {{currency}} {{ product.price }}

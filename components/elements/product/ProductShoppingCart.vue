@@ -3,13 +3,13 @@
         <div class="ps-product__thumbnail">
             <nuxt-link :to="`/product/${product.id}`">
                 <img
-                    :src="`${baseUrl}${product.thumbnail.url}`"
+                    :src="product.images[0].url"
                     alt="martfury"
                 />
             </nuxt-link>
         </div>
         <div class="ps-product__content">
-            <nuxt-link :to="`/product/${product.id}`">
+            <nuxt-link :to="`/product/${product.name}`">
                 <a class="ps-product__title">{{ product.title }}</a>
             </nuxt-link>
         </div>
@@ -23,14 +23,14 @@ export default {
     props: {
         product: {
             type: Object,
-            default: () => {}
-        }
+            default: () => {},
+        },
     },
     computed: {
         baseUrl() {
             return baseUrl;
-        }
-    }
+        },
+    },
 };
 </script>
 
