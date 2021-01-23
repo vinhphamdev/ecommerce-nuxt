@@ -54,17 +54,17 @@ export default {
     components: { ProductShoppingCart },
     computed: {
         ...mapState({
-            cartItems: state => state.cart.cartItems,
-            total: state => state.cart.total,
-            amount: state => state.cart.amount,
-            cartProducts: state => state.product.cartProducts
-        })
+            cartItems: (state) => state.cart.cartItems,
+            total: (state) => state.cart.total,
+            amount: (state) => state.cart.amount,
+            cartProducts: (state) => state.product.cartProducts,
+        }),
     },
     methods: {
         async loadCartProducts() {
             const cookieCart = this.$cookies.get('cart', { parseJSON: true });
             let queries = [];
-            cookieCart.cartItems.forEach(item => {
+            cookieCart.cartItems.forEach((item) => {
                 queries.push(item.id);
             });
             if (this.cartItems.length > 0) {
@@ -75,12 +75,14 @@ export default {
         },
         handleRemoveProductFromCart(product) {
             const cartItem = this.cartItems.find(
-                item => item.id === product.id
+                (item) => item.id === product.id
             );
+
+            console.log('cardItem', cardItem);
             this.$store.dispatch('cart/removeProductFromCart', cartItem);
             this.loadCartProducts();
-        }
-    }
+        },
+    },
 };
 </script>
 

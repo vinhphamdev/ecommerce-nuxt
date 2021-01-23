@@ -105,6 +105,8 @@ export const actions = {
                 query = query + `&id=${item}`;
             }
         });
+
+        console.log(query);
         const reponse = await Repository.get(`${baseUrl}/products?${query}`)
             .then(response => {
                 commit('setCartProducts', response.data);

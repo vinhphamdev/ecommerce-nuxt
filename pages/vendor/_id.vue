@@ -1,6 +1,6 @@
 <template lang="html">
     <div class="ps-page--single ps-page--vendor">
-        <bread-crumb :breadcrumb="breadCrumb" />
+        <!-- <bread-crumb :breadcrumb="breadCrumb" /> -->
         <vendor-store />
     </div>
 </template>
@@ -12,22 +12,13 @@ import VendorStore from '~/components/partials/vendor/VendorStore';
 export default {
     components: {
         BreadCrumb,
-        VendorStore
+        VendorStore,
     },
-
-    data: () => {
-        return {
-            breadCrumb: [
-                {
-                    text: 'Home',
-                    url: '/'
-                },
-                {
-                    text: 'Vendor store'
-                }
-            ]
-        };
-    }
+    async created() {
+        const vendorId = this.$route.params.id;
+        await this.$store.dispatch('shop/getAllProductsByVendor', vendorId);
+        await this.$store.dispatch('shop/getVendorById', vendorId);
+    },
 };
 </script>
 

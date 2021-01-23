@@ -3,7 +3,8 @@ import { baseUrl } from '~/repositories/Repository';
 
 export const state = () => ({
     products: [],
-    vendors: []
+    vendors: [],
+    vendor: {}
 });
 
 export const getters = {
@@ -16,7 +17,19 @@ export const getters = {
     },
 };
 
-export const mutations = {};
+export const mutations = {
+    updateProducts(state, payload) {
+        state.products = payload;
+    },
+
+    updateVendor(state, payload) {
+        state.vendor = payload;
+    },
+
+    updateVendors(state, payload) {
+        state.vendors = payload;
+    }
+};
 
 export const actions = {
 
@@ -25,7 +38,19 @@ export const actions = {
             `${baseUrl}/products`
         )
             .then(response => {
-                state.products = response.data;
+                commit('updateProducts', response.data);
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }));
+        return response;
+    },
+
+    async getAllProductsByVendor({ commit, state }, vendorId) {
+        const response = await Repository.get(
+            `${baseUrl}/products?vendor=${vendorId}`
+        )
+            .then(response => {
+                commit('updateProducts', response.data);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }));
@@ -37,11 +62,23 @@ export const actions = {
             `${baseUrl}/vendors?status=ACTIVE`
         )
             .then(response => {
-                state.vendors = response.data;
+                commit('updateVendors', response.data);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }));
         return response;
-    }
+    },
+
+    async getVendorById({ commit, state }, vendorId) {
+        const response = await Repository.get(
+            `${baseUrl}/vendors?id=${vendorId}`
+        )
+            .then(response => {
+                commit('updateVendor', response.data[0]);
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }));
+        return response;
+    },
 
 };

@@ -31,9 +31,9 @@ export const actions = {
                 total: compareItems.total
             });
         }
-        if (auth) {
-            commit('auth/setIsLoggedIn', Boolean(auth.isLoggedIn));
-        }
+        // if (auth) {
+        //     commit('auth/setIsLoggedIn', Boolean(auth.isLoggedIn));
+        // }
         if (currency) {
             commit('app/setCurrency', currency.data);
         }

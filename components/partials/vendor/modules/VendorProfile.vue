@@ -1,21 +1,16 @@
 <template lang="html">
     <div class="ps-block--vendor">
         <div class="ps-block__thumbnail">
-            <img src="/img/vendor/vendor-store.jpg" alt="martfury" />
+            <img v-if="vendor.avatar" :src="vendor.avatar.url" alt="martfury" />
         </div>
         <div class="ps-block__container">
             <div class="ps-block__header">
-                <h4>Digitalworld us</h4>
-                <Rating />
-                <p><strong>85% Positive</strong> (562 rating)</p>
+                <h4>{{vendor.name}}</h4>
             </div>
             <div class="ps-block__divider"></div>
             <div class="ps-block__content">
                 <p>
-                    <strong>Digiworld US</strong>, New York’s no.1 online
-                    retailer was established in May 2012 with the aim and vision
-                    to become the one-stop shop for retail in New York with
-                    implementation of best practices both online
+                   {{vendor.description}}
                 </p>
                 <span class="ps-block__divider"></span>
                 <p>
@@ -64,11 +59,13 @@
 </template>
 
 <script>
-import Rating from '~/components/elements/Rating';
-
 export default {
     name: 'VendorProfile',
-    components: { Rating }
+    computed: {
+        vendor() {
+            return this.$store.state.shop.vendor;
+        },
+    },
 };
 </script>
 

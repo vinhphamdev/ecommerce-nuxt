@@ -55,7 +55,7 @@ export default {
             'garden-and-kitchen',
             'new-arrivals-products',
         ];
-        await this.$store.dispatch('collection/getCollectionsBySlugs', queries);
+        // await this.$store.dispatch('collection/getCollectionsBySlugs', queries);
     },
 };
 </script>

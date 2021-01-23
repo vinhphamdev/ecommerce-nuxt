@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="ps-product">
         <div class="ps-product__thumbnail">
-            <nuxt-link :to="`/product/${product.id}`">
+            <nuxt-link :to="`/vendor/${product.id}`">
                 <img v-if="product.avatar.url"
                     :src="`${product.avatar.url}`"
                     alt="martfury"
@@ -53,9 +53,4 @@ export default {
 };
 </script>
 <style lang="scss" scope>
-// .thumbnail-product {
-//     width: 188px;
-//     height: 188px;
-//     object-fit: cover;
-// }
 </style>

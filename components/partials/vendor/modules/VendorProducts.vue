@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import { relatedProduct } from '~/static/data/product.json';
 import ProductDefault from '../../../elements/product/ProductDefault';
 export default {
     name: 'VendorProducts',
@@ -60,9 +59,14 @@ export default {
     data() {
         return {
             gridMode: true,
-            products: relatedProduct
         };
-    }
+    },
+
+    computed: {
+        products() {
+            return this.$store.state.shop.products;
+        },
+    },
 };
 </script>
 
