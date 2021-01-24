@@ -77,6 +77,8 @@ export default {
                 id: this.product.id,
                 quantity: this.quantity,
                 price: this.product.price,
+                url: this.product.images[0].url,
+                name: this.product.name,
             };
             if (existItem !== undefined) {
                 if (this.quantity + existItem.quantity > 10) {

@@ -84,8 +84,12 @@
                 Return to shopping cart
             </nuxt-link>
             <div class="ps-block__footer">
-                <button class="ps-btn" @click="handleToShipping">
+                <!-- <button class="ps-btn" @click="handleToShipping">
                     Continue to shipping
+                </button> -->
+
+                <button class="ps-btn" @click="createOrder">
+                    Confirm
                 </button>
             </div>
         </div>
@@ -93,13 +97,35 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
     name: 'FormCheckoutInformation',
+    ...mapState({
+        cartItems: (state) => state.cart.cartItems,
+    }),
     methods: {
         handleToShipping() {
             this.$router.push('/account/shipping');
-        }
-    }
+        },
+
+        async createOrder() {
+            const cookieCart = this.$cookies.get('cart', { parseJSON: true });
+            const items = cookieCart.cartItems.map((it) => ({
+                product: it.id,
+                quantity: it.quantity,
+            }));
+
+            const params = {
+                customer_name: 'Nhat',
+                shipping_address: 'ha noi',
+                order_items: items,
+                payment_method: 'CREDIT_CARD',
+                // vendor: '60008b65e49d541b24c6316c',
+            };
+
+            await this.$store.dispatch('shop/createOrder', params);
+        },
+    },
 };
 </script>
 

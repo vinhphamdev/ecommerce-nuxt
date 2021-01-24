@@ -80,7 +80,7 @@ export const actions = {
         const cookieParams = {
             total: state.total,
             amount: state.amount,
-            cartItems: state.cartItems
+            cartItems: state.cartItems,
         };
 
         this.$cookies.set('cart', cookieParams, {

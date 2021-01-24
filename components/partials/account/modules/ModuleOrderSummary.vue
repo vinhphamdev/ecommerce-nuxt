@@ -11,15 +11,15 @@
                 </figure>
                 <figure class="ps-block__items">
                     <nuxt-link
-                        v-for="(product, index) in cartProducts"
-                        :to="`/product/${product.id}`"
-                        :key="product.id"
+                        v-for="(item, index) in cartItems"
+                        :to="`/product/${item.id}`"
+                        :key="item.id"
                         class="ps-product__title"
                     >
-                        {{ product.title }}
+                        {{ item.name }}
                         <br />
                         {{ cartItems[index].quantity }} x ${{
-                            product.price.toFixed(2)
+                            item.price.toFixed(2)
                         }}
                     </nuxt-link>
                 </figure>
@@ -52,17 +52,17 @@ export default {
     props: {
         shipping: {
             type: Boolean,
-            default: () => false
-        }
+            default: () => false,
+        },
     },
     computed: {
         ...mapState({
-            cartItems: state => state.cart.cartItems,
-            total: state => state.cart.total,
-            amount: state => state.cart.amount,
-            cartProducts: state => state.product.cartProducts
-        })
-    }
+            cartItems: (state) => state.cart.cartItems,
+            total: (state) => state.cart.total,
+            amount: (state) => state.cart.amount,
+            cartProducts: (state) => state.product.cartProducts,
+        }),
+    },
 };
 </script>
 

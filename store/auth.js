@@ -1,21 +1,25 @@
 import Repository, { serializeQuery } from '~/repositories/Repository.js';
 import { baseUrl } from '~/repositories/Repository';
+import Cookies from 'js-cookie';
 
 export const state = () => ({
     isLoggedIn: false,
     // token: localStorage.getItem('token') || ''
-    token: ''
+    token: '',
+
 });
 
 export const mutations = {
     setToken(state, payload) {
         // localStorage.setItem('token', payload);
+        Cookies.set('id_token', payload);
         state.token = payload;
         state.isLoggedIn = true;
     },
 
     logout(state) {
         // localStorage.setItem('token', '');
+        Cookies.set('id_token', '');
         state.token = '';
         state.isLoggedIn = false;
     }

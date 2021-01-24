@@ -10,32 +10,32 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(product, index) in cartProducts" :key="product.id">
+            <tr v-for="(item, index) in cartItems" :key="item.id">
                 <td data-label="Product">
-                    <product-shopping-cart :product="product" />
+                    <product-shopping-cart :product="item" />
                 </td>
-                <td data-label="Price" class="price">$ {{ product.price }}</td>
+                <td data-label="Price" class="price">$ {{ item.price }}</td>
                 <td data-label="Quantity">
                     <div class="form-group--number">
-                        <button class="up">+</button>
-                        <button class="down">-</button>
+                        <button class="up" @click="increase(item)">+</button>
+                        <button class="down" @click="decrease(item)">-</button>
                         <input
                             class="form-control"
                             type="text"
                             placeholder="1"
-                            value="1"
+                            v-model="cartItems[index].quantity"
                         />
                     </div>
                 </td>
                 <td data-label="Total">
                     ${{
-                        (cartItems[index].quantity * product.price).toFixed(2)
+                        (cartItems[index].quantity * item.price).toFixed(2)
                     }}
                 </td>
                 <td data-label="Action">
                     <a
                         href="#"
-                        @click.prevent="handleRemoveProductFromCart(product)"
+                        @click.prevent="handleRemoveProductFromCart(item)"
                     >
                         <i class="icon-cross"></i>
                     </a>
@@ -78,9 +78,16 @@ export default {
                 (item) => item.id === product.id
             );
 
-            console.log('cardItem', cardItem);
             this.$store.dispatch('cart/removeProductFromCart', cartItem);
             this.loadCartProducts();
+        },
+
+        increase(it) {
+            this.$store.commit('cart/increaseItemQuantity', it);
+        },
+
+        decrease(it) {
+            this.$store.commit('cart/decreaseItemQuantity', it);
         },
     },
 };

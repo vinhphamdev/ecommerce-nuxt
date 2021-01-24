@@ -1,5 +1,6 @@
 import Repository from '~/repositories/Repository';
 import { baseUrl } from '~/repositories/Repository';
+import Cookies from 'js-cookie';
 
 export const state = () => ({
     products: [],
@@ -28,7 +29,7 @@ export const mutations = {
 
     updateVendors(state, payload) {
         state.vendors = payload;
-    }
+    },
 };
 
 export const actions = {
@@ -75,6 +76,23 @@ export const actions = {
         )
             .then(response => {
                 commit('updateVendor', response.data[0]);
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }));
+        return response;
+    },
+
+    async createOrder({ commit, state }, params) {
+        const token = Cookies.get('id_token');
+        const response = await Repository.post(
+            `${baseUrl}/orders`, params, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        )
+            .then(response => {
+                console.log(response);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }));
