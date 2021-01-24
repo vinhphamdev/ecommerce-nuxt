@@ -2,7 +2,7 @@
     <div class="ps-product-list ps-garden-kitchen ps-section--carousel-outside">
         <div class="ps-container">
             <div class="ps-section__header">
-                <h3>{{ $t('homeDefault.consumerElectronics.heading') }}</h3>
+                <h3>Products</h3>
                 <ul class="ps-section__links">
                     <li>
                         <nuxt-link :to="localePath('/shop')">

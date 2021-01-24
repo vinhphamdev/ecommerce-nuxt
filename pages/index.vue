@@ -2,9 +2,9 @@
     <main id="homepage-1">
         <home-banner />
 
-        <clothings collection-slug="clothings" />
+        <clothings />
 
-        <conumer-electronics collection-slug="consumer-electronics" />
+        <conumer-electronics/>
 
         <newsletters layout="fullwidth"/>
     </main>
