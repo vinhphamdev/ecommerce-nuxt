@@ -15,14 +15,14 @@ import HeaderMobile from '~/components/shared/mobile/HeaderMobile';
 
 export default {
     transition: 'zoom',
-    middleware: 'authentication',
+    // middleware: 'authentication',
     components: {
         HeaderMobile,
         Payment,
         Shipping,
         Checkout,
         EditAddress,
-        BreadCrumb
+        BreadCrumb,
     },
 
     data: () => {
@@ -30,18 +30,18 @@ export default {
             breadCrumb: [
                 {
                     text: 'Home',
-                    url: '/'
+                    url: '/',
                 },
                 {
                     text: 'Shopping Cart',
-                    url: '/account/shopping-cart'
+                    url: '/account/shopping-cart',
                 },
                 {
-                    text: 'Shipping'
-                }
-            ]
+                    text: 'Shipping',
+                },
+            ],
         };
-    }
+    },
 };
 </script>
 

@@ -10,11 +10,11 @@ import EditAddress from '~/components/partials/account/EditAddress';
 import Checkout from '~/components/partials/account/Checkout';
 
 export default {
-    middleware: 'authentication',
+    // middleware: 'authentication',
     components: {
         Checkout,
         EditAddress,
-        BreadCrumb
+        BreadCrumb,
     },
     transition: 'zoom',
     data: () => {
@@ -22,18 +22,18 @@ export default {
             breadCrumb: [
                 {
                     text: 'Home',
-                    url: '/'
+                    url: '/',
                 },
                 {
                     text: 'Shopping Cart',
-                    url: '/account/shopping-cart'
+                    url: '/account/shopping-cart',
                 },
                 {
-                    text: 'Checkout Information'
-                }
-            ]
+                    text: 'Checkout Information',
+                },
+            ],
         };
-    }
+    },
 };
 </script>
 
