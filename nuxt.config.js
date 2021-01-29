@@ -20,6 +20,10 @@ export default {
                 rel: 'stylesheet',
                 href:
                     'https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700&amp;amp;subset=latin-ext'
+            },
+            {
+                rel: 'stylesheet',
+                href: 'https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css'
             }
         ]
     },
