@@ -1,5 +1,6 @@
 <template lang="html">
     <div class="ps-shopping vendor-shop">
+        <div id="map"></div>
         <div class="ps-shopping__header">
             <p>
                 <strong>
@@ -66,8 +67,50 @@ export default {
         products() {
             return this.$store.state.shop.products;
         },
+
+        vendor() {
+            return this.$store.state.shop.vendor;
+        },
+    },
+
+    created() {
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+        let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+
+        console.log('mapboxClient', mapboxClient);
+        mapboxClient.geocoding
+            .forwardGeocode({
+                query: this.vendor.address,
+                autocomplete: false,
+                limit: 1,
+            })
+            .send()
+            .then(function (response) {
+                if (
+                    response &&
+                    response.body &&
+                    response.body.features &&
+                    response.body.features.length
+                ) {
+                    let feature = response.body.features[0];
+
+                    let map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/streets-v11',
+                        center: feature.center,
+                        zoom: 10,
+                    });
+                    new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+                }
+            });
     },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#map {
+    width: 100%;
+    height: 350px;
+}
+</style>
