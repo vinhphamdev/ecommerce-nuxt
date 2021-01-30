@@ -104,7 +104,7 @@ export default {
                 alert('You may only purchase from one vendor');
                 return false;
             }
-
+            const vendorId = Object.keys(arr)[0]
             const items = cookieCart.cartItems.map((it) => ({
                 product: it.id,
                 quantity: it.quantity,
@@ -119,13 +119,13 @@ export default {
                 this.loading = false;
                 return;
             }
-
+            console.log(vendorId)
             await strapi.createEntry('orders', {
                 customer_name: this.customerName,
                 shipping_address: this.shippingAddress,
                 order_items: items,
                 payment_method: 'CREDIT_CARD',
-                vendor: '60105073c3a76b0011130d5c',
+                vendor: vendorId,
                 token,
             });
 
