@@ -65,7 +65,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import strapi from '~/utilities/strapi';
+import strapi from '~/utilities/Strapi';
 import { Card, createToken } from 'vue-stripe-elements-plus';
 
 export default {
