@@ -4,13 +4,13 @@
         @submit.prevent="handleSubmit"
         v-click-outside="handleClickOutside"
     >
-        <div class="ps-form__categories">
+        <!-- <div class="ps-form__categories">
             <select class="form-control">
                 <option v-for="item in exampleCategories" :value="{ item }">
                     {{ item }}
                 </option>
             </select>
-        </div>
+        </div> -->
         <div class="ps-form__input">
             <input
                 v-model="searchText"

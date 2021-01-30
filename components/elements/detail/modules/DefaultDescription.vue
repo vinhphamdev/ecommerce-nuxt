@@ -13,7 +13,7 @@
    
             <v-tab-item>
                 <div class="tab-content">
-                    <partial-description />
+                    <partial-description :product="product" />
                 </div>
             </v-tab-item>
 

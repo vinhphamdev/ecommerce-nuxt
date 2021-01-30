@@ -49,7 +49,7 @@
                             "
                             @click="handleClickSlide(index)"
                         >
-                            <img :src="`${baseURL}${image.url}`" />
+                            <img :src="image.url" />
                         </div>
                     </div>
                 </div>

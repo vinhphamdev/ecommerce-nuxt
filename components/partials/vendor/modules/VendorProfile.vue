@@ -14,11 +14,11 @@
                 </p>
                 <span class="ps-block__divider"></span>
                 <p>
-                    <strong>Address</strong> 325 Orchard Str, New York, NY 10002
+                    <strong>Address</strong> {{vendor.address}}
                 </p>
-                <figure>
+                <!-- <figure>
                     <figcaption>
-                        Foloow us on social
+                        Follow us on social
                     </figcaption>
                     <ul class="ps-list--social-color">
                         <li>
@@ -42,9 +42,9 @@
                             </a>
                         </li>
                     </ul>
-                </figure>
+                </figure> -->
             </div>
-            <div class="ps-block__footer">
+            <!-- <div class="ps-block__footer">
                 <p>
                     Call us directly
                     <strong>(+053) 77-637-3300</strong>
@@ -53,7 +53,7 @@
                 <a class="ps-btn ps-btn--fullwidth" href="">
                     Contact Seller
                 </a>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
