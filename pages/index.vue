@@ -1,6 +1,6 @@
 <template lang="html">
     <main id="homepage-1">
-        <home-banner />
+        <!-- <home-banner /> -->
 
         <clothings />
 

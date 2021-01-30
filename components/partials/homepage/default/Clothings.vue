@@ -3,40 +3,6 @@
         <div class="ps-container">
             <div class="ps-section__header">
                 <h3>Vendors</h3>
-                <ul class="ps-section__links">
-                    <li>
-                        <nuxt-link :to="localePath('/shop')">
-                            {{
-                            $t(
-                            'homeDefault.consumerElectronics.links.newArrivals'
-                            )
-                            }}
-                        </nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link :to="localePath('/shop')">
-                            {{
-                            $t(
-                            'homeDefault.consumerElectronics.links.bestSeller'
-                            )
-                            }}
-                        </nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link :to="localePath('/shop')">
-                            {{
-                            $t(
-                            'homeDefault.consumerElectronics.links.bestSeller'
-                            )
-                            }}
-                        </nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link :to="localePath('/shop')">
-                            {{ $t('common.viewAll') }}
-                        </nuxt-link>
-                    </li>
-                </ul>
             </div>
             <div class="ps-section__content">
                 <carousel-arrows type="simple" />
@@ -49,7 +15,6 @@
                             <product-vendor :product="vendor" />
                         </div>
                     </div>
-                    <!--Carousel controls-->
                     <div
                         class="swiper-pagination swiper-pagination-bullets"
                     ></div>
@@ -60,10 +25,9 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import { carouselFullwidth } from '~/utilities/carousel-helpers.js';
 import ProductVendor from '../../../elements/product/ProductVendor';
-import { getColletionBySlug } from '../../../../utilities/product-helper';
 import CarouselArrows from '~/components/elements/commons/CarouselArrows';
 
 export default {
@@ -95,3 +59,8 @@ export default {
     },
 };
 </script>
+<style lang="scss" scoped>
+.ps-product-list {
+    margin-top: 24px;
+}
+</style>

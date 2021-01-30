@@ -3,45 +3,11 @@
         <div class="ps-container">
             <div class="ps-section__header">
                 <h3>Products</h3>
-                <ul class="ps-section__links">
-                    <li>
-                        <nuxt-link :to="localePath('/shop')">
-                            {{
-                                $t(
-                                    'homeDefault.consumerElectronics.links.newArrivals'
-                                )
-                            }}
-                        </nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link :to="localePath('/shop')">
-                            {{
-                                $t(
-                                    'homeDefault.consumerElectronics.links.bestSeller'
-                                )
-                            }}
-                        </nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link :to="localePath('/shop')">
-                            {{
-                                $t(
-                                    'homeDefault.consumerElectronics.links.bestSeller'
-                                )
-                            }}
-                        </nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link :to="localePath('/shop')">
-                            {{ $t('common.viewAll') }}
-                        </nuxt-link>
-                    </li>
-                </ul>
             </div>
             <div class="ps-section__content">
-                 <v-row>
+                 <v-row style="margin-bottom:20px">
                      <template v-for="product in products">
-                         <v-col cols="6" md="2">
+                         <v-col cols="6" md="2" style="margin-bottom:20px">
                             <product-default :product="product" />
                          </v-col>
                      </template>
@@ -52,10 +18,9 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import { carouselFullwidth } from '~/utilities/carousel-helpers.js';
 import ProductDefault from '../../../elements/product/ProductDefault';
-import { getColletionBySlug } from '../../../../utilities/product-helper';
 import CarouselArrows from '~/components/elements/commons/CarouselArrows';
 
 export default {

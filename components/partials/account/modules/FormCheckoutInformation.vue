@@ -21,56 +21,22 @@
             Shipping address
         </h3>
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="form-group">
-                    <label>First Name </label>
+                    <label>Name</label>
                     <v-text-field
-                        placeholder="First Name"
+                        placeholder="Name"
                         outlined
                         height="50"
+                        v-model="customerName"
                     />
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label>Last Name </label>
-                    <v-text-field
-                        placeholder="Last Name"
-                        outlined
-                        height="50"
-                    />
-                </div>
-            </div>
+
         </div>
         <div class="form-group">
             <label>Address</label>
-            <v-text-field placeholder="Address" outlined height="50" />
-        </div>
-        <div class="form-group">
-            <label>Apartment</label>
-            <v-text-field
-                placeholder="Apartment, suite, etc. (optional)"
-                outlined
-                height="50"
-            />
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label>City</label>
-                    <v-text-field placeholder="City" outlined height="50" />
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label>Postcode</label>
-                    <v-text-field
-                        placeholder="Postal Code"
-                        outlined
-                        height="50"
-                    />
-                </div>
-            </div>
+            <v-text-field placeholder="Address" outlined height="50" v-model="shippingAddress" />
         </div>
         <div class="form-group">
             <v-checkbox
@@ -91,6 +57,13 @@
                 <button class="ps-btn" @click="createOrder">
                     Confirm
                 </button>
+
+                 <label for="card">Card</label>
+                        <card
+                          ref="card-stripe"
+                          stripe="pk_test_51IDw7QHYRruOoW8HFWgG6rgdEuicAla4kQfpH11fdOwJgS8sqd44yWoX9dpIuuVsg7zhjLzCYNkD1JJkxGAUisub00KzvQ5vKh"
+                          @change='complete = $event.complete'
+                        />
             </div>
         </div>
     </div>
@@ -98,11 +71,23 @@
 
 <script>
 import { mapState } from 'vuex';
+import strapi from '~/utilities/strapi';
+import { Card, createToken } from 'vue-stripe-elements-plus';
+
 export default {
     name: 'FormCheckoutInformation',
     ...mapState({
         cartItems: (state) => state.cart.cartItems,
     }),
+    components: {
+        Card,
+    },
+    data() {
+        return {
+            customerName: null,
+            shippingAddress: null,
+        };
+    },
     methods: {
         handleToShipping() {
             this.$router.push('/account/shipping');
@@ -116,14 +101,37 @@ export default {
             }));
 
             const params = {
-                customer_name: 'Nhat',
-                shipping_address: 'ha noi',
+                customer_name: this.customerName,
+                shipping_address: this.shippingAddress,
                 order_items: items,
                 payment_method: 'CREDIT_CARD',
-                // vendor: '60008b65e49d541b24c6316c',
+                vendor: '60105073c3a76b0011130d5c',
+                token,
             };
 
-            await this.$store.dispatch('shop/createOrder', params);
+            let token;
+            try {
+                const response = await createToken();
+                console.log('response', response);
+                token = response.token.id;
+            } catch (err) {
+                alert('An error occurred.');
+                this.loading = false;
+                return;
+            }
+
+            await strapi.createEntry('orders', {
+                customer_name: this.customerName,
+                shipping_address: this.shippingAddress,
+                order_items: items,
+                payment_method: 'CREDIT_CARD',
+                vendor: '60105073c3a76b0011130d5c',
+                token,
+            });
+
+            console.log('success');
+
+            // await this.$store.dispatch('shop/createOrder', params);
         },
     },
 };

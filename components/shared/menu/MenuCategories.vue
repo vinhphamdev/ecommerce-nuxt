@@ -25,7 +25,7 @@ export default {
                 {
                     icon: 'icon-star',
                     text: this.$i18n.t('menu.menuCategories.hotPromotions'),
-                    url: '/shop'
+                    url: '/shop',
                 },
                 {
                     icon: 'icon-laundry',
@@ -46,51 +46,51 @@ export default {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.homeAudioAndTheathers'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.tvAndVideos'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.cameraphotosAndVideos'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.cellphonesAndAccessories'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.headphone'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.videosgames'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.wirelessSpeakers'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.officeElectronic'
                                     ),
-                                    url: '/shop'
-                                }
-                            ]
+                                    url: '/shop',
+                                },
+                            ],
                         },
                         {
                             heading: this.$i18n.t(
@@ -101,47 +101,47 @@ export default {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.digitalCables'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.audioAndVideoCables'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.batteries'
                                     ),
-                                    url: '/shop'
-                                }
-                            ]
-                        }
-                    ]
+                                    url: '/shop',
+                                },
+                            ],
+                        },
+                    ],
                 },
                 {
                     icon: 'icon-shirt',
                     text: this.$i18n.t(
                         'menu.menuCategories.clothingAndapparel'
                     ),
-                    url: '/shop'
+                    url: '/shop',
                 },
                 {
                     icon: 'icon-lampshade',
                     text: this.$i18n.t(
                         'menu.menuCategories.HomeGardenAndKitchen'
                     ),
-                    url: '/shop'
+                    url: '/shop',
                 },
                 {
                     icon: 'icon-heart-pulse',
                     text: this.$i18n.t('menu.menuCategories.healthAndBeauty'),
-                    url: '/shop'
+                    url: '/shop',
                 },
                 {
                     icon: 'icon-diamond2',
                     text: this.$i18n.t('menu.menuCategories.yewelryAndWatches'),
-                    url: '/shop'
+                    url: '/shop',
                 },
                 {
                     icon: 'icon-desktop',
@@ -161,97 +161,97 @@ export default {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.computerAndTablets'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.laptop'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.monitors'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.networking'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.driveAndStorages'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.computerComponents'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.securityAndProtection'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.gamingLaptop'
                                     ),
-                                    url: '/shop'
+                                    url: '/shop',
                                 },
                                 {
                                     text: this.$i18n.t(
                                         'menu.menuCategories.accessories'
                                     ),
-                                    url: '/shop'
-                                }
-                            ]
-                        }
-                    ]
+                                    url: '/shop',
+                                },
+                            ],
+                        },
+                    ],
                 },
                 {
                     icon: 'icon-baby-bottle',
                     text: this.$i18n.t('menu.menuCategories.babiesAndMoms'),
-                    url: '/shop'
+                    url: '/shop',
                 },
                 {
                     icon: 'icon-smartphone',
                     text: this.$i18n.t(
                         'menu.menuCategories.phonesAndAccessories'
                     ),
-                    url: '/shop'
+                    url: '/shop',
                 },
                 {
                     icon: 'icon-book2',
                     text: this.$i18n.t('menu.menuCategories.booksAndOffice'),
-                    url: '/shop'
+                    url: '/shop',
                 },
                 {
                     icon: 'icon-car-siren',
                     text: this.$i18n.t('menu.menuCategories.carsAndMotocycles'),
-                    url: '/shop'
+                    url: '/shop',
                 },
                 {
                     icon: 'icon-wrench',
                     text: this.$i18n.t('menu.menuCategories.homeImproments'),
-                    url: '/shop'
+                    url: '/shop',
                 },
                 {
                     icon: 'icon-tag',
                     text: this.$i18n.t(
                         'menu.menuCategories.vouchersAndServices'
                     ),
-                    url: '/shop'
-                }
-            ]
+                    url: '/shop',
+                },
+            ],
         };
-    }
+    },
 };
 </script>
 

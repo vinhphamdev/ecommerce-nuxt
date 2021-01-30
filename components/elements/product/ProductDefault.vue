@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="ps-product">
+    <div class="ps-product pa">
         <div class="ps-product__thumbnail">
             <nuxt-link :to="`/product/${product.id}`">
                 <img v-if="product.images.length > 0"
@@ -33,6 +33,10 @@
                 >
                     {{ product.name }}
                 </nuxt-link>
+                  <div class="ps-product__rating">
+                    <rating />
+                    <span>{{ product.ratingCount }}</span>
+                </div>
           
                 <p class="ps-product__price">
                     {{ currency }}{{ product.price }}
@@ -42,6 +46,10 @@
                 <nuxt-link :to="`/product/${product.id}`">
                     <a class="ps-product__title">{{ product.name }}</a>
                 </nuxt-link>
+                  <div class="ps-product__rating">
+                    <rating />
+                    <span>{{ product.ratingCount }}</span>
+                </div>
       
                 <p class="ps-product__price">${{ product.price }}</p>
             </div>
@@ -71,12 +79,6 @@ export default {
         }),
         baseUrl() {
             return baseUrl;
-        },
-        isSale() {
-            if (this.product.is_sale) {
-                return true;
-            }
-            return false;
         },
     },
 
@@ -125,5 +127,9 @@ export default {
     width: 188px;
     height: 188px;
     object-fit: cover;
+}
+
+.pa {
+    padding: 8px;
 }
 </style>

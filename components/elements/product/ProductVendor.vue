@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="ps-product">
+    <div class="ps-product pa">
         <div class="ps-product__thumbnail">
             <nuxt-link :to="`/vendor/${product.id}`">
                 <img v-if="product.avatar.url"
@@ -10,18 +10,16 @@
             </nuxt-link>
         </div>
         <div class="ps-product__container">
-            <nuxt-link to="/shop" class="ps-product__vendor">
+            <!-- <nuxt-link to="/shop" class="ps-product__vendor">
                 {{ product.name }}
-            </nuxt-link>
+            </nuxt-link> -->
             <div class="ps-product__content">
                 <nuxt-link
-                    :to="`/product/${product.id}`"
+                    :to="`/vendor/${product.id}`"
                     class="ps-product__title"
                 >
                     {{ product.name }}
                 </nuxt-link>
-          
-        
             </div>
         </div>
     </div>
@@ -53,4 +51,7 @@ export default {
 };
 </script>
 <style lang="scss" scope>
+.pa {
+    padding: 12px 16px;
+}
 </style>

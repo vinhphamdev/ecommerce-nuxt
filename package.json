@@ -25,10 +25,12 @@
         "nuxt-i18n": "^6.3.0",
         "prettier": "^1.9.2",
         "save-dev": "^0.0.1-security",
+        "strapi-sdk-javascript": "^0.3.3",
         "vue-awesome-swiper": "^3.1.3",
         "vue-images-loaded": "^1.1.2",
         "vue-lazyload": "^1.3.3",
         "vue-notification": "^1.3.19",
+        "vue-stripe-elements-plus": "^0.3.2",
         "vuelidate": "^0.7.4",
         "vuex-persistedstate": "^2.5.4"
     },
