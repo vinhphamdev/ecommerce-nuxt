@@ -74,38 +74,40 @@ export default {
     },
 
     created() {
-        mapboxgl.accessToken =
-            'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
-        let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+        setTimeout(() => {
+            mapboxgl.accessToken =
+                'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+            let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
 
-        console.log('mapboxClient', mapboxClient);
-        mapboxClient.geocoding
-            .forwardGeocode({
-                query: this.vendor
-                    ? this.vendor.address
-                    : 'New York, Tiểu bang New York, Hoa Kỳ',
-                autocomplete: false,
-                limit: 1,
-            })
-            .send()
-            .then(function (response) {
-                if (
-                    response &&
-                    response.body &&
-                    response.body.features &&
-                    response.body.features.length
-                ) {
-                    let feature = response.body.features[0];
+            console.log('mapboxClient', mapboxClient);
+            mapboxClient.geocoding
+                .forwardGeocode({
+                    query: this.vendor.address,
+                    autocomplete: false,
+                    limit: 1,
+                })
+                .send()
+                .then(function (response) {
+                    if (
+                        response &&
+                        response.body &&
+                        response.body.features &&
+                        response.body.features.length
+                    ) {
+                        let feature = response.body.features[0];
 
-                    let map = new mapboxgl.Map({
-                        container: 'map',
-                        style: 'mapbox://styles/mapbox/streets-v11',
-                        center: feature.center,
-                        zoom: 10,
-                    });
-                    new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
-                }
-            });
+                        let map = new mapboxgl.Map({
+                            container: 'map',
+                            style: 'mapbox://styles/mapbox/streets-v11',
+                            center: feature.center,
+                            zoom: 10,
+                        });
+                        new mapboxgl.Marker()
+                            .setLngLat(feature.center)
+                            .addTo(map);
+                    }
+                });
+        }, 1000);
     },
 };
 </script>
