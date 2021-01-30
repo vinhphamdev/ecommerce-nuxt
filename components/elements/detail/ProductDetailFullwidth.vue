@@ -14,7 +14,7 @@ import InformationDefault from '~/components/elements/detail/information/Informa
 import ThumbnailDefault from '~/components/elements/detail/thumbnail/ThumbnailDefault';
 export default {
     name: 'ProductDetailFullwidth',
-    components: { ThumbnailDefault, InformationDefault, DefaultDescription }
+    components: { ThumbnailDefault, InformationDefault, DefaultDescription },
 };
 </script>
 

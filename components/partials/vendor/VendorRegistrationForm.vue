@@ -65,6 +65,9 @@ export default {
                 errors.push('This field is required');
             return errors;
         },
+        userId() {
+            return this.$store.state.auth.userId;
+        },
     },
     data() {
         return {
@@ -87,10 +90,24 @@ export default {
             const params = {
                 name: this.name,
                 description: this.description,
+                owner: this.userId,
             };
 
-            await this.$store.dispatch('auth/vendorRegistration', params);
-            alert('Dang ky thanh cong');
+            try {
+                await this.$store.dispatch('auth/vendorRegistration', params);
+                this.$notify({
+                    group: 'addCartSuccess',
+                    title: 'Success!',
+                    text: `Register to become vendor successfully`,
+                });
+            } catch (e) {
+                console.log(e);
+                this.$notify({
+                    group: 'addCartSuccess',
+                    title: 'Failed!',
+                    text: `An error occurred`,
+                });
+            }
         },
     },
 };

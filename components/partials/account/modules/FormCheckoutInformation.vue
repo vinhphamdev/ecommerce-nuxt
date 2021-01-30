@@ -11,12 +11,7 @@
                 height="50"
             />
         </div>
-        <div class="form-group">
-            <v-checkbox
-                color="success"
-                label="Keep me up to date on news and exclusive offers?"
-            />
-        </div>
+
         <h3 class="ps-form__heading">
             Shipping address
         </h3>
@@ -38,12 +33,18 @@
             <label>Address</label>
             <v-text-field placeholder="Address" outlined height="50" v-model="shippingAddress" />
         </div>
-        <div class="form-group">
-            <v-checkbox
-                color="success"
-                label="Save this information for next time"
-            />
+
+        <h3 class="ps-form__heading">
+            Payment
+        </h3>
+        <div class="form-group pb24">
+            <card
+            ref="card-stripe"
+            stripe="pk_test_51IDw7QHYRruOoW8HFWgG6rgdEuicAla4kQfpH11fdOwJgS8sqd44yWoX9dpIuuVsg7zhjLzCYNkD1JJkxGAUisub00KzvQ5vKh"
+            @change='complete = $event.complete'
+        />
         </div>
+
         <div class="ps-form__submit">
             <nuxt-link to="/account/shopping-cart">
                 <i class="icon-arrow-left mr-1"></i>
@@ -57,13 +58,6 @@
                 <button class="ps-btn" @click="createOrder">
                     Confirm
                 </button>
-
-                 <label for="card">Card</label>
-                        <card
-                          ref="card-stripe"
-                          stripe="pk_test_51IDw7QHYRruOoW8HFWgG6rgdEuicAla4kQfpH11fdOwJgS8sqd44yWoX9dpIuuVsg7zhjLzCYNkD1JJkxGAUisub00KzvQ5vKh"
-                          @change='complete = $event.complete'
-                        />
             </div>
         </div>
     </div>
@@ -137,4 +131,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.pb24 {
+    padding-bottom: 24px;
+}
+</style>

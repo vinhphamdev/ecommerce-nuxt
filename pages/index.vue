@@ -40,22 +40,5 @@ export default {
 
     transition: 'zoom',
     layout: 'layout-default',
-
-    computed: {
-        ...mapState({
-            collections: (state) => state.collection.collections,
-        }),
-    },
-
-    async created() {
-        const queries = [
-            'deal-of-the-day',
-            'consumer-electronics',
-            'clothings',
-            'garden-and-kitchen',
-            'new-arrivals-products',
-        ];
-        // await this.$store.dispatch('collection/getCollectionsBySlugs', queries);
-    },
 };
 </script>

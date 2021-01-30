@@ -85,6 +85,7 @@ export default {
 
             const response = await this.$store.dispatch('auth/login', params);
             this.$store.commit('auth/setToken', response.jwt);
+            this.$store.commit('auth/updateUserId', response.user.id);
             this.$router.push('/');
         },
     },

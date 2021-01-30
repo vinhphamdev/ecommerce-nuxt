@@ -6,22 +6,26 @@ export const state = () => ({
     isLoggedIn: false,
     // token: localStorage.getItem('token') || ''
     token: '',
+    userId: ''
 
 });
 
 export const mutations = {
     setToken(state, payload) {
-        // localStorage.setItem('token', payload);
         Cookies.set('id_token', payload);
         state.token = payload;
         state.isLoggedIn = true;
     },
 
     logout(state) {
-        // localStorage.setItem('token', '');
         Cookies.set('id_token', '');
         state.token = '';
         state.isLoggedIn = false;
+        state.userId = ''
+    },
+
+    updateUserId(state, payload) {
+        state.userId = payload;
     }
 };
 

@@ -14,6 +14,7 @@ export default {
         VendorRegistrationForm,
         BreadCrumb,
     },
+    middleware: 'authentication',
 
     data: () => {
         return {
