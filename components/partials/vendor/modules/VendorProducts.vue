@@ -73,41 +73,39 @@ export default {
         },
     },
 
-    created() {
-        setTimeout(() => {
-            mapboxgl.accessToken =
-                'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
-            let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+    async created() {
+        const vendorId = this.$route.params.id;
+        await this.$store.dispatch('shop/getVendorById', vendorId);
 
-            console.log('mapboxClient', mapboxClient);
-            mapboxClient.geocoding
-                .forwardGeocode({
-                    query: this.vendor.address,
-                    autocomplete: false,
-                    limit: 1,
-                })
-                .send()
-                .then(function (response) {
-                    if (
-                        response &&
-                        response.body &&
-                        response.body.features &&
-                        response.body.features.length
-                    ) {
-                        let feature = response.body.features[0];
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+        let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
 
-                        let map = new mapboxgl.Map({
-                            container: 'map',
-                            style: 'mapbox://styles/mapbox/streets-v11',
-                            center: feature.center,
-                            zoom: 10,
-                        });
-                        new mapboxgl.Marker()
-                            .setLngLat(feature.center)
-                            .addTo(map);
-                    }
-                });
-        }, 1000);
+        mapboxClient.geocoding
+            .forwardGeocode({
+                query: this.vendor.address,
+                autocomplete: false,
+                limit: 1,
+            })
+            .send()
+            .then(function (response) {
+                if (
+                    response &&
+                    response.body &&
+                    response.body.features &&
+                    response.body.features.length
+                ) {
+                    let feature = response.body.features[0];
+
+                    let map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/streets-v11',
+                        center: feature.center,
+                        zoom: 10,
+                    });
+                    new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+                }
+            });
     },
 };
 </script>
