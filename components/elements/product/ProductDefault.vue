@@ -96,6 +96,7 @@ export default {
                 price: this.product.price,
                 url: this.product.images[0].url,
                 name: this.product.name,
+                vendorId: this.product.vendor.id,
             };
             this.$store.dispatch('cart/addProductToCart', item);
             this.getCartProduct(this.cartItems);

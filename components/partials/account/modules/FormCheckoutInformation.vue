@@ -89,6 +89,22 @@ export default {
 
         async createOrder() {
             const cookieCart = this.$cookies.get('cart', { parseJSON: true });
+            const cartItems = cookieCart.cartItems;
+            const arr = cartItems.reduce(function (acc, cur) {
+                if (typeof acc[cur.vendorId] == 'undefined') {
+                    acc[cur.vendorId] = 1;
+                } else {
+                    acc[cur.vendorId] += 1;
+                }
+
+                return acc;
+            }, {});
+
+            if (Object.keys(arr).length > 1) {
+                alert('You may only purchase from one vendor');
+                return false;
+            }
+
             const items = cookieCart.cartItems.map((it) => ({
                 product: it.id,
                 quantity: it.quantity,
