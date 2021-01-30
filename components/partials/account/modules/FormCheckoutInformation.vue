@@ -134,6 +134,7 @@ export default {
                 title: 'Success!',
                 text: `Create order successfully`,
             });
+            this.$store.dispatch('cart/clearCart');
         },
     },
 };
