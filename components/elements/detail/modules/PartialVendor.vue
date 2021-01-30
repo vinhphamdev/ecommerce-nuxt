@@ -14,6 +14,7 @@ export default {
         },
     },
     async created() {
+        if (!this.product.vendor.address) return;
         mapboxgl.accessToken =
             'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
         let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
