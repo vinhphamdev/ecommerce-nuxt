@@ -81,7 +81,9 @@ export default {
         console.log('mapboxClient', mapboxClient);
         mapboxClient.geocoding
             .forwardGeocode({
-                query: this.vendor.address,
+                query: this.vendor
+                    ? this.vendor.address
+                    : 'New York, Tiểu bang New York, Hoa Kỳ',
                 autocomplete: false,
                 limit: 1,
             })
