@@ -19,7 +19,7 @@
 
             <v-tab-item>
                 <div class="tab-content">
-                    <partial-vendor />
+                    <partial-vendor :product="product" />
                 </div>
             </v-tab-item>
 
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import PartialDescription from '~/components/elements/detail/modules/PartialDescription';
 import PartialSpecification from '~/components/elements/detail/modules/PartialSpecification';
 import PartialVendor from '~/components/elements/detail/modules/PartialVendor';
@@ -41,6 +42,11 @@ export default {
         PartialVendor,
         PartialSpecification,
         PartialDescription,
+    },
+    computed: {
+        ...mapState({
+            product: (state) => state.product.product,
+        }),
     },
 };
 </script>

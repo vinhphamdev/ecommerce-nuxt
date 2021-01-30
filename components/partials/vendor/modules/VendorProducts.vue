@@ -114,5 +114,6 @@ export default {
 #map {
     width: 100%;
     height: 350px;
+    margin-bottom: 12px;
 }
 </style>

@@ -75,7 +75,6 @@ export const actions = {
     async getProductsById({ commit }, payload) {
         const reponse = await Repository.get(`${baseUrl}/products/${payload}`)
             .then(response => {
-                console.log(response);
                 commit('setProduct', response.data);
                 return response.data;
             })
@@ -106,7 +105,6 @@ export const actions = {
             }
         });
 
-        console.log(query);
         const reponse = await Repository.get(`${baseUrl}/products?${query}`)
             .then(response => {
                 commit('setCartProducts', response.data);

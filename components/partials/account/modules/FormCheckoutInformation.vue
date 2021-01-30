@@ -94,19 +94,9 @@ export default {
                 quantity: it.quantity,
             }));
 
-            const params = {
-                customer_name: this.customerName,
-                shipping_address: this.shippingAddress,
-                order_items: items,
-                payment_method: 'CREDIT_CARD',
-                vendor: '60105073c3a76b0011130d5c',
-                token,
-            };
-
             let token;
             try {
                 const response = await createToken();
-                console.log('response', response);
                 token = response.token.id;
             } catch (err) {
                 alert('An error occurred.');
@@ -123,9 +113,11 @@ export default {
                 token,
             });
 
-            console.log('success');
-
-            // await this.$store.dispatch('shop/createOrder', params);
+            this.$notify({
+                group: 'addCartSuccess',
+                title: 'Success!',
+                text: `Create order successfully`,
+            });
         },
     },
 };

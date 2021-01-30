@@ -1,19 +1,54 @@
 <template lang="html">
-    <section>
-        <h4>GoPro</h4>
-        <p>
-            Digiworld US, New York’s no.1 online retailer was established in May
-            2012 with the aim and vision to become the one-stop shop for retail
-            in New York with implementation of best practices both online
-        </p>
-        <a href="#">More Products from Gopro</a>
-    </section>
+            <div>
+                <div id="map"></div>
+            </div>
 </template>
 
 <script>
 export default {
-    name: 'PartialVendor'
+    name: 'PartialVendor',
+    props: {
+        product: {
+            type: Object,
+            default: () => {},
+        },
+    },
+    async created() {
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+        let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+        mapboxClient.geocoding
+            .forwardGeocode({
+                query: this.product.vendor.address,
+                autocomplete: false,
+                limit: 1,
+            })
+            .send()
+            .then(function (response) {
+                if (
+                    response &&
+                    response.body &&
+                    response.body.features &&
+                    response.body.features.length
+                ) {
+                    let feature = response.body.features[0];
+                    let map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/streets-v11',
+                        center: feature.center,
+                        zoom: 10,
+                    });
+
+                    new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+                }
+            });
+    },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#map {
+    width: 100%;
+    height: 400px;
+}
+</style>
