@@ -5,7 +5,9 @@ import Cookies from 'js-cookie';
 export const state = () => ({
     products: [],
     vendors: [],
-    vendor: {}
+    vendor: {},
+
+    orderDetail: {}
 });
 
 export const getters = {
@@ -30,6 +32,11 @@ export const mutations = {
     updateVendors(state, payload) {
         state.vendors = payload;
     },
+
+    updateOrderDetail(state, payload){
+        console.log(payload);
+        state.orderDetail = payload;
+    }
 };
 
 export const actions = {
@@ -93,6 +100,18 @@ export const actions = {
         )
             .then(response => {
                 console.log(response);
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }));
+        return response;
+    },
+
+    async getOrderDetail({ commit, state }, orderNumber) {
+        const response = await Repository.get(
+            `${baseUrl}/orders?order_number=${orderNumber}`
+        )
+            .then(response => {
+                commit('updateOrderDetail', response.data[0]);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }));

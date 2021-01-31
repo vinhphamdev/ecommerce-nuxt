@@ -13,33 +13,24 @@
                     </p>
                 </div>
                 <div class="ps-section__content">
-                    <form
+                    <div
                         class="ps-form--order-tracking"
-                        action="/"
-                        method="get"
                     >
                         <div class="form-group">
-                            <label>Order ID</label>
+                            <label>Order number</label>
                             <input
                                 class="form-control"
                                 type="text"
                                 placeholder="Found in your order confimation email"
+                                v-model="orderNumber"
                             />
                         </div>
                         <div class="form-group">
-                            <label>Billing Email</label>
-                            <input
-                                class="form-control"
-                                type="text"
-                                placeholder=""
-                            />
-                        </div>
-                        <div class="form-group">
-                            <button class="ps-btn ps-btn--fullwidth">
+                            <button class="ps-btn ps-btn--fullwidth" @click="getOrderDetail">
                                 Track Your Order
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,21 +45,28 @@ export default {
     transition: 'zoom',
     components: {
         HeaderMobile,
-        BreadCrumb
+        BreadCrumb,
     },
     data: () => {
         return {
             breadCrumb: [
                 {
                     text: 'Home',
-                    url: '/'
+                    url: '/',
                 },
                 {
-                    text: 'Order Tracking'
-                }
-            ]
+                    text: 'Order Tracking',
+                },
+            ],
+            orderNumber: '',
         };
-    }
+    },
+    methods: {
+        async getOrderDetail() {
+            const data = await this.$store.dispatch('shop/getOrderDetail', this.orderNumber);
+            this.$router.push(`/order/${data[0].id}`);
+        },
+    },
 };
 </script>
 

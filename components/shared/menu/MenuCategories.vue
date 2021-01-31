@@ -35,7 +35,6 @@ export default {
                 url: `/vendor/${item.id}`,
             }
         })
-        console.log(vendors)
     }
 };
 </script>

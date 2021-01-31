@@ -6,8 +6,13 @@ export const state = () => ({
     isLoggedIn: false,
     // token: localStorage.getItem('token') || ''
     token: '',
-    userId: ''
+    userId: '',
 
+    // user infor
+    customerId: '',
+    name: '',
+    address: '',
+    email: ''
 });
 
 export const mutations = {
@@ -21,11 +26,30 @@ export const mutations = {
         Cookies.set('id_token', '');
         state.token = '';
         state.isLoggedIn = false;
-        state.userId = ''
+        state.userId = '';
+        state.name = '';
+        state.address = '';
+        state.email = '';
     },
 
     updateUserId(state, payload) {
         state.userId = payload;
+    },
+
+    updateName(state, payload) {
+        state.name = payload;
+    },
+
+    updateAddress(state, payload) {
+        state.address = payload;
+    },
+
+    updateEmail(state, payload) {
+        state.email = payload;
+    },
+
+    updateCustomerId(state, payload) {
+        state.customerId = payload;
     }
 };
 
@@ -63,6 +87,58 @@ export const actions = {
         )
             .then(
                 response => {
+                    return response.data
+                }
+            )
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }))
+
+        return response;
+    },
+
+    async getProfile({ commit, state }, userId) {
+        const response = await Repository.get(
+            `${baseUrl}/customers?user=${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${state.token}`
+            }
+        }
+        )
+            .then(
+                response => {
+                    console.log(response.data[0]);
+                    commit('updateCustomerId', response.data[0].id);
+                    commit('updateName', response.data[0].name);
+                    commit('updateAddress', response.data[0].customer_address);
+                    commit('updateEmail', response.data[0].user.email);
+                    return response.data
+                }
+            )
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }))
+
+        return response;
+    },
+
+    async updateProfile({ commit, state }, params) {
+        const response = await Repository.put(
+            `${baseUrl}/customers/${params.id}`, {
+                name: params.name,
+                customer_address: params.customer_address
+            }, {
+            headers: {
+                'Authorization': `Bearer ${state.token}`
+            }
+        }
+        )
+            .then(
+                response => {
+                    console.log(response.data);
+                    commit('updateName', response.data.name);
+                    commit('updateAddress', response.data.customer_address);
+                    commit('updateEmail', response.data.user.email);
                     return response.data
                 }
             )

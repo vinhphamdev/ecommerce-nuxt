@@ -20,6 +20,11 @@
                             {{ $t('header.navigationExtra.sellOnMartfury') }}
                         </nuxt-link>
                     </li>
+                     <li>
+                        <nuxt-link to="/account/order-tracking">
+                            {{ $t('header.navigationExtra.trackYourOrder') }}
+                        </nuxt-link>
+                    </li>
                 </ul>
             </div>
         </div>

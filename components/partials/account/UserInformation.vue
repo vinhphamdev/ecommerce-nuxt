@@ -9,7 +9,7 @@
                                 <img src="/img/users/3.jpg" />
                                 <figure>
                                     <figcaption>Hello</figcaption>
-                                    <p>username@gmail.com</p>
+                                    <p>{{email}}</p>
                                 </figure>
                             </div>
                             <div class="ps-widget__content">
@@ -19,11 +19,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8">
-                    <section class="ps-section--account-setting">
-                        <div class="ps-section__content">
-                            <p>No product here.</p>
-                        </div>
-                    </section>
+                    <FormEditAddress/>
                 </div>
             </div>
         </div>
@@ -32,46 +28,36 @@
 
 <script>
 import AccountLinks from './modules/AccountLinks';
+import FormEditAddress from '~/components/partials/account/modules/FormEditAddress';
+
 export default {
     name: 'UserInformation',
-    components: { AccountLinks },
+    components: { AccountLinks, FormEditAddress },
+    computed: {
+        email() {
+            return this.$store.state.auth.email;
+        },
+    },
     data() {
         return {
             accountLinks: [
                 {
                     text: 'Account Information',
                     url: '/account/user-information',
-                    icon: 'icon-user'
-                },
-                {
-                    text: 'Notifications',
-                    url: '/account/notifications',
-                    icon: 'icon-alarm-ringing'
+                    icon: 'icon-user',
+                    active: true
                 },
                 {
                     text: 'Invoices',
                     url: '/account/invoices',
-                    icon: 'icon-papers'
+                    icon: 'icon-papers',
                 },
-                {
-                    text: 'Address',
-                    url: '/account/addresses',
-                    icon: 'icon-map-marker'
-                },
-                {
-                    text: 'Recent Viewed Product',
-                    url: '/account/recent-viewed-product',
-                    icon: 'icon-store',
-                    active: true
-                },
-                {
-                    text: 'Wishlist',
-                    url: '/account/wishlist',
-                    icon: 'icon-heart'
-                }
-            ]
+            ],
         };
-    }
+    },
+
+    created() {
+    },
 };
 </script>
 

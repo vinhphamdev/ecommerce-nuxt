@@ -74,6 +74,7 @@ export default {
     methods: {
         handleLogout() {
             this.$store.commit('auth/logout');
+            this.$router.push('/account/login');
         },
     },
 };

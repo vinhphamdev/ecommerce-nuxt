@@ -23,7 +23,7 @@
                         placeholder="Name"
                         outlined
                         height="50"
-                        v-model="customerName"
+                        v-model="name"
                     />
                 </div>
             </div>
@@ -31,7 +31,7 @@
         </div>
         <div class="form-group">
             <label>Address</label>
-            <v-text-field placeholder="Address" outlined height="50" v-model="shippingAddress" />
+            <v-text-field placeholder="Address" outlined height="50" v-model="address" />
         </div>
 
         <h3 class="ps-form__heading">
@@ -73,6 +73,29 @@ export default {
     ...mapState({
         cartItems: (state) => state.cart.cartItems,
     }),
+    computed: {
+        userId() {
+            return this.$store.state.auth.userId;
+        },
+
+        name: {
+            get() {
+                return this.$store.state.auth.name;
+            },
+            set(value) {
+                this.$store.commit('auth/updateName', value);
+            },
+        },
+
+        address: {
+            get() {
+                return this.$store.state.auth.address;
+            },
+            set(value) {
+                this.$store.commit('auth/updateAddress', value);
+            },
+        },
+    },
     components: {
         Card,
     },
@@ -82,6 +105,7 @@ export default {
             shippingAddress: null,
         };
     },
+    created() {},
     methods: {
         handleToShipping() {
             this.$router.push('/account/shipping');
@@ -100,11 +124,8 @@ export default {
                 return acc;
             }, {});
 
-            if (Object.keys(arr).length > 1) {
-                alert('You may only purchase from one vendor');
-                return false;
-            }
-            const vendorId = Object.keys(arr)[0]
+            const vendors = Object.keys(arr);
+
             const items = cookieCart.cartItems.map((it) => ({
                 product: it.id,
                 quantity: it.quantity,
@@ -119,15 +140,21 @@ export default {
                 this.loading = false;
                 return;
             }
-            console.log(vendorId)
-            await strapi.createEntry('orders', {
-                customer_name: this.customerName,
-                shipping_address: this.shippingAddress,
+
+            const params = {
+                customer_name: this.name,
+                shipping_address: this.address,
                 order_items: items,
                 payment_method: 'CREDIT_CARD',
-                vendor: vendorId,
+                vendors: vendors,
                 token,
-            });
+            };
+
+            if (this.userId != '') {
+                params['user'] = this.userId;
+            }
+
+            await strapi.createEntry('orders', params);
 
             this.$notify({
                 group: 'addCartSuccess',
