@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import MarkdownIt  from "markdown-it";
+import MarkdownIt from 'markdown-it';
 export default {
     name: 'ModuleProductDetailDesc',
     props: {
@@ -23,12 +23,12 @@ export default {
     data() {
         return {
             infoHTML: '',
-        }
+        };
     },
     created() {
-        const md = new MarkdownIt()
-        this.infoHTML = md.render(this.product.info)
-    }
+        const md = new MarkdownIt();
+        this.infoHTML = this.product.info ? md.render(this.product.info) : '';
+    },
 };
 </script>
 
