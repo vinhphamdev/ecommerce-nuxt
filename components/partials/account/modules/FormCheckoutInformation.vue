@@ -6,9 +6,10 @@
         <div class="form-group">
             <label>Email or phone number <sup>*</sup></label>
             <v-text-field
-                placeholder="Email or phone number"
+                placeholder="Email"
                 outlined
                 height="50"
+                v-model="mail"
             />
         </div>
 
@@ -103,6 +104,7 @@ export default {
         return {
             customerName: null,
             shippingAddress: null,
+            mail: null,
         };
     },
     created() {},
@@ -142,6 +144,7 @@ export default {
             }
 
             const params = {
+                mail: this.mail,
                 customer_name: this.name,
                 shipping_address: this.address,
                 order_items: items,
