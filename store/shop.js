@@ -33,7 +33,7 @@ export const mutations = {
         state.vendors = payload;
     },
 
-    updateOrderDetail(state, payload){
+    updateOrderDetail(state, payload) {
         console.log(payload);
         state.orderDetail = payload;
     }
@@ -112,6 +112,18 @@ export const actions = {
         )
             .then(response => {
                 commit('updateOrderDetail', response.data[0]);
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }));
+        return response;
+    },
+
+    async getListOrder({ commit, state }, userId) {
+        const response = await Repository.get(
+            `${baseUrl}/orders?user=${userId}`
+        )
+            .then(response => {
+                console.log(response.data);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }));

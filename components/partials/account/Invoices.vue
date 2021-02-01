@@ -9,7 +9,7 @@
                                 <img src="/img/users/3.jpg" />
                                 <figure>
                                     <figcaption>Hello</figcaption>
-                                    <p>username@gmail.com</p>
+                                    <p>{{email}}</p>
                                 </figure>
                             </div>
                             <div class="ps-widget__content">
@@ -25,7 +25,7 @@
                                 <h3>Invoices</h3>
                             </div>
                             <div class="ps-section__content">
-                                <TableInvoices />
+                                <TableInvoices :products="products"/>
                             </div>
                         </div>
                     </div>
@@ -41,23 +41,39 @@ import TableInvoices from './modules/TableInvoices';
 export default {
     name: 'InvoiceDetail',
     components: { TableInvoices, AccountLinks },
+    computed: {
+        email() {
+            return this.$store.state.auth.email;
+        },
+
+        userId() {
+            return this.$store.state.auth.userId;
+        },
+    },
     data() {
         return {
             accountLinks: [
                 {
                     text: 'Account Information',
                     url: '/account/user-information',
-                    icon: 'icon-user'
+                    icon: 'icon-user',
                 },
                 {
                     text: 'Invoices',
                     url: '/account/invoices',
                     icon: 'icon-papers',
-                    active: true
-                }
-            ]
+                    active: true,
+                },
+            ],
+            products: [],
         };
-    }
+    },
+    async created() {
+        this.products = await this.$store.dispatch(
+            'shop/getListOrder',
+            this.userId
+        );
+    },
 };
 </script>
 

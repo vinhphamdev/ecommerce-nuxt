@@ -48,9 +48,7 @@ export default {
         };
     },
     async created() {
-        const response = await this.$store.dispatch('shop/getAllProducts');
-
-        await this.$store.dispatch('shop/getAllVendors');
+        await this.$store.dispatch('shop/getAllProducts');
     },
 };
 </script>

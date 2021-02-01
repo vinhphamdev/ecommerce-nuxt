@@ -63,8 +63,7 @@ export default {
     },
     methods: {
         async getOrderDetail() {
-            const data = await this.$store.dispatch('shop/getOrderDetail', this.orderNumber);
-            this.$router.push(`/order/${data[0].id}`);
+            this.$router.push(`/order/${this.orderNumber}`);
         },
     },
 };

@@ -32,12 +32,6 @@ import CarouselArrows from '~/components/elements/commons/CarouselArrows';
 
 export default {
     components: { CarouselArrows, ProductVendor },
-    props: {
-        collectionSlug: {
-            type: String,
-            default: '',
-        },
-    },
     computed: {
         ...mapGetters({
             vendors: 'shop/getAllVendors',

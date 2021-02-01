@@ -11,11 +11,18 @@
                                     }}<span> - {{ status }}</span>
                                 </h3>
                             </div>
-                            <p>Created Order: {{createdAt}}</p>
-                            <div class="row" style="margin:0 !important;margin-bottom:20px;margin-top:10px;">
+                            <p>Created Order: {{ createdAt }}</p>
+                            <div
+                                class="row"
+                                style="
+                                    margin: 0 !important;
+                                    margin-bottom: 20px;
+                                    margin-top: 10px;
+                                "
+                            >
                                 <div class="card">
-                                    <p>Customer Name: {{name}}</p>
-                                    <p>Shipping Address: {{address}}</p>
+                                    <p>Customer Name: {{ name }}</p>
+                                    <p>Shipping Address: {{ address }}</p>
                                 </div>
 
                                 <div class="card">
@@ -24,14 +31,15 @@
                                 </div>
 
                                 <div class="card">
-                                    <p>Payment method: {{paymentMethod}}</p>
+                                    <p>Payment method: {{ paymentMethod }}</p>
                                 </div>
                             </div>
                             <div class="ps-section__content">
-                                <p></p>
                                 <div>
                                     <div class="table-repsonsive">
-                                        <table class="table table-bordered">
+                                        <table
+                                            class="table ps-table--shopping-cart"
+                                        >
                                             <thead>
                                                 <tr>
                                                     <th>Product</th>
@@ -45,7 +53,7 @@
                                                     v-for="item in tableData"
                                                     :key="item.id"
                                                 >
-                                                    <td>
+                                                    <td class="text-left">
                                                         <img
                                                             :src="
                                                                 item.product
@@ -79,7 +87,9 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td>Total: {{ total }}</td>
+                                                    <td class="text-right">
+                                                        Total: {{ total }}
+                                                    </td>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -125,18 +135,20 @@ export default {
             paymentMethod: '',
             orderNumber: '',
             status: '',
-            createdAt: ''
+            createdAt: '',
         };
     },
 
-    created() {
-        console.log(this.orderDetail);
+    async created() {
+        const id = this.$route.params.id;
+        await this.$store.dispatch('shop/getOrderDetail', id);
+
         this.tableData = this.orderDetail.order_items;
         this.total = this.orderDetail.invoice_amount;
         this.name = this.orderDetail.customer_name;
         this.address = this.orderDetail.shipping_address;
         this.paymentMethod = this.orderDetail.payment_method;
-        this.orderNumber = this.orderDetail.id;
+        this.orderNumber = this.orderDetail.order_number;
         this.status = this.orderDetail.order_status;
         this.createdAt = this.orderDetail.createdAt;
     },
@@ -151,11 +163,11 @@ export default {
     padding: 10px;
     border-radius: 4px;
     height: 92px;
-    flex:1;
+    flex: 1;
     justify-content: center;
 }
 
-p{
-    margin-bottom:0;
+p {
+    margin-bottom: 0;
 }
 </style>

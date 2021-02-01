@@ -25,17 +25,15 @@ export default {
         };
     },
     async created() {
-        const vendors = await this.$store.dispatch(
-            'shop/getAllVendors',
-        );
+        const vendors = await this.$store.dispatch('shop/getAllVendors');
         this.menuCategories = vendors.map((item) => {
             return {
                 icon: 'icon-star',
                 text: item.name,
                 url: `/vendor/${item.id}`,
-            }
-        })
-    }
+            };
+        });
+    },
 };
 </script>
 

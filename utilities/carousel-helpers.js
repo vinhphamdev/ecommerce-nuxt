@@ -1,5 +1,5 @@
 export const carouselFullwidth = {
-    loop: true,
+    loop: false,
     slidesPerView: 7,
     spaceBetween: 1,
     scrollbar: {

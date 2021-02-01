@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 
 export const state = () => ({
     isLoggedIn: false,
-    // token: localStorage.getItem('token') || ''
     token: '',
     userId: '',
 
@@ -125,9 +124,9 @@ export const actions = {
     async updateProfile({ commit, state }, params) {
         const response = await Repository.put(
             `${baseUrl}/customers/${params.id}`, {
-                name: params.name,
-                customer_address: params.customer_address
-            }, {
+            name: params.name,
+            customer_address: params.customer_address
+        }, {
             headers: {
                 'Authorization': `Bearer ${state.token}`
             }
