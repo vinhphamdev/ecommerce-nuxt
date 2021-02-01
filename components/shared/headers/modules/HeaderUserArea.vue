@@ -49,25 +49,9 @@ export default {
                     url: '/account/user-information',
                 },
                 {
-                    text: 'Notifications',
-                    url: '/account/notifications',
-                },
-                {
                     text: 'Invoices',
                     url: '/account/invoices',
                 },
-                {
-                    text: 'Address',
-                    url: '/account/addresses',
-                },
-                // {
-                //     text: 'Recent Viewed Product',
-                //     url: '/account/recent-viewed-product',
-                // },
-                // {
-                //     text: 'Wishlist',
-                //     url: '/account/wishlist'
-                // }
             ],
         };
     },
