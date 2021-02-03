@@ -126,7 +126,7 @@ export default {
                 return acc;
             }, {});
 
-            const vendors = Object.keys(arr);
+            const vendors = Object.keys(arr).filter((item) => item !== 'undefined');
 
             const items = cookieCart.cartItems.map((it) => ({
                 product: it.id,
