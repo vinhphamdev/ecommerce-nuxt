@@ -48,7 +48,6 @@ export default {
     },
     async created () {
         const data = await this.$store.dispatch('shop/getLandingPage');
-        console.log('data', data);
         const md = new MarkdownIt();
         this.infoHTML = md.render(data[0].content);
     },
