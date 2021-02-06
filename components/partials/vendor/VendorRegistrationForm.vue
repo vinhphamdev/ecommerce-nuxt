@@ -18,13 +18,12 @@
             </div>
 
             <div class="form-group">
-                <v-text-field
+                <v-textarea
                     v-model="description"
                     class="ps-text-field"
                     :error-messages="descriptionErrors"
                     @input="$v.description.$touch()"
                     placeholder="Description"
-                    height="50"
                     outlined
                 />
             </div>
@@ -70,6 +69,7 @@
                     <v-file-input
                     truncate-length="16"
                     v-model="file"
+                    placeholder="Select vendor avatar"
                     ></v-file-input>
                 </div>
 
@@ -121,16 +121,14 @@ export default {
         emailErrors() {
             const errors = [];
             if (!this.$v.email.$dirty) return errors;
-            !this.$v.email.required &&
-                errors.push('This field is required');
+            !this.$v.email.required && errors.push('This field is required');
             return errors;
         },
 
         phoneErrors() {
             const errors = [];
             if (!this.$v.phone.$dirty) return errors;
-            !this.$v.phone.required &&
-                errors.push('This field is required');
+            !this.$v.phone.required && errors.push('This field is required');
             return errors;
         },
         userId() {
@@ -144,7 +142,7 @@ export default {
             // address: null,
             email: null,
             phone: null,
-            file: null
+            file: null,
         };
     },
     validations: {
@@ -165,16 +163,16 @@ export default {
 
             const formData = new FormData();
 
-              const params = {
+            const params = {
                 name: this.name,
                 description: this.description,
                 owner: this.userId,
                 // address: this.address,
                 email: this.email,
-                phone_number: this.phone
+                phone_number: this.phone,
             };
-                formData.append("data", JSON.stringify(params));
-                formData.append(`files.images`, this.file, this.file.name);
+            formData.append('data', JSON.stringify(params));
+            formData.append(`files.avatar`, this.file, this.file.name);
 
             try {
                 await this.$store.dispatch('auth/vendorRegistration', formData);
