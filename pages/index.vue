@@ -2,7 +2,10 @@
     <main id="homepage-1">
         <!-- <home-banner /> -->
 
-        <div v-html="infoHTML"/>
+
+        <div class="ps-container">
+            <div v-html="infoHTML"/>
+        </div>
 
         <!-- <clothings />
 
