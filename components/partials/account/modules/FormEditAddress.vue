@@ -62,18 +62,31 @@ export default {
 
     methods: {
         async updateProfile() {
-            const form = {
-                name: this.name,
-                customer_address: this.address,
-                id: this.customerId
-            };
-            await this.$store.dispatch('auth/updateProfile', form);
-            this.$notify({
-                group: 'addCartSuccess',
-                title: 'Success!',
-                text: `Update infor successfully`
-            });
-
+            if (this.customerId) {
+                const form = {
+                    name: this.name,
+                    customer_address: this.address,
+                    id: this.customerId
+                };
+                await this.$store.dispatch('auth/updateProfile', form);
+                this.$notify({
+                    group: 'addCartSuccess',
+                    title: 'Success!',
+                    text: `Update infor successfully`
+                });
+            } else {
+                const form = {
+                    name: this.name,
+                    customer_address: this.address,
+                    id: this.$store.state.auth.userId
+                };
+                await this.$store.dispatch('auth/createProfile', form);
+                this.$notify({
+                    group: 'addCartSuccess',
+                    title: 'Success!',
+                    text: `Update infor successfully`
+                });
+            }
         },
     },
 };
