@@ -78,6 +78,7 @@ export default {
                 const form = {
                     name: this.name,
                     customer_address: this.address,
+                    email: this.email,
                     id: this.$store.state.auth.userId
                 };
                 await this.$store.dispatch('auth/createProfile', form);
