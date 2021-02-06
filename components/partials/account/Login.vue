@@ -83,12 +83,21 @@ export default {
                 password: this.password,
             };
 
+            try{
             const response = await this.$store.dispatch('auth/login', params);
             this.$store.commit('auth/setToken', response.jwt);
             this.$store.commit('auth/updateUserId', response.user.id);
             this.$store.dispatch('auth/getProfile', response.user.id);
-
             this.$router.push('/');
+            } catch(e){
+                console.log(e);
+                this.$notify({
+                group: 'addCartSuccess',
+                title: 'Failed!',
+                text: `Username or password not correct`
+            });
+            }
+           
         },
     },
 };
