@@ -29,7 +29,7 @@
                 />
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <v-text-field
                     v-model="address"
                     class="ps-text-field"
@@ -39,7 +39,7 @@
                     height="50"
                     outlined
                 />
-            </div>
+            </div> -->
 
              <div class="form-group">
                 <v-text-field
@@ -110,13 +110,13 @@ export default {
             return errors;
         },
 
-        addressErrors() {
-            const errors = [];
-            if (!this.$v.address.$dirty) return errors;
-            !this.$v.address.required &&
-                errors.push('This field is required');
-            return errors;
-        },
+        // addressErrors() {
+        //     const errors = [];
+        //     if (!this.$v.address.$dirty) return errors;
+        //     !this.$v.address.required &&
+        //         errors.push('This field is required');
+        //     return errors;
+        // },
 
         emailErrors() {
             const errors = [];
@@ -141,7 +141,7 @@ export default {
         return {
             name: null,
             description: null,
-            address: null,
+            // address: null,
             email: null,
             phone: null,
             file: null
@@ -150,7 +150,7 @@ export default {
     validations: {
         name: { required },
         description: { required },
-        address: { required },
+        // address: { required },
         email: { required, email },
         phone: { required },
         file: { required },
@@ -163,17 +163,21 @@ export default {
                 return false;
             }
 
-            const params = {
+const formData = new FormData();
+
+              const params = {
                 name: this.name,
                 description: this.description,
                 owner: this.userId,
-                address: this.address,
+                // address: this.address,
                 email: this.email,
-                phone: this.phone
+                phone_number: this.phone
             };
+                formData.append("data", JSON.stringify(params));
+                formData.append(`files.images`, this.file, this.file.name);
 
             try {
-                await this.$store.dispatch('auth/vendorRegistration', params);
+                await this.$store.dispatch('auth/vendorRegistration', formData);
                 this.$notify({
                     group: 'addCartSuccess',
                     title: 'Success!',

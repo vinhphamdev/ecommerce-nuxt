@@ -81,7 +81,8 @@ export const actions = {
         const response = await Repository.post(
             `${baseUrl}/vendors`, payload, {
             headers: {
-                'Authorization': `Bearer ${state.token}`
+                'Authorization': `Bearer ${state.token}`,
+                'Content-Type': 'multipart/form-data; boundary=something'
             }
         }
         )

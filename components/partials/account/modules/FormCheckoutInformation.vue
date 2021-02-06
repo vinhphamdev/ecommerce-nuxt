@@ -4,7 +4,7 @@
             Contact information
         </h3>
         <div class="form-group">
-            <label>Email or phone number <sup>*</sup></label>
+            <label>Email</label>
             <v-text-field
                 placeholder="Email"
                 outlined
