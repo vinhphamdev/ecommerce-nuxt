@@ -58,6 +58,7 @@ export const actions = {
             `${baseUrl}/auth/local/register`, payload
         )
             .then(response => {
+                commit('setToken', response.data.jwt);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }));
@@ -134,10 +135,35 @@ export const actions = {
         )
             .then(
                 response => {
-                    console.log(response.data);
                     commit('updateName', response.data.name);
                     commit('updateAddress', response.data.customer_address);
                     commit('updateEmail', response.data.user.email);
+                    return response.data
+                }
+            )
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }))
+
+        return response;
+    },
+
+    async createProfile({ commit, state }, params) {
+        const response = await Repository.post(
+            `${baseUrl}/customers`, {
+            name: params.name,
+            customer_address: params.address,
+            phone: params.phone,
+            email: params.email,
+            user: params.id
+        }, {
+            headers: {
+                'Authorization': `Bearer ${state.token}`
+            }
+        }
+        )
+            .then(
+                response => {
                     return response.data
                 }
             )

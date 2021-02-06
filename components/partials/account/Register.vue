@@ -14,6 +14,19 @@
                     height="50"
                 />
             </div>
+
+             <div class="form-group">
+                <v-text-field
+                    v-model="password"
+                    :error-messages="passwordErrors"
+                    @input="$v.password.$touch()"
+                    placeholder="Password"
+                    class="ps-text-field"
+                    outlined
+                    height="50"
+                    type="password"
+                />
+            </div>
             
             <div class="form-group">
                 <v-text-field
@@ -26,18 +39,33 @@
                     height="50"
                 />
             </div>
+
+                 <div class="form-group">
+                <v-text-field
+                    v-model="phone"
+                    :error-messages="phoneErrors"
+                    @input="$v.phone.$touch()"
+                    placeholder="Phone"
+                    class="ps-text-field"
+                    type="number"
+                    outlined
+                    height="50"
+                />
+            </div>
+
             <div class="form-group">
                 <v-text-field
-                    v-model="password"
-                    :error-messages="passwordErrors"
-                    @input="$v.password.$touch()"
-                    placeholder="Password"
+                    v-model="address"
+                    :error-messages="addressErrors"
+                    @input="$v.address.$touch()"
+                    placeholder="Address"
                     class="ps-text-field"
                     outlined
                     height="50"
-                    type="password"
                 />
             </div>
+
+     
             <div class="form-group submit">
                 <button
                     type="submit"
@@ -78,24 +106,43 @@ export default {
             !this.$v.email.email && errors.push('This must be an email');
             return errors;
         },
+
+        phoneErrors() {
+            const errors = [];
+            if (!this.$v.phone.$dirty) return errors;
+            !this.$v.phone.required && errors.push('This field is required');
+            return errors;
+        },
+
+        addressErrors() {
+         const errors = [];
+            if (!this.$v.address.$dirty) return errors;
+            !this.$v.address.required && errors.push('This field is required');
+            return errors;
+        },
     },
     data() {
         return {
             username: null,
             password: null,
             email: null,
+            phone: null,
+            address: null,
         };
     },
     validations: {
         username: { required },
         password: { required },
         email: { required, email },
+        phone: { required },
+        address: { required },
     },
     methods: {
         async handleSubmit() {
             this.$v.$touch();
-            if (!this.$v.$invalid) {
-                this.$router.push('/account/login');
+
+            if(this.$v.$invalid){
+                return false;
             }
 
             const params = {
@@ -104,11 +151,22 @@ export default {
                 password: this.password,
             };
 
-            const response = await this.$store.dispatch(
+            const registerData = await this.$store.dispatch(
                 'auth/register',
                 params
             );
 
+
+            const profileParam = {
+                name: this.username,
+                email: this.email,
+                phone: this.phone,
+                address: this.address,
+                id: registerData.user.id
+            }
+            
+            const updateProfile = await this.$store.dispatch('auth/createProfile', profileParam);
+            
             this.$router.push('/account/login');
         },
     },
