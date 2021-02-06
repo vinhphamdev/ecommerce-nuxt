@@ -2,13 +2,11 @@
     <main id="homepage-1">
         <!-- <home-banner /> -->
 
-        <div v-html="infoHTML"/>
-
-        <!-- <clothings />
+        <clothings />
 
         <conumer-electronics/>
 
-        <newsletters layout="fullwidth"/> -->
+        <newsletters layout="fullwidth"/>
     </main>
 </template>
 <script>
@@ -24,7 +22,6 @@ import NavigationList from '~/components/shared/mobile/NavigationList';
 import HeaderMobile from '~/components/shared/mobile/HeaderMobile';
 import MobileDrawer from '~/components/shared/mobile/MobileDrawer';
 import DemoPanel from '~/components/shared/DemoPanel';
-import MarkdownIt from 'markdown-it';
 
 
 export default {
@@ -40,17 +37,6 @@ export default {
         Newsletters,
         Clothings,
         ConumerElectronics,
-    },
-    data() {
-        return {
-           infoHTML: '',
-        }
-    },
-    async created () {
-        const data = await this.$store.dispatch('shop/getLandingPage');
-        console.log('data', data);
-        const md = new MarkdownIt();
-        this.infoHTML = md.render(data[0].content);
     },
 
     transition: 'zoom',

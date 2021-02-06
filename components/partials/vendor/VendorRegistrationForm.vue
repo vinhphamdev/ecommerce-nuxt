@@ -163,7 +163,7 @@ export default {
                 return false;
             }
 
-const formData = new FormData();
+            const formData = new FormData();
 
               const params = {
                 name: this.name,

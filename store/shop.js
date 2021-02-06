@@ -130,4 +130,15 @@ export const actions = {
         return response;
     },
 
+    async getLandingPage({ commit, state }) {
+        const response = await Repository.get(
+            `${baseUrl}/pages?slug=landing-page`
+        )
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }));
+        return response;
+    },
+
 };
