@@ -6,7 +6,8 @@
         "register": "Registre",
         "navigationExtra": {
             "sellOnMartfury": "Vendre sur Martfury",
-            "trackYourOrder": "Le Suivi De Votre Commande"
+            "trackYourOrder": "Le Suivi De Votre Commande",
+            "marketPlace": "Marketplace"
         },
         "miniCart": {
             "subTotal": "Sous-Total:",

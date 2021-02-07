@@ -25,6 +25,12 @@
                             {{ $t('header.navigationExtra.trackYourOrder') }}
                         </nuxt-link>
                     </li>
+
+                      <li>
+                        <nuxt-link to="/marketplace">
+                            {{ $t('header.navigationExtra.marketPlace') }}
+                        </nuxt-link>
+                    </li>
                 </ul>
             </div>
         </div>

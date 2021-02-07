@@ -9,7 +9,9 @@
                 placeholder="Email"
                 outlined
                 height="50"
-                v-model="mail"
+                v-model="email"
+                 :error-messages="emailErrors"
+                @input="$v.email.$touch()"
             />
         </div>
 
@@ -25,6 +27,8 @@
                         outlined
                         height="50"
                         v-model="name"
+                         :error-messages="nameErrors"
+                    @input="$v.name.$touch()"
                     />
                 </div>
             </div>
@@ -32,7 +36,10 @@
         </div>
         <div class="form-group">
             <label>Address</label>
-            <v-text-field placeholder="Address" outlined height="50" v-model="address" />
+            <v-text-field placeholder="Address" outlined height="50" v-model="address" 
+             :error-messages="addressErrors"
+                    @input="$v.address.$touch()"
+            />
         </div>
 
         <h3 class="ps-form__heading">
@@ -68,13 +75,38 @@
 import { mapState } from 'vuex';
 import strapi from '~/utilities/Strapi';
 import { Card, createToken } from 'vue-stripe-elements-plus';
+import { email, required } from 'vuelidate/lib/validators';
 
 export default {
     name: 'FormCheckoutInformation',
     ...mapState({
         cartItems: (state) => state.cart.cartItems,
     }),
+    validations: {
+        name: { required },
+        email: { required, email },
+        address: { required },
+    },
     computed: {
+        nameErrors() {
+            const errors = [];
+            if (!this.$v.name.$dirty) return errors;
+            !this.$v.name.required && errors.push('This field is required');
+            return errors;
+        },
+        emailErrors() {
+            const errors = [];
+            if (!this.$v.email.$dirty) return errors;
+            !this.$v.email.required && errors.push('This field is required');
+            return errors;
+        },
+         addressErrors() {
+            const errors = [];
+            if (!this.$v.address.$dirty) return errors;
+            !this.$v.address.required && errors.push('This field is required');
+            return errors;
+        },
+
         userId() {
             return this.$store.state.auth.userId;
         },
@@ -104,7 +136,7 @@ export default {
         return {
             customerName: null,
             shippingAddress: null,
-            mail: null,
+            email: null,
         };
     },
     created() {},
@@ -114,6 +146,11 @@ export default {
         },
 
         async createOrder() {
+              this.$v.$touch();
+            if (this.$v.$invalid) {
+                return false;
+            }
+
             const cookieCart = this.$cookies.get('cart', { parseJSON: true });
             const cartItems = cookieCart.cartItems;
             const arr = cartItems.reduce(function (acc, cur) {
@@ -157,14 +194,29 @@ export default {
                 params['user'] = this.userId;
             }
 
-            await strapi.createEntry('orders', params);
+            try{
+                const data = await strapi.createEntry('orders', params);
+                console.log('data', data);
 
-            this.$notify({
-                group: 'addCartSuccess',
-                title: 'Success!',
-                text: `Create order successfully`,
-            });
-            this.$store.dispatch('cart/clearCart');
+                this.$notify({
+                    group: 'addCartSuccess',
+                    title: 'Success!',
+                    text: `Create order successfully`,
+                });
+                this.$store.dispatch('cart/clearCart');
+
+                this.$router.push(`/order/${data.order_number}`);
+
+
+
+            } catch(e){
+                console.log(e);
+                this.$notify({
+                    group: 'addCartSuccess',
+                    title: 'Failed!',
+                    text: `Error occurred`,
+                });
+            }
         },
     },
 };

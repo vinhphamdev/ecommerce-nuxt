@@ -13,9 +13,15 @@
                 <label> Address</label>
                 <input type="text" placeholder="" v-model="address" class="form-control" />
             </div>
+
             <div class="form-group">
                 <label> Email address</label>
                 <input type="text" placeholder="" v-model="email" class="form-control" readonly/>
+            </div>
+
+              <div class="form-group">
+                <label>Phone number</label>
+                <input type="number" placeholder="" v-model="phone" class="form-control"/>
             </div>
             <div class="form-group submit" @click="updateProfile">
                 <button class="ps-btn">Save</button>
@@ -58,6 +64,15 @@ export default {
                 this.$store.commit('auth/updateEmail', value);
             },
         },
+
+        phone: {
+            get() {
+                return this.$store.state.auth.phone_number;
+            },
+            set(value) {
+                this.$store.commit('auth/updatePhone', value);
+            },
+        },
     },
 
     methods: {
@@ -65,8 +80,10 @@ export default {
             const form = {
                 name: this.name,
                 customer_address: this.address,
-                id: this.customerId
+                id: this.customerId,
+                phone_number: this.phone
             };
+
             await this.$store.dispatch('auth/updateProfile', form);
             this.$notify({
                 group: 'addCartSuccess',
