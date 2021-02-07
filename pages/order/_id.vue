@@ -7,7 +7,7 @@
                         <div class="ps-section--account-setting">
                             <div class="ps-section__header">
                                 <h3>
-                                    Order Detail #{{ orderNumber
+                                    Order Number {{ orderNumber
                                     }}<span> - {{ status }}</span>
                                 </h3>
                             </div>
