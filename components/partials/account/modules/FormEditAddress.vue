@@ -19,10 +19,10 @@
                 <input type="text" placeholder="" v-model="email" class="form-control" readonly/>
             </div>
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label>Phone number</label>
                 <input type="number" placeholder="" v-model="phone" class="form-control"/>
-            </div>
+            </div> -->
             <div class="form-group submit" @click="updateProfile">
                 <button class="ps-btn">Save</button>
             </div>
@@ -65,14 +65,14 @@ export default {
             },
         },
 
-        phone: {
-            get() {
-                return this.$store.state.auth.phone_number;
-            },
-            set(value) {
-                this.$store.commit('auth/updatePhone', value);
-            },
-        },
+        // phone: {
+        //     get() {
+        //         return this.$store.state.auth.phone_number;
+        //     },
+        //     set(value) {
+        //         this.$store.commit('auth/updatePhone', value);
+        //     },
+        // },
     },
 
     methods: {

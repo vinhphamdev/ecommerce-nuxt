@@ -12,7 +12,7 @@ export const state = () => ({
     name: '',
     address: '',
     email: '',
-    phone_number: ''
+    // phone_number: ''
 });
 
 export const mutations = {
@@ -30,7 +30,7 @@ export const mutations = {
         state.name = '';
         state.address = '';
         state.email = '';
-        state.phone_number = '';
+        // state.phone_number = '';
     },
 
     updateUserId(state, payload) {
@@ -49,9 +49,9 @@ export const mutations = {
         state.email = payload;
     },
 
-    updatePhone(state, payload) {
-        state.phone_number = payload;
-    },
+    // updatePhone(state, payload) {
+    //     state.phone_number = payload;
+    // },
 
     updateCustomerId(state, payload) {
         state.customerId = payload;
@@ -114,12 +114,11 @@ export const actions = {
         )
             .then(
                 response => {
-                    console.log(response.data[0]);
                     commit('updateCustomerId', response.data[0].id);
                     commit('updateName', response.data[0].name);
                     commit('updateAddress', response.data[0].customer_address);
                     commit('updateEmail', response.data[0].user.email);
-                    commit('updatePhone', response.data[0].phone_number);
+                    // commit('updatePhone', response.data[0].phone_number);
                     return response.data
                 }
             )
@@ -135,7 +134,7 @@ export const actions = {
             `${baseUrl}/customers/${params.id}`, {
             name: params.name,
             customer_address: params.customer_address,
-            phone_number: params.phone_number
+            // phone_number: params.phone_number
         }, {
             headers: {
                 'Authorization': `Bearer ${state.token}`
@@ -147,7 +146,7 @@ export const actions = {
                     commit('updateName', response.data.name);
                     commit('updateAddress', response.data.customer_address);
                     commit('updateEmail', response.data.user.email);
-                    commit('updatePhone', response.data.phone_number);
+                    // commit('updatePhone', response.data.phone_number);
                     return response.data
                 }
             )
