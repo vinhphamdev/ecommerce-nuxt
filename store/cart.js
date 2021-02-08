@@ -1,3 +1,5 @@
+import Repository from '~/repositories/Repository';
+import { baseUrl } from '~/repositories/Repository';
 const calculateAmount = obj =>
     Object.values(obj)
         .reduce((acc, { quantity, price }) => acc + quantity * price, 0)
@@ -7,6 +9,8 @@ export const state = () => ({
     total: 0,
     amount: 0,
     cartItems: [],
+    filteredCartItems: [],
+    selectedVendor: '',
     loading: false
 });
 
@@ -15,6 +19,7 @@ export const mutations = {
         state.cartItems = payload.cartItems;
         state.amount = payload.amount;
         state.total = payload.total;
+        state.filteredCartItems = payload.filteredCartItems || [];
     },
 
     setLoading(state, payload) {
@@ -35,6 +40,7 @@ export const mutations = {
             state.total = 1;
         }
         state.amount = calculateAmount(state.cartItems);
+        state.filteredCartItems = state.cartItems.filter((item) => item.vendorId === state.selectedVendor)
     },
 
     removeItem: (state, payload) => {
@@ -47,6 +53,7 @@ export const mutations = {
             state.amount = 0;
             state.total = 0;
         }
+        state.filteredCartItems = state.cartItems.filter((item) => item.vendorId === state.selectedVendor)
     },
 
     increaseItemQuantity(state, payload) {
@@ -56,6 +63,7 @@ export const mutations = {
             state.total++;
             state.amount = calculateAmount(state.cartItems);
         }
+        state.filteredCartItems = state.cartItems.filter((item) => item.vendorId === state.selectedVendor)
     },
 
     decreaseItemQuantity(state, payload) {
@@ -65,12 +73,34 @@ export const mutations = {
             state.total--;
             state.amount = calculateAmount(state.cartItems);
         }
+        state.filteredCartItems = state.cartItems.filter((item) => item.vendorId === state.selectedVendor)
     },
 
     clearCart: state => {
         state.cartItems = [];
+        state.filteredCartItems = [];
         state.amount = 0;
         state.total = 0;
+    },
+
+    clearItemInCart: (state, itemList) => {
+        state.filteredCartItems = []
+        const idList = itemList.map((i) => i.id)
+        let newTotal = state.total
+        state.cartItems = state.cartItems.filter((item) => {
+            const itemToRemove = itemList.find((i) => i.id === item.id)
+            if (itemToRemove) newTotal -= itemToRemove.quantity
+            return !idList.includes(item.id)
+        })
+        state.amount = calculateAmount(state.cartItems);
+        state.total = newTotal
+    },
+
+    chooseVendor: (state, vendorId) => {
+        state.selectedVendor = vendorId
+        state.filteredCartItems = state.cartItems.filter((item) => {
+            return item.vendorId === vendorId
+        })
     }
 };
 
@@ -142,5 +172,29 @@ export const actions = {
             path: '/',
             maxAge: 60 * 60 * 24 * 7
         });
-    }
+    }, 
+
+    clearItemInCart({ commit, state }, selectedItems) {
+        commit('clearItemInCart', selectedItems)
+        const cookieParams = {
+            total: state.total,
+            amount: state.amount,
+            cartItems: state.cartItems
+        };
+        this.$cookies.set('cart', cookieParams, {
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7
+        });
+    },
+
+    async getVendorById({ commit, state }, vendorId) {
+        const response = await Repository.get(
+            `${baseUrl}/vendors/${vendorId}`
+        )
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }));
+        return response;
+    },
 };

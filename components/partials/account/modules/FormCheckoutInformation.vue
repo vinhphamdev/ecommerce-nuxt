@@ -4,6 +4,18 @@
             Contact information
         </h3>
         <div class="form-group">
+            <label>Vendor</label>
+            <v-select
+                v-model="selectedVendor"
+                :items="vendorList"
+                item-text="name"
+                item-value="id"
+                outlined
+                label="Select vendor"
+                return-object
+            />
+        </div>
+        <div class="form-group">
             <label>Email</label>
             <v-text-field
                 placeholder="Email"
@@ -27,8 +39,8 @@
                         outlined
                         height="50"
                         v-model="name"
-                         :error-messages="nameErrors"
-                    @input="$v.name.$touch()"
+                        :error-messages="nameErrors"
+                        @input="$v.name.$touch()"
                     />
                 </div>
             </div>
@@ -37,7 +49,7 @@
         <div class="form-group">
             <label>Address</label>
             <v-text-field placeholder="Address" outlined height="50" v-model="address" 
-             :error-messages="addressErrors"
+                :error-messages="addressErrors"
                     @input="$v.address.$touch()"
             />
         </div>
@@ -59,9 +71,6 @@
                 Return to shopping cart
             </nuxt-link>
             <div class="ps-block__footer">
-                <!-- <button class="ps-btn" @click="handleToShipping">
-                    Continue to shipping
-                </button> -->
 
                 <button class="ps-btn" @click="createOrder">
                     Confirm
@@ -87,6 +96,21 @@ export default {
         email: { required, email },
         address: { required },
     },
+    async created() {
+        const cartItems = this.$store.state.cart.cartItems;
+        const vendorIdList = [];
+        cartItems.forEach((item) => {
+            if (!vendorIdList.includes(item.vendorId)) {
+                vendorIdList.push(item.vendorId);
+            }
+        });
+        
+        const vendorListPromise = vendorIdList.map((vendorId) => {
+            return this.$store.dispatch('cart/getVendorById', vendorId);
+        })
+        const vendorList = await Promise.all(vendorListPromise)
+        this.vendorList = vendorList
+    },
     computed: {
         nameErrors() {
             const errors = [];
@@ -100,7 +124,7 @@ export default {
             !this.$v.email.required && errors.push('This field is required');
             return errors;
         },
-         addressErrors() {
+        addressErrors() {
             const errors = [];
             if (!this.$v.address.$dirty) return errors;
             !this.$v.address.required && errors.push('This field is required');
@@ -117,6 +141,15 @@ export default {
             },
             set(value) {
                 this.$store.commit('auth/updateName', value);
+            },
+        },
+
+        selectedVendor: {
+            get() {
+                return this.$store.state.cart.selectedVendor;
+            },
+            set(value) {
+                this.$store.commit('cart/chooseVendor', value.id);
             },
         },
 
@@ -137,38 +170,30 @@ export default {
             customerName: null,
             shippingAddress: null,
             email: null,
+            vendorList: []
         };
     },
-    created() {},
     methods: {
         handleToShipping() {
             this.$router.push('/account/shipping');
         },
 
         async createOrder() {
-              this.$v.$touch();
+            this.$v.$touch();
             if (this.$v.$invalid) {
                 return false;
             }
-
             const cookieCart = this.$cookies.get('cart', { parseJSON: true });
             const cartItems = cookieCart.cartItems;
-            const arr = cartItems.reduce(function (acc, cur) {
-                if (typeof acc[cur.vendorId] == 'undefined') {
-                    acc[cur.vendorId] = 1;
-                } else {
-                    acc[cur.vendorId] += 1;
-                }
+            const selectedItems = cartItems.filter((item) => {
+                return item.vendorId === this.$store.state.cart.selectedVendor;
+            });
 
-                return acc;
-            }, {});
-
-            const vendors = Object.keys(arr).filter((item) => item !== 'undefined');
-
-            const items = cookieCart.cartItems.map((it) => ({
+            const items = selectedItems.map((it) => ({
                 product: it.id,
                 quantity: it.quantity,
             }));
+
 
             let token;
             try {
@@ -186,7 +211,7 @@ export default {
                 shipping_address: this.address,
                 order_items: items,
                 payment_method: 'CREDIT_CARD',
-                vendors: vendors,
+                vendor: this.$store.state.cart.selectedVendor,
                 token,
             };
 
@@ -194,22 +219,18 @@ export default {
                 params['user'] = this.userId;
             }
 
-            try{
+            try {
                 const data = await strapi.createEntry('orders', params);
-                console.log('data', data);
 
                 this.$notify({
                     group: 'addCartSuccess',
                     title: 'Success!',
                     text: `Create order successfully`,
                 });
-                this.$store.dispatch('cart/clearCart');
-
-                this.$router.push(`/order/${data.order_number}`);
-
-
-
-            } catch(e){
+                this.$store.dispatch('cart/clearItemInCart', selectedItems);
+                // window.location.href = `/order/${data.order_number}`
+                // this.$router.push(`/order/${data.order_number}`);
+            } catch (e) {
                 console.log(e);
                 this.$notify({
                     group: 'addCartSuccess',

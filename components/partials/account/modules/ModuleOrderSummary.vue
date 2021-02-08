@@ -11,14 +11,14 @@
                 </figure>
                 <figure class="ps-block__items">
                     <nuxt-link
-                        v-for="(item, index) in cartItems"
+                        v-for="(item, index) in filteredCartItems"
                         :to="`/product/${item.id}`"
                         :key="item.id"
                         class="ps-product__title"
                     >
                         {{ item.name }}
                         <br />
-                        {{ cartItems[index].quantity }} x ${{
+                        {{ filteredCartItems[index].quantity }} x ${{
                             item.price.toFixed(2)
                         }}
                     </nuxt-link>
@@ -28,16 +28,6 @@
                         <strong>Subtotal</strong>
                         <small>$ {{ amount }}</small>
                     </figcaption>
-                </figure>
-                <figure v-if="shipping === true">
-                    <figcaption>
-                        <strong>Shipping</strong>
-                        <small>$ 20.00</small>
-                    </figcaption>
-                </figure>
-                <figure v-else class="ps-block__shipping">
-                    <h3>Shipping</h3>
-                    <p>Calculated at next step</p>
                 </figure>
             </div>
         </div>
@@ -57,9 +47,15 @@ export default {
     },
     computed: {
         ...mapState({
-            cartItems: (state) => state.cart.cartItems,
+            filteredCartItems: (state) => state.cart.filteredCartItems,
             total: (state) => state.cart.total,
-            amount: (state) => state.cart.amount,
+            amount: (state) => {
+                let rs = 0
+                state.cart.filteredCartItems.forEach((item) => {
+                    rs += item.quantity * item.price
+                })
+                return rs
+            },
             cartProducts: (state) => state.product.cartProducts,
         }),
     },
