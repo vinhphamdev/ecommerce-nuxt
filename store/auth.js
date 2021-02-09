@@ -181,6 +181,24 @@ export const actions = {
             }))
 
         return response;
+    },
+
+    async getMap({ commit, state }, params) {
+        console.log('params', params);
+        const response = await Repository.get(
+            `https://api.mapbox.com/directions/v5/mapbox/cycling/${params.start1},${params.start2};${params.end1},${params.end2}?steps=true&geometries=geojson&access_token=pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA`,
+        )
+            .then(
+                response => {
+                    console.log('response', response);
+                    return response.data
+                }
+            )
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }))
+
+        return response;
     }
 
 };
