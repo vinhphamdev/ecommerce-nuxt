@@ -186,7 +186,7 @@ export const actions = {
     async getMap({ commit, state }, params) {
         console.log('params', params);
         const response = await Repository.get(
-            `https://api.mapbox.com/directions/v5/mapbox/cycling/${params.start1},${params.start2};${params.end1},${params.end2}?steps=true&geometries=geojson&access_token=pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA`,
+            `https://api.mapbox.com/directions/v5/mapbox/driving/${params.start1},${params.start2};${params.end1},${params.end2}?steps=true&geometries=geojson&access_token=pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA`,
         )
             .then(
                 response => {

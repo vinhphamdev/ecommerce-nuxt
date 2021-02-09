@@ -34,20 +34,20 @@ export default {
                 limit: 1,
             }).send();
 
-            this._from = ['-74.005974', '40.712776'];
+            this._from = [-73.98598843989849, 40.75753761273267];
 
-         this._to = ['-73.98528100727081', '40.747697277759166'];
+         this._to = [-74.01306601045609, 40.712251474963686];
 
         let feature = from.body.features[0];
 
          this.map = new mapboxgl.Map({
                         container: 'map',
                         style: 'mapbox://styles/mapbox/streets-v10',
-                        center: this._from,
+                        center: [-73.98598843989849, 40.75753761273267],
                         zoom: 12,
                     });
 
-                    var canvas = this.map.getCanvasContainer();
+                    this.map.getCanvasContainer();
 
 
 //   Add starting point to the map
