@@ -39,7 +39,6 @@ export default {
                         center: feature.center,
                         zoom: 15,
                     });
-
                     new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
                 }
             });
