@@ -2,7 +2,7 @@
     <div class="ps-shopping">
         <div class="ps-shopping__header">
             <p>
-                <strong class="mr-2">{{ total }}</strong>
+                <!-- <strong class="mr-2">{{ total }}</strong> -->
                 Products found
             </p>
             <div class="ps-shopping__actions">
@@ -34,11 +34,11 @@
             </div>
         </div>
         <div class="ps-shopping__content">
-            <div v-if="queries" class="ps-shopping__queries">
+            <!-- <div v-if="queries" class="ps-shopping__queries">
                 <a v-for="query in queries" href="#" @click.prevent="">
                     {{ query }}
                 </a>
-            </div>
+            </div> -->
             <div v-if="listView === false" class="ps-shopping-product">
                 <div class="row">
                     <div
@@ -49,13 +49,6 @@
                         <product-default :product="product" />
                     </div>
                 </div>
-                <footer class="mt-30">
-                    <v-pagination
-                        v-model="page"
-                        :length="paginationLenght"
-                        @input="handleChangePagination"
-                    />
-                </footer>
             </div>
             <div v-else class="ps-shopping-product">
                 <product-wide
@@ -63,13 +56,6 @@
                     :product="product"
                     :key="product.id"
                 />
-                <footer class="mt-30">
-                    <v-pagination
-                        v-model="page"
-                        :length="paginationLenght"
-                        @input="handleChangePagination"
-                    />
-                </footer>
             </div>
         </div>
     </div>
@@ -85,17 +71,8 @@ export default {
     components: { ProductWide, ProductDefault },
     computed: {
         ...mapState({
-            products: state => state.product.products,
-            total: state => state.product.total,
-            queries: state => state.collection.queries
+            products: state => state.shop.products,
         }),
-        paginationLenght() {
-            if (this.total % 12 === 0) {
-                return parseInt(this.total / this.pageSize);
-            } else {
-                return parseInt(this.total / 12 + 1);
-            }
-        }
     },
     data() {
         return {
@@ -105,16 +82,7 @@ export default {
         };
     },
     methods: {
-        async handleChangePagination(value) {
-            const params = {
-                _start: value === 1 ? 0 : (value - 1) * 12,
-                _limit: 12
-            };
-            await this.$store.dispatch('product/getProducts', params);
-        },
-        handleChangeViewMode() {
-            this.listView = !this.listView;
-        }
+
     }
 };
 </script>

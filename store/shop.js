@@ -41,6 +41,11 @@ export const mutations = {
 
     setCategories(state, payload){
         state.categories = payload;
+    },
+
+    getProductByType(state, payload){
+        state.products.filter(it => {
+        })
     }
 };
 

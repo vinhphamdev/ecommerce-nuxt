@@ -5,12 +5,7 @@
                 {{ $t('shop.widget.categories') }}
             </h4>
             <ul v-if="categories !== undefined" class="ps-list--categories">
-                <!-- <li>
-                    <a href="#" @click.prevent="handleGotoCategory(null)">
-                        All Categories
-                    </a>
-                </li> -->
-                <li v-for="category in categories" :key="category.id">
+                <li v-for="category in categories" :key="category.id" @click="getProductByType(category.id)">
                         {{ category.name }}
                 </li>
             </ul>
@@ -26,12 +21,8 @@ export default {
     computed: {
         ...mapState({
             categories: state => state.shop.categories,
-            products: state => state.product.products
+            products: state => state.shop.products
         }),
-    },
-    data() {
-        return {
-        };
     },
     created () {
         this.getProductType();
@@ -41,9 +32,9 @@ export default {
            await this.$store.dispatch('shop/getProductType')
        },
 
-    //    getProductsByType(){
-    //        await this.$store.dispatch('shop/getProductType')
-    //    }
+       getProductByType(type){
+        this.$store.commit('getProductByType', type);
+       }
     }
 };
 </script>
