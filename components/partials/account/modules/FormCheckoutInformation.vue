@@ -22,7 +22,7 @@
                 outlined
                 height="50"
                 v-model="email"
-                 :error-messages="emailErrors"
+                :error-messages="emailErrors"
                 @input="$v.email.$touch()"
             />
         </div>
@@ -84,7 +84,7 @@
 import { mapState } from 'vuex';
 import strapi from '~/utilities/Strapi';
 import { Card, createToken } from 'vue-stripe-elements-plus';
-import { email, required } from 'vuelidate/lib/validators';
+import { email as isEmail, required } from 'vuelidate/lib/validators';
 
 export default {
     name: 'FormCheckoutInformation',
@@ -93,10 +93,11 @@ export default {
     }),
     validations: {
         name: { required },
-        email: { required, email },
+        email: { required, isEmail },
         address: { required },
     },
     async created() {
+        this.email = this.$store.state.auth.email;
         const cartItems = this.$store.state.cart.cartItems;
         const vendorIdList = [];
         cartItems.forEach((item) => {
@@ -133,6 +134,10 @@ export default {
 
         userId() {
             return this.$store.state.auth.userId;
+        },
+
+        userEmail() {
+            return this.$store.state.auth.email;
         },
 
         name: {
@@ -240,6 +245,11 @@ export default {
             }
         },
     },
+    watch: {
+        userEmail(newVal) {
+            this.email = newVal
+        }
+    }
 };
 </script>
 
