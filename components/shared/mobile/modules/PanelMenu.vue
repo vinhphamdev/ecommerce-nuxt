@@ -102,7 +102,6 @@ export default {
     },
     methods: {
         handleClosePanel() {
-            console.log('test');
             this.$store.commit('app/setCurrentDrawerContent', null);
             this.$store.commit('app/setAppDrawer', false);
         }

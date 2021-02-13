@@ -11,7 +11,7 @@
                                     }}<span> - {{ status }}</span>
                                 </h3>
                             </div>
-                            <p>Created Order: {{ createdAt }}</p>
+                            <p>Created At: <strong>{{ new Date(createdAt).toLocaleString() }}</strong></p>
                             <div
                                 class="row"
                                 style="
@@ -21,18 +21,19 @@
                                 "
                             >
                                 <div class="card">
-                                    <p>Customer Name: {{ name }}</p>
-                                    <p>Shipping Address: {{ address }}</p>
+                                    <p>Customer Name: <strong>{{ name }}</strong></p>
+                                    <p>Shipping Address: <strong>{{ address }}</strong></p>
+                                    <p>Payment method: <strong>{{ parsePaymentMethod(paymentMethod) }}</strong></p>
                                 </div>
 
-                                <div class="card">
+                                <!-- <div class="card">
                                     <p>Standard Delivery</p>
                                     <p>21$</p>
-                                </div>
+                                </div> -->
 
-                                <div class="card">
-                                    <p>Payment method: {{ paymentMethod }}</p>
-                                </div>
+                                <!-- <div class="card">
+                                    <p>Payment method: <strong>{{ parsePaymentMethod(paymentMethod) }}</strong></p>
+                                </div> -->
                             </div>
                             <div class="ps-section__content">
                                 <div>
@@ -189,13 +190,17 @@ export default {
                         'line-cap': 'round',
                     },
                     paint: {
-                        'line-color': '#3887be',
-                        'line-width': 5,
+                        'line-color': '#24628c',
+                        'line-width': 3,
                         'line-opacity': 0.75,
                     },
                 });
             }
         },
+        parsePaymentMethod(code) {
+            if (code === 'CREDIT_CARD') return 'Credit card'
+            return code
+        }
     },
 
     async created() {
@@ -243,7 +248,7 @@ export default {
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v10',
             center: this._from,
-            zoom: 12,
+            zoom: 14,
         });
 
         this.map.getCanvasContainer();
@@ -253,30 +258,13 @@ export default {
         this.map.on('load', () => {
             this.getRoute();
 
-            this.map.addLayer({
-                id: 'point',
-                type: 'circle',
-                source: {
-                    type: 'geojson',
-                    data: {
-                        type: 'FeatureCollection',
-                        features: [
-                            {
-                                type: 'Feature',
-                                properties: {},
-                                geometry: {
-                                    type: 'Point',
-                                    coordinates: this._from,
-                                },
-                            },
-                        ],
-                    },
-                },
-                paint: {
-                    'circle-radius': 10,
-                    'circle-color': '#3887be',
-                },
-            });
+            new mapboxgl.Marker({
+                color: '#42f5b6'
+            }).setLngLat(this._from).addTo(this.map);
+
+            new mapboxgl.Marker({
+                color: '#42f5b6'
+            }).setLngLat(this._to).addTo(this.map);
         });
     },
 };
