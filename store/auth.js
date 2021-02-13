@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 export const state = () => ({
     isLoggedIn: false,
-    token: '',
+    token: Cookies.get('id_token') || '',
     userId: '',
 
     // user infor
@@ -76,6 +76,7 @@ export const actions = {
             `${baseUrl}/auth/local`, payload
         )
             .then(response => {
+                commit('setToken', response.data.jwt);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }))
@@ -184,13 +185,11 @@ export const actions = {
     },
 
     async getMap({ commit, state }, params) {
-        console.log('params', params);
         const response = await Repository.get(
             `https://api.mapbox.com/directions/v5/mapbox/driving/${params.start1},${params.start2};${params.end1},${params.end2}?steps=true&geometries=geojson&access_token=pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA`,
         )
             .then(
                 response => {
-                    console.log('response', response);
                     return response.data
                 }
             )
