@@ -38,7 +38,9 @@ export default {
     name: 'HeaderUserArea',
     computed: {
         ...mapState({
-            isLoggedIn: (state) => state.auth.isLoggedIn,
+            isLoggedIn: (state) => {
+                return state.auth.isLoggedIn
+            },
         }),
     },
     data() {

@@ -229,7 +229,7 @@ export default {
                 });
                 this.$store.dispatch('cart/clearItemInCart', selectedItems);
                 // window.location.href = `/order/${data.order_number}`
-                // this.$router.push(`/order/${data.order_number}`);
+                this.$router.push(`/order/${data.order_number}`);
             } catch (e) {
                 console.log(e);
                 this.$notify({

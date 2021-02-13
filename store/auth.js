@@ -2,18 +2,33 @@ import Repository, { serializeQuery } from '~/repositories/Repository.js';
 import { baseUrl } from '~/repositories/Repository';
 import Cookies from 'js-cookie';
 
-export const state = () => ({
-    isLoggedIn: false,
-    token: Cookies.get('id_token') || '',
-    userId: '',
+export const state = () => {
+    const token = Cookies.get('id_token') || '';
+    const authState = {
+        isLoggedIn: token ? true : false,
+        token,
+        userId: '',
+        aaa: '',
+    
+        // user infor
+        customerId: '',
+        name: '',
+        address: '',
+        email: '',
+        // phone_number: ''
+    }
+    return authState
+};
 
-    // user infor
-    customerId: '',
-    name: '',
-    address: '',
-    email: '',
-    // phone_number: ''
-});
+const getProfile = async (userId, token) => {
+    const response = await Repository.get(
+        `${baseUrl}/customers?user=${userId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    return response.data
+}
 
 export const mutations = {
     setToken(state, payload) {
@@ -72,16 +87,21 @@ export const actions = {
     },
 
     async login({ commit }, payload) {
-        const response = await Repository.post(
-            `${baseUrl}/auth/local`, payload
-        )
-            .then(response => {
-                commit('setToken', response.data.jwt);
-                return response.data;
-            })
-            .catch(error => ({ error: JSON.stringify(error) }))
+        try {
+            const authResponse = await Repository.post(`${baseUrl}/auth/local`, payload)
+        
+            // commit('setToken', authResponse.data.jwt);
+            // commit('updateUserId', authResponse.data.id);
+            // const profile = (await getProfile(authResponse.data.user.id, authResponse.data.jwt))[0]
+            // commit('updateCustomerId', profile.id);
+            // commit('updateName', profile.name);
+            // commit('updateAddress', profile.customer_address);
+            // commit('updateEmail', profile.user.email);
 
-        return response;
+            return authResponse.data;
+        } catch (error) {
+            return { error: JSON.stringify(error) }
+        }
     },
 
     async vendorRegistration({ commit, state }, payload) {
@@ -106,21 +126,15 @@ export const actions = {
     },
 
     async getProfile({ commit, state }, userId) {
-        const response = await Repository.get(
-            `${baseUrl}/customers?user=${userId}`, {
-            headers: {
-                'Authorization': `Bearer ${state.token}`
-            }
-        }
-        )
+        const response = await getProfile(userId, state.token)
             .then(
-                response => {
-                    commit('updateCustomerId', response.data[0].id);
-                    commit('updateName', response.data[0].name);
-                    commit('updateAddress', response.data[0].customer_address);
-                    commit('updateEmail', response.data[0].user.email);
+                data => {
+                    commit('updateCustomerId', data[0].id);
+                    commit('updateName', data[0].name);
+                    commit('updateAddress', data[0].customer_address);
+                    commit('updateEmail', data[0].user.email);
                     // commit('updatePhone', response.data[0].phone_number);
-                    return response.data
+                    return data
                 }
             )
             .catch(error => ({

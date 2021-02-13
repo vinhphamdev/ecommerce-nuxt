@@ -25,7 +25,7 @@
                                 <h3>Invoices</h3>
                             </div>
                             <div class="ps-section__content">
-                                <TableInvoices :products="products"/>
+                                <TableInvoices />
                             </div>
                         </div>
                     </div>
@@ -38,17 +38,15 @@
 <script>
 import AccountLinks from './modules/AccountLinks';
 import TableInvoices from './modules/TableInvoices';
+import { mapState } from 'vuex';
 export default {
     name: 'InvoiceDetail',
     components: { TableInvoices, AccountLinks },
     computed: {
-        email() {
-            return this.$store.state.auth.email;
-        },
-
-        userId() {
-            return this.$store.state.auth.userId;
-        },
+        ...mapState({
+            userId: (state) => state.auth.userId,
+            email: (state) => state.auth.email,
+        })
     },
     data() {
         return {
@@ -65,14 +63,7 @@ export default {
                     active: true,
                 },
             ],
-            products: [],
         };
-    },
-    async created() {
-        this.products = await this.$store.dispatch(
-            'shop/getListOrder',
-            this.userId
-        );
     },
 };
 </script>

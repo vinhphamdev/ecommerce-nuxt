@@ -123,7 +123,6 @@ export const actions = {
             `${baseUrl}/orders?user=${userId}`
         )
             .then(response => {
-                console.log(response.data);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }));
