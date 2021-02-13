@@ -92,10 +92,10 @@ export default {
             } catch(e){
                 console.log(e);
                 this.$notify({
-                group: 'addCartSuccess',
-                title: 'Failed!',
-                text: `Username or password not correct`
-            });
+                    group: 'addCartSuccess',
+                    title: 'Failed!',
+                    text: `Username or password not correct`
+                });
             }
            
         },
