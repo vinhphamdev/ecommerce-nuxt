@@ -31,6 +31,12 @@
                             {{ $t('header.navigationExtra.marketPlace') }}
                         </nuxt-link>
                     </li>
+
+                     <li>
+                        <nuxt-link to="/catalogue">
+                            {{ $t('header.navigationExtra.catalogue') }}
+                        </nuxt-link>
+                    </li>
                 </ul>
             </div>
         </div>

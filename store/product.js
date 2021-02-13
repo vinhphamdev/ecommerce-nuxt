@@ -114,15 +114,6 @@ export const actions = {
         return reponse;
     },
 
-    async getProductBrands({ commit }) {
-        const reponse = await Repository.get(`${baseUrl}/brands`)
-            .then(response => {
-                commit('setBrands', response.data);
-                return response.data;
-            })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
-    },
 
     async getProductCategories({ commit }) {
         const reponse = await Repository.get(`${baseUrl}/product-categories`)
@@ -134,46 +125,6 @@ export const actions = {
         return reponse;
     },
 
-    async getProductsByBrands({ commit }, payload) {
-        let query = '';
-        payload.forEach(item => {
-            if (query === '') {
-                query = `slug_in=${item}`;
-            } else {
-                query = query + `&slug_in=${item}`;
-            }
-        });
-        const reponse = await Repository.get(`${baseUrl}/brands?${query}`)
-            .then(response => {
-                if (response.data) {
-                    const brands = response.data;
-                    let products = [];
-                    brands.forEach(brand => {
-                        brand.products.forEach(product => {
-                            products.push(product);
-                        });
-                    });
-                    commit('setProducts', products);
-                    commit('setTotal', products.length);
-                    return products;
-                } else {
-                    return null;
-                }
-            })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
-    },
-    async getProductsByPriceRange({ commit }, payload) {
-        const reponse = await Repository.get(
-            `${baseUrl}/products?${serializeQuery(payload)}`
-        )
-            .then(response => {
-                commit('setProducts', response.data);
-                commit('setSearchResults', response.data);
-                commit('setTotal', response.data.length);
-                return response.data;
-            })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
-    }
+   
+
 };

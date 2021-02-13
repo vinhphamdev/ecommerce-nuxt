@@ -7,7 +7,8 @@
         "navigationExtra": {
             "sellOnMartfury": "Sell on Martfury",
             "trackYourOrder": "Track Your Order",
-            "marketPlace": "Marketplace"
+            "marketPlace": "Marketplace",
+            "catalogue": "Catalogue"
         },
         "miniCart": {
             "subTotal": "Sub Total:",

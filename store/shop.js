@@ -7,7 +7,9 @@ export const state = () => ({
     vendors: [],
     vendor: {},
 
-    orderDetail: {}
+    orderDetail: {},
+
+    categories: []
 });
 
 export const getters = {
@@ -35,6 +37,10 @@ export const mutations = {
 
     updateOrderDetail(state, payload) {
         state.orderDetail = payload;
+    },
+
+    setCategories(state, payload){
+        state.categories = payload;
     }
 };
 
@@ -132,6 +138,19 @@ export const actions = {
             `${baseUrl}/pages?slug=landing-page`
         )
             .then(response => {
+                return response.data;
+            })
+            .catch(error => ({ error: JSON.stringify(error) }));
+        return response;
+    },
+
+    async getProductType({ commit, state }) {
+        const response = await Repository.get(
+            `${baseUrl}/product-types`
+        )
+            .then(response => {
+                console.log(response.data);
+                commit('setCategories', response.data);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }));
