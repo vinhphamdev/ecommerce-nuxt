@@ -104,7 +104,6 @@ export default {
         },
 
         addItemToCart(payload) {
-            console.log(payload);
             this.$store.dispatch('cart/addProductToCart', payload);
             this.getCartProduct(this.cartItems);
             this.$notify({

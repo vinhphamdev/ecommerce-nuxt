@@ -1,6 +1,5 @@
 <template lang="html">
     <div class="table-repsonsive">
-        <span>{{ userId }}</span>
         <table class="table ps-table--shopping-cart">
             <thead>
                 <tr>
@@ -25,28 +24,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 export default {
     name: 'TableInvoices',
-    computed: {
-        async products() {
-            console.log('here ', this.userId)
-            if (this.userId) {
-                console.log('lolo')
-                const orders = await this.$store.dispatch(
-                    'shop/getListOrder',
-                    this.userId
-                );
-                console.log('orders ', orders)
-                return orders
-            } else {
-                return [{id: 1, order_number: '1', createdAt: '2021-02-13T08:36:26.333Z', order_status: 'PREPARING', invoice_amount: 40}]
-            }
-        },
-        ...mapState({
-            userId: (state) => state.auth.userId,
-        })
-    },
+    props: {
+        products: {
+            type: Array,
+            default: []
+        }
+    }
 };
 </script>
 

@@ -23,7 +23,6 @@ export default {
 
     methods: {
         handleClosePanel() {
-            console.log('accc');
             this.$store.commit('theme/updateSiteOverlay', false);
             this.$store.commit('theme/updateNavigationPanel', false);
         }

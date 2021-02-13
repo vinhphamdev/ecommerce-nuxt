@@ -85,7 +85,6 @@ export default {
 
             try{
             const response = await this.$store.dispatch('auth/login', params);
-            console.log('login response', response)
             this.$store.commit('auth/setToken', response.jwt);
             this.$store.commit('auth/updateUserId', response.user.id);
             this.$store.dispatch('auth/getProfile', response.user.id);
@@ -93,10 +92,10 @@ export default {
             } catch(e){
                 console.log(e);
                 this.$notify({
-                group: 'addCartSuccess',
-                title: 'Failed!',
-                text: `Username or password not correct`
-            });
+                    group: 'addCartSuccess',
+                    title: 'Failed!',
+                    text: `Username or password not correct`
+                });
             }
            
         },

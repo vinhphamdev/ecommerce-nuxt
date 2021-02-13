@@ -34,7 +34,6 @@ export const mutations = {
     },
 
     updateOrderDetail(state, payload) {
-        console.log(payload);
         state.orderDetail = payload;
     }
 };
@@ -99,7 +98,6 @@ export const actions = {
         }
         )
             .then(response => {
-                console.log(response);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }));

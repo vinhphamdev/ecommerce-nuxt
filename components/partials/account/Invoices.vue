@@ -25,7 +25,7 @@
                                 <h3>Invoices</h3>
                             </div>
                             <div class="ps-section__content">
-                                <TableInvoices />
+                                <TableInvoices :products="products" />
                             </div>
                         </div>
                     </div>
@@ -62,9 +62,30 @@ export default {
                     icon: 'icon-papers',
                     active: true,
                 },
-            ],
+            ], 
+            products: [],
         };
     },
+    watch: {
+        async userId(newId, oldId) {
+            if (newId) {
+                const orders = await this.$store.dispatch(
+                    'shop/getListOrder',
+                    newId
+                );
+                this.products = orders
+            }
+        },
+    },
+    async created() {
+        if (this.userId) {
+            const orders = await this.$store.dispatch(
+                'shop/getListOrder',
+                this.userId
+            );
+            this.products = orders
+        }
+    }
 };
 </script>
 
