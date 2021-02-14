@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import { carouselFullwidth } from '~/utilities/carousel-helpers.js';
 import ProductDefault from '../../../elements/product/ProductDefault';
 import CarouselArrows from '~/components/elements/commons/CarouselArrows';
@@ -32,8 +32,8 @@ export default {
         },
     },
     computed: {
-        ...mapGetters({
-            products: 'shop/getAllProducts',
+        ...mapState({
+            products: state => state.shop.productsCatalogue,
         }),
     },
     data() {
@@ -47,8 +47,8 @@ export default {
             },
         };
     },
-    async created() {
-        await this.$store.dispatch('shop/getAllProducts');
-    },
+    // async created() {
+    //     await this.$store.dispatch('shop/getAllProducts');
+    // },
 };
 </script>

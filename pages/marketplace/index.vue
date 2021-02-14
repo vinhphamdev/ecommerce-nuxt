@@ -10,7 +10,6 @@
     </main>
 </template>
 <script>
-import { mapState } from 'vuex';
 import FooterFullwidth from '~/components/shared/footers/FooterFullwidth';
 import Newsletters from '~/components/partials/commons/Newsletters';
 import SiteFeauturesFullwidth from '~/components/partials/commons/SiteFeauturesFullwidth';

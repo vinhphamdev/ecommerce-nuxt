@@ -26,17 +26,17 @@
                         </nuxt-link>
                     </li>
 
-                      <li>
+                    <li>
                         <nuxt-link to="/marketplace">
                             {{ $t('header.navigationExtra.marketPlace') }}
                         </nuxt-link>
                     </li>
 
-                     <li>
+                    <!-- <li>
                         <nuxt-link to="/catalogue">
                             {{ $t('header.navigationExtra.catalogue') }}
                         </nuxt-link>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
