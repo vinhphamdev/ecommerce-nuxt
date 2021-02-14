@@ -32,7 +32,9 @@ export const mutations = {
     filterProduct(state, name){
         const arr = state.products.filter((item) => {
             if(item.product_types.length > 0){
-                return item.product_types[0].name == name;
+                return item.product_types.filter(it => {
+                    return it.name == name;
+                })
             }
         });
 
