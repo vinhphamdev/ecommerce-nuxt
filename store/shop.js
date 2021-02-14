@@ -30,16 +30,21 @@ export const mutations = {
     },
 
     filterProduct(state, name){
-        const arr = state.products.filter((item) => {
-            if(item.product_types.length > 0){
-                return item.product_types.filter(it => {
-                    return it.name == name;
-                })
-            }
-        });
-
-        state.productsCatalogue = arr;
-        console.log('arr', arr);
+        if (name) {
+            const arr = state.products.filter((item) => {
+                if (item.product_types.length > 0) {
+                    return item.product_types.some(it => {
+                        return it.name == name;
+                    })
+                } else {
+                    return false
+                }
+            });
+    
+            state.productsCatalogue = arr;
+        } else {
+            state.productsCatalogue = state.products;
+        }
     },
 
     updateVendor(state, payload) {
@@ -165,9 +170,14 @@ export const actions = {
             `${baseUrl}/product-types`
         )
             .then(response => {
-                console.log(response.data);
-                commit('setCategories', response.data);
-                return response.data;
+                const allProductsType = {
+                    name: 'All products',
+                    id: 'all_products'
+                }
+                const types = [allProductsType].concat(response.data)
+                console.log('aaa', types);
+                commit('setCategories', types);
+                return types;
             })
             .catch(error => ({ error: JSON.stringify(error) }));
         return response;

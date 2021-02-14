@@ -55,7 +55,7 @@ export default {
                     url: '/'
                 },
                 {
-                    text: 'Shop Sidebar'
+                    text: 'Catalogue'
                 }
             ]
         };
