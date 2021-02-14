@@ -71,7 +71,7 @@ export default {
     components: { ProductWide, ProductDefault },
     computed: {
         ...mapState({
-            products: state => state.shop.products,
+            products: state => state.shop.productsCatalogue,
         }),
     },
     data() {
@@ -83,7 +83,11 @@ export default {
     },
     methods: {
 
-    }
+    },
+    async created () {
+        const data = await this.$store.dispatch('shop/getAllProducts');
+        console.log('data', data);
+    },
 };
 </script>
 

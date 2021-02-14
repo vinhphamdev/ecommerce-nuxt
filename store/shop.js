@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 export const state = () => ({
     products: [],
+    productsCatalogue: [],
     vendors: [],
     vendor: {},
 
@@ -25,6 +26,18 @@ export const getters = {
 export const mutations = {
     updateProducts(state, payload) {
         state.products = payload;
+        state.productsCatalogue = payload;
+    },
+
+    filterProduct(state, name){
+        const arr = state.products.filter((item) => {
+            if(item.product_types.length > 0){
+                return item.product_types[0].name == name;
+            }
+        });
+
+        state.productsCatalogue = arr;
+        console.log('arr', arr);
     },
 
     updateVendor(state, payload) {
@@ -43,10 +56,6 @@ export const mutations = {
         state.categories = payload;
     },
 
-    getProductByType(state, payload){
-        state.products.filter(it => {
-        })
-    }
 };
 
 export const actions = {
