@@ -24,67 +24,12 @@
             <v-list class="menu--mobile">
                 <template v-for="vendor in vendors">
                     <v-list-item-content>
-                        <nuxt-link
-                            :to="`/vendor/${vendor.id}`"
-                            @click="handleClosePanel"
+                        <span
+                            @click="handleClosePanel(`/vendor/${vendor.id}`)"
                         >
                             {{ vendor.name }}
-                        </nuxt-link>
+                        </span>
                     </v-list-item-content>
-                    <!-- <v-list-group v-if="menuItem.subMenu" no-action>
-                        <template v-slot:activator>
-                            <v-list-item-content>
-                                <nuxt-link
-                                    :to="menuItem.url"
-                                    @click="handleClosePanel"
-                                >
-                                    {{ menuItem.text }}
-                                </nuxt-link>
-                            </v-list-item-content>
-                        </template>
-                        <mobile-submenu :menu="menuItem.subMenu" />
-                    </v-list-group>
-                    <v-list-group v-else-if="menuItem.mega" no-action>
-                        <template v-slot:activator>
-                            <v-list-item-content>
-                                <nuxt-link
-                                    :to="menuItem.url"
-                                    @click="handleClosePanel"
-                                >
-                                    {{ menuItem.text }}
-                                </nuxt-link>
-                            </v-list-item-content>
-                        </template>
-                        <v-list>
-                            <template v-for="megaItem in menuItem.megaContent">
-                                <v-list-group no-action>
-                                    <template v-slot:activator>
-                                        <v-list-item-content>
-                                            <nuxt-link
-                                                :to="menuItem.url"
-                                                @click="handleClosePanel"
-                                            >
-                                                {{ megaItem.heading }}
-                                            </nuxt-link>
-                                        </v-list-item-content>
-                                    </template>
-                                    <mobile-submenu
-                                        :menu="megaItem.megaItems"
-                                    />
-                                </v-list-group>
-                            </template>
-                        </v-list>
-                    </v-list-group>
-                    <v-list-item v-else>
-                        <v-list-item-content>
-                            <nuxt-link
-                                :to="menuItem.url"
-                                @click="handleClosePanel"
-                            >
-                                {{ menuItem.text }}
-                            </nuxt-link>
-                        </v-list-item-content>
-                    </v-list-item> -->
                 </template>
             </v-list>
         </div>
@@ -109,13 +54,15 @@ export default {
         }),
     },
     methods: {
-        handleClosePanel() {
+        handleClosePanel(url) {
             this.$store.commit('app/setCurrentDrawerContent', null);
             this.$store.commit('app/setAppDrawer', false);
+            if (url) {
+                this.$router.push(url);
+            }
         }
     },
     async created() {
-        console.log('lolo')
         await this.$store.dispatch('shop/getAllVendors');
     },
 };
