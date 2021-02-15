@@ -4,17 +4,17 @@
             <a
                 class="navigation__item"
                 href="#"
-                @click.prevent="handleOpenDrawer('menu')"
+                @click.prevent="handleOpenDrawer('vendors')"
             >
                 <i class="icon-menu"></i>
-                <span> Menu</span>
+                <span> Vendors</span>
             </a>
             <a
                 class="navigation__item"
-                @click.prevent="handleOpenDrawer('categories')"
+                @click.prevent="goToPath('/marketplace')"
             >
                 <i class="icon-list4"></i>
-                <span> Categories</span>
+                <span> Marketplace</span>
             </a>
 
             <a
@@ -68,6 +68,9 @@ export default {
             }
             this.$store.commit('app/setCurrentDrawerContent', drawer);
             this.$store.commit('app/setAppDrawer', !this.appDrawer);
+        },
+        goToPath(path) {
+            this.$router.push(path)
         }
     }
 };
