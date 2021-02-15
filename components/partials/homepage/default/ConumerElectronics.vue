@@ -7,9 +7,9 @@
             <div class="ps-section__content">
                  <v-row style="margin-bottom:20px">
                      <template v-for="product in products">
-                         <v-col cols="6" md="2" style="margin-bottom:20px">
+                        <v-col cols="6" md="2" style="margin-bottom:20px">
                             <product-default :product="product" />
-                         </v-col>
+                        </v-col>
                      </template>
                  </v-row>
             </div>

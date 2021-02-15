@@ -65,7 +65,7 @@ export default {
 
     computed: {
         products() {
-            return this.$store.state.shop.products;
+            return this.$store.state.shop.vendorProducts;
         },
 
         vendor() {

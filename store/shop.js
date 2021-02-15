@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 export const state = () => ({
     products: [],
+    vendorProducts: [],
     productsCatalogue: [],
     vendors: [],
     vendor: {},
@@ -27,6 +28,10 @@ export const mutations = {
     updateProducts(state, payload) {
         state.products = payload;
         state.productsCatalogue = payload;
+    },
+
+    updateVendorProducts(state, payload) {
+        state.vendorProducts = payload
     },
 
     filterProduct(state, name){
@@ -84,7 +89,8 @@ export const actions = {
             `${baseUrl}/products?vendor=${vendorId}`
         )
             .then(response => {
-                commit('updateProducts', response.data);
+                // commit('updateProducts', response.data);
+                commit('updateVendorProducts', response.data);
                 return response.data;
             })
             .catch(error => ({ error: JSON.stringify(error) }));
@@ -175,7 +181,6 @@ export const actions = {
                     id: 'all_products'
                 }
                 const types = [allProductsType].concat(response.data)
-                console.log('aaa', types);
                 commit('setCategories', types);
                 return types;
             })
