@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
     <div class="ps-dropdown language">
         <a href="#" @click.prevent>
             <img :src="selectedLocale.image" alt="" />
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-    name: 'LanguageSwicher',
+    name: 'LanguageSwitcher',
     computed: {
         currentLocale() {
             return this.$i18n.locale;
