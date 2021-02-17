@@ -12,11 +12,11 @@
                     class="ps-select form-control"
                     data-placeholder="Sort Items"
                 >
-                    <option>Sort by latest</option>
-                    <option>Sort by popularity</option>
-                    <option>Sort by average rating</option>
-                    <option>Sort by price: low to high</option>
-                    <option>Sort by price: high to low</option>
+                    <option
+                        v-for="(option, index) in sortOptions"
+                        :key="index"
+                        >{{ option }}</option
+                    >
                 </select>
                 <div class="ps-shopping__view">
                     <p>View</p>
@@ -41,6 +41,7 @@
                     {{ query }}
                 </a>
             </div>
+
             <div v-if="listView === false" class="ps-shopping-product">
                 <div class="row">
                     <div
@@ -87,6 +88,7 @@ import ProductDefault from '~/components/elements/product/ProductDefault';
 import RecommendItems from '~/components/partials/shop/sections/RecommendItems';
 import BestSaleItems from '~/components/partials/shop/sections/BestSaleItems';
 import ProductWide from '~/components/elements/product/ProductWide';
+import sortOptions from '~/static/data/sortOptions.json';
 
 export default {
     name: 'LayoutShop',
@@ -107,9 +109,10 @@ export default {
     },
     data() {
         return {
-            listView: false,
+            listView: true,
             page: 1,
-            pageSize: 12
+            pageSize: 12,
+            sortOptions: sortOptions
         };
     },
     methods: {

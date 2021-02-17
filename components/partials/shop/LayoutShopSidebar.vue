@@ -10,11 +10,11 @@
                     class="ps-select form-control"
                     data-placeholder="Sort Items"
                 >
-                    <option>Sort by latest</option>
-                    <option>Sort by popularity</option>
-                    <option>Sort by average rating</option>
-                    <option>Sort by price: low to high</option>
-                    <option>Sort by price: high to low</option>
+                    <option
+                        v-for="(option, index) in sortOptions"
+                        :key="index"
+                        >{{ option }}</option
+                    >
                 </select>
                 <div class="ps-shopping__view">
                     <p>View</p>
@@ -65,29 +65,29 @@
 import { mapState } from 'vuex';
 import ProductDefault from '~/components/elements/product/ProductDefault';
 import ProductWide from '~/components/elements/product/ProductWide';
+import sortOptions from '~/static/data/sortOptions.json';
 
 export default {
     name: 'LayoutShopSidebar',
     components: { ProductWide, ProductDefault },
     computed: {
         ...mapState({
-            products: state => state.shop.productsCatalogue,
-        }),
+            products: state => state.shop.productsCatalogue
+        })
     },
     data() {
         return {
             listView: false,
             page: 1,
-            pageSize: 12
+            pageSize: 12,
+            sortOptions: sortOptions
         };
     },
-    methods: {
-
-    },
-    async created () {
+    methods: {},
+    async created() {
         const data = await this.$store.dispatch('shop/getAllProducts');
         console.log('data', data);
-    },
+    }
 };
 </script>
 

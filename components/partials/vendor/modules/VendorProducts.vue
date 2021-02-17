@@ -10,11 +10,11 @@
             </p>
             <div class="ps-shopping__actions">
                 <select class="form-control" data-placeholder="Sort Items">
-                    <option>Sort by latest</option>
-                    <option>Sort by popularity</option>
-                    <option>Sort by average rating</option>
-                    <option>Sort by price: low to high</option>
-                    <option>Sort by price: high to low</option>
+                    <option
+                        v-for="(option, index) in sortOptions"
+                        :key="index"
+                        >{{ option }}</option
+                    >
                 </select>
                 <div class="ps-shopping__view">
                     <p>View</p>
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div v-else class="ps-shopping-product">
-                <!--<ProductWide product="{product}" key="{product.id}" />-->
+                <ProductWide product="{product}" key="{product.id}" />
             </div>
         </div>
     </div>
@@ -54,12 +54,15 @@
 
 <script>
 import ProductDefault from '../../../elements/product/ProductDefault';
+import sortOptions from '~/static/data/sortOptions.json';
+
 export default {
     name: 'VendorProducts',
     components: { ProductDefault },
     data() {
         return {
             gridMode: true,
+            sortOptions: sortOptions
         };
     },
 
@@ -70,7 +73,7 @@ export default {
 
         vendor() {
             return this.$store.state.shop.vendor;
-        },
+        }
     },
 
     async created() {
@@ -86,10 +89,10 @@ export default {
                 .forwardGeocode({
                     query: this.vendor.address,
                     autocomplete: false,
-                    limit: 1,
+                    limit: 1
                 })
                 .send()
-                .then(function (response) {
+                .then(function(response) {
                     if (
                         response &&
                         response.body &&
@@ -102,13 +105,15 @@ export default {
                             container: 'map',
                             style: 'mapbox://styles/mapbox/streets-v11',
                             center: feature.center,
-                            zoom: 15,
+                            zoom: 15
                         });
-                        new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+                        new mapboxgl.Marker()
+                            .setLngLat(feature.center)
+                            .addTo(map);
                     }
                 });
         }
-    },
+    }
 };
 </script>
 
