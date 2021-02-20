@@ -1,5 +1,5 @@
-import Repository, { serializeQuery } from '~/repositories/Repository.js';
-import { baseUrl } from '~/repositories/Repository';
+import Repository, { serializeQuery } from "~/repositories/Repository.js";
+import { baseUrl } from "~/repositories/Repository";
 
 export const state = () => ({
     product: null,
@@ -10,7 +10,7 @@ export const state = () => ({
     compareItems: null,
     brands: null,
     categories: null,
-    total: 0
+    totalProducts: 0
 });
 
 export const getters = {
@@ -49,7 +49,7 @@ export const mutations = {
     },
 
     setTotal(state, payload) {
-        state.total = payload;
+        state.totalProducts = payload;
     }
 };
 

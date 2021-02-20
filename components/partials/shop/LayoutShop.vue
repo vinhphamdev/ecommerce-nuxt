@@ -4,7 +4,7 @@
         <recommend-items collectionSlug="shop-recommend-items" />
         <div class="ps-shopping__header">
             <p>
-                <strong class="mr-2">{{ total }}</strong>
+                <strong class="mr-2">{{ totalProducts }}</strong>
                 Products found
             </p>
             <div class="ps-shopping__actions">
@@ -22,14 +22,14 @@
                     <p>View</p>
                     <ul class="ps-tab-list">
                         <li :class="listView !== true ? 'active' : ''">
-                            <a href="#" @click.prevent="handleChangeViewMode">
+                            <button @click="handleChangeViewMode">
                                 <i class="icon-grid"></i>
-                            </a>
+                            </button>
                         </li>
                         <li :class="listView === true ? 'active' : ''">
-                            <a href="#" @click.prevent="handleChangeViewMode">
+                            <button  @click="handleChangeViewMode">
                                 <i class="icon-list4"></i>
-                            </a>
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -46,8 +46,8 @@
                 <div class="row">
                     <div
                         v-for="product in products"
-                        class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6 "
                         :key="product.id"
+                        class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6 "
                     >
                         <product-default :product="product" />
                     </div>
@@ -96,15 +96,15 @@ export default {
     computed: {
         ...mapState({
             products: state => state.product.products,
-            total: state => state.product.total,
+	        totalProducts: state => state.product.totalProducts,
             queries: state => state.collection.queries,
             listView: state => state.shop.listView
         }),
         paginationLength() {
-            if (this.total % 12 === 0) {
-                return parseInt(this.total / this.pageSize);
+            if (this.totalProducts % 12 === 0) {
+                return parseInt(this.totalProducts / this.pageSize);
             } else {
-                return parseInt(this.total / 12 + 1);
+                return parseInt(this.totalProducts / 12 + 1);
             }
         }
     },
