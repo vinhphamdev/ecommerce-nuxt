@@ -11,7 +11,7 @@
                 </nuxt-link>
             </p>
             <div class="ps-product__rating">
-                <rating />
+	            <rating :rating='product.ratingCount' />
                 <span>(1 review)</span>
             </div>
         </div>
