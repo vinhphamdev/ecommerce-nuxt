@@ -9,13 +9,12 @@
             </nuxt-link>
         </div>
         <div class="ps-product__content">
-            <a
+            <span
                 class="ps-product__remove"
-                href="#"
-                @click.prevent="handleRemoveProductFromCart(product)"
+                @click="handleRemoveProductFromCart(product)"
             >
                 <i class="icon-cross"></i>
-            </a>
+            </span>
             <nuxt-link :to="`/product/${product.id}`" class="ps-product__title">
                 {{ product.name }}
             </nuxt-link>
@@ -31,7 +30,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { baseUrl } from '~/repositories/Repository';
 export default {
     name: 'ProductMiniCart',
@@ -44,7 +43,6 @@ export default {
     computed: {
         ...mapState({
             total: (state) => state.cart.total,
-            cartItems: (state) => state.cart.cartItems,
             cartProducts: (state) => state.product.cartProducts,
             currency: (state) => state.app.currency,
         }),
@@ -62,6 +60,9 @@ export default {
                 return null;
             }
         },
+        // ...mapGetters({
+        //     cartItems: 'cart/getCart'
+        // }),
         baseUrl() {
             return baseUrl;
         },

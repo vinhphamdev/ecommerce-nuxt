@@ -1,11 +1,11 @@
 <template lang="html">
     <div class="ps-cart--mini">
-        <a class="header__extra" href="#">
+        <div class="header__extra">
             <i class="icon-bag2"></i>
             <span>
                 <i>{{ total }}</i>
             </span>
-        </a>
+        </div>
         <div v-if="total > 0" class="ps-cart__content">
             <div class="ps-cart__items">
                 <template v-if="loading === true">

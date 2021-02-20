@@ -61,6 +61,6 @@ export default {
 
 <style lang="scss" scoped>
 .navigation {
-    padding: 15px 0px;
+    padding: 15px 0;
 }
 </style>
