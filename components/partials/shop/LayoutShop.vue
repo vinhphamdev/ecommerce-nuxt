@@ -57,7 +57,7 @@
                         color="#fcb800"
                         total-visible="8"
                         v-model="page"
-                        :length="paginationLenght"
+                        :length="paginationLength"
                         @input="handleChangePagination"
                     />
                 </footer>
@@ -73,7 +73,7 @@
                         color="#fcb800"
                         v-model="page"
                         total-visible="8"
-                        :length="paginationLenght"
+                        :length="paginationLength"
                         @input="handleChangePagination"
                     />
                 </footer>
@@ -99,7 +99,7 @@ export default {
             total: state => state.product.total,
             queries: state => state.collection.queries
         }),
-        paginationLenght() {
+        paginationLength() {
             if (this.total % 12 === 0) {
                 return parseInt(this.total / this.pageSize);
             } else {

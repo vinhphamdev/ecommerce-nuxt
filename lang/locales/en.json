@@ -11,6 +11,7 @@
             "catalogue": "Catalogue"
         },
         "miniCart": {
+            "total": "Total:",
             "subTotal": "Sub Total:",
             "viewCart": "View Cart",
             "checkout": "Checkout",
