@@ -6,15 +6,23 @@
                 <i>0</i>
             </span>
         </nuxt-link>
-        <nuxt-link to="/account/login" class="header__extra">
+        <nuxt-link :to="!isLoggedIn ? '/account/login' : '/account/user-information'" class="header__extra">
             <i class="icon-user"></i>
         </nuxt-link>
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
-    name: 'MobileHeaderActions'
+    name: 'MobileHeaderActions',
+    computed: {
+        ...mapState({
+            isLoggedIn: (state) => {
+                return state.auth.isLoggedIn
+            },
+        }),
+    },
 };
 </script>
 
