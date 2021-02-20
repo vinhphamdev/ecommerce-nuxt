@@ -6,8 +6,8 @@ const calculateAmount = obj =>
         .toFixed(2);
 
 export const state = () => ({
-    total: 0,
-    amount: 0,
+    amount: 0, // should be total here
+    total: 0, // should be amount here
     subtotal: 0, // = amount - (amount * 19 / 100) // price before tax
     tax: 19, // in meaning of %
     cartItems: [],
@@ -16,17 +16,33 @@ export const state = () => ({
     loading: false
 });
 
+export const getters = {
+    isLoading: state => state.loading,
+    getCart: state => {
+        return state.cartItems;
+    },
+
+    getProductQuantityById: state => productId => {
+        if (!state.cartItems || !productId) {
+            return 0;
+        }
+
+        const product = state.cartItems.find(item => item.id === productId);
+        return product ? product.quantity : 0;
+    }
+};
+
 export const mutations = {
+    setLoading(state, payload) {
+        state.loading = payload;
+    },
+
     initCart(state, payload) {
         state.cartItems = payload.cartItems;
         state.amount = payload.amount;
         state.total = payload.total;
         state.subtotal = payload.amount - ((payload.amount * state.tax) / 100).toPrecision(4);
         state.filteredCartItems = payload.filteredCartItems || [];
-    },
-
-    setLoading(state, payload) {
-        state.loading = payload;
     },
 
     addItem(state, payload) {

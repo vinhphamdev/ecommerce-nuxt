@@ -6,7 +6,7 @@
             </div>
             <div class="ps-section__content">
                 <table-shopping-cart v-if="cartProducts !== null" />
-                <p v-else>Cart empty</p>
+                <h3 v-else>Cart is empty</h3>
                 <div class="ps-section__cart-actions">
                     <nuxt-link to="/shop" class="ps-btn">
                         <i class="icon-arrow-left mr-2"></i>
@@ -36,6 +36,7 @@
                                 <ul class="ps-block__product">
                                     <li
                                         v-for="(product, index) in cartProducts"
+                                        :key='index'
                                     >
                                         <span class="ps-block__estimate">
                                             <nuxt-link
@@ -44,8 +45,8 @@
                                             >
                                                 {{ product.name }}
                                                 <br />
-                                                x
-                                                {{ cartItems[index].quantity }}
+
+                                                {{ quantity(product.id) }} x ${{product.price}}
                                             </nuxt-link>
                                         </span>
                                     </li>
@@ -70,7 +71,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import ProductShoppingCart from '~/components/elements/product/ProductShoppingCart';
 import TableShoppingCart from '~/components/partials/account/modules/TableShoppingCart';
 
@@ -79,14 +80,20 @@ export default {
     components: { TableShoppingCart, ProductShoppingCart },
     computed: {
         ...mapState({
-            cartItems: (state) => state.cart.cartItems,
             total: state => state.cart.total,
             subtotal: state => state.cart.subtotal,
             tax: state => state.cart.tax,
             amount: state => state.cart.amount,
             cartProducts: state => state.product.cartProducts
         }),
-    },
+        ...mapGetters({
+            cartItems: 'cart/getCart'
+        }),
+        quantity() {
+            return productId =>
+                this.$store.getters['cart/getProductQuantityById'](productId);
+        }
+    }
 };
 </script>
 

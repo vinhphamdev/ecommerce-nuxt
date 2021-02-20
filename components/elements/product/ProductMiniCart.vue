@@ -23,7 +23,7 @@
                 {{ product.vendor.name }}
             </p>
             <small v-if="quantity !== null">
-                {{ quantity }} x {{currency}} {{ product.price }}
+                {{ quantity(product.id) }} x {{currency}} {{ product.price }}
             </small>
         </div>
     </div>
@@ -31,7 +31,6 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import { baseUrl } from '~/repositories/Repository';
 export default {
     name: 'ProductMiniCart',
     props: {
@@ -66,6 +65,9 @@ export default {
         baseUrl() {
             return baseUrl;
         },
+        ...mapGetters({
+            cartItems: 'cart/getCart'
+        }),
     },
     methods: {
         async loadCartProducts() {
