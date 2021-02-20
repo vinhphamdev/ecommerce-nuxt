@@ -16,12 +16,11 @@
                     class="form-control"
                     type="text"
                     placeholder="1"
-                    v-if="!isLoading"
                     v-model="quantity"
                 />
             </div>
         </td>
-        <td v-if="!isLoading" data-label="Total">
+        <td  data-label="Total">
             ${{ (quantity * item.price).toFixed(2) }}
         </td>
         <td data-label="Action">

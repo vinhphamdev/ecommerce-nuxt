@@ -49,16 +49,16 @@
                 </a>
                 <ul class="ps-product__actions">
                     <li>
-                        <a href="#" @click.prevent="handleAddItemToWishlist">
+                        <button @click="handleAddItemToWishlist">
                             <i class="icon-heart"></i>
                             Wishlist
-                        </a>
+                        </button>
                     </li>
                     <li>
-                        <a href="#" @click.prevent="handleAddItemToCompare">
+                        <button @click="handleAddItemToCompare">
                             <i class="icon-chart-bars"></i>
                             Compare
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>

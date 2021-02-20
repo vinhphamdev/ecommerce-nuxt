@@ -19,12 +19,12 @@
             Buy Now
         </a>
         <div class="ps-product__actions">
-            <a href="#">
+            <button >
                 <i class="icon-heart"></i>
-            </a>
-            <a href="#">
+            </button>
+            <button>
                 <i class="icon-chart-bars"></i>
-            </a>
+            </button>
         </div>
     </div>
 </template>

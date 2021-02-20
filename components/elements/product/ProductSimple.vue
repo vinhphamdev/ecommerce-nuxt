@@ -9,14 +9,13 @@
             </nuxt-link>
             <ul class="ps-product__actions">
                 <li>
-                    <a
-                        to="#"
+                    <button
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Read More"
                     >
                         <i class="icon-bag2"></i>
-                    </a>
+                    </button>
                 </li>
                 <li>
                     <a
