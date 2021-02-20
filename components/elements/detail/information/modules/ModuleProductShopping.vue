@@ -6,7 +6,7 @@
                 <button class="up" @click.prevent="handleIncreaseQuantity">
                     <i class="fa fa-plus"></i>
                 </button>
-                <button class="down" @click.prevent="handleDescreaseQuantity">
+                <button class="down" @click.prevent="handleDecreaseQuantity">
                     <i class="fa fa-minus"></i>
                 </button>
                 <input
@@ -56,7 +56,7 @@ export default {
             this.quantity++;
         },
 
-        handleDescreaseQuantity() {
+        handleDecreaseQuantity() {
             if (this.quantity > 1) {
                 this.quantity--;
             }
