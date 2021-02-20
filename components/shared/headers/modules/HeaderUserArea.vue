@@ -13,7 +13,9 @@
         </div>
     </div>
     <div v-else class="ps-block--user-account">
-        <i class="icon-user"></i>
+        <nuxt-link to="/account/user-information">
+            <i class="icon-user"></i>
+        </nuxt-link>
         <div class="ps-block__content">
             <ul class="ps-list--arrow">
                 <li v-for="link in accountLinks" :key="link.text">
