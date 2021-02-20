@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-const token = Cookies.get('id_token');
+export const token = Cookies.get('id_token');
 const baseDomain = 'https://strapi-poc.gophuot.vn';
 
 export const customHeaders = {
