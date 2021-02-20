@@ -25,7 +25,11 @@
                         <div class="ps-block--shopping-total">
                             <div class="ps-block__header">
                                 <p>
-                                    Subtotal <span> ${{ total }}</span>
+                                    {{ $t('header.miniCart.subTotal') }}
+                                    <span> ${{ subtotal }}</span>
+                                </p>
+                                <p>
+                                    Tax <span>{{ tax }}%</span>
                                 </p>
                             </div>
                             <div class="ps-block__content">
@@ -47,7 +51,8 @@
                                     </li>
                                 </ul>
                                 <h3>
-                                    Total <span>${{ amount }}</span>
+                                    {{ $t('header.miniCart.total') }}
+                                    <span>${{ amount }}</span>
                                 </h3>
                             </div>
                         </div>
@@ -75,9 +80,11 @@ export default {
     computed: {
         ...mapState({
             cartItems: (state) => state.cart.cartItems,
-            total: (state) => state.cart.total,
-            amount: (state) => state.cart.amount,
-            cartProducts: (state) => state.product.cartProducts,
+            total: state => state.cart.total,
+            subtotal: state => state.cart.subtotal,
+            tax: state => state.cart.tax,
+            amount: state => state.cart.amount,
+            cartProducts: state => state.product.cartProducts
         }),
     },
 };

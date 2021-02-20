@@ -6,6 +6,7 @@ export const actions = {
             commit('cart/initCart', {
                 cartItems: cartItems.cartItems,
                 total: cartItems.total,
+                subtotal: cartItems.subtotal,
                 amount: cartItems.amount
             });
             let query = [];

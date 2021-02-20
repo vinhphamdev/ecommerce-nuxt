@@ -6,7 +6,7 @@
                 <figure>
                     <figcaption>
                         <strong>Product</strong>
-                        <strong>total</strong>
+                        <strong>Total: $ {{ amount }}</strong>
                     </figcaption>
                 </figure>
                 <figure class="ps-block__items">
@@ -25,8 +25,12 @@
                 </figure>
                 <figure>
                     <figcaption>
-                        <strong>Subtotal</strong>
-                        <small>$ {{ amount }}</small>
+                        <strong>{{ $t('header.miniCart.subTotal') }}</strong>
+                        <small>$ {{ subtotal }}</small>
+                    </figcaption>
+                    <figcaption>
+                        <strong>Tax</strong>
+                        <small>{{ tax }}%</small>
                     </figcaption>
                 </figure>
             </div>
@@ -55,6 +59,8 @@ export default {
                     rs += item.quantity * item.price
                 })
                 return rs
+            subtotal: state => state.cart.subtotal,
+            tax: state => state.cart.tax,
             },
             cartProducts: (state) => state.product.cartProducts,
         }),

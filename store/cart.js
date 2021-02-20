@@ -8,6 +8,8 @@ const calculateAmount = obj =>
 export const state = () => ({
     total: 0,
     amount: 0,
+    subtotal: 0, // = amount - (amount * 19 / 100) // price before tax
+    tax: 19, // in meaning of %
     cartItems: [],
     filteredCartItems: [],
     selectedVendor: '',
@@ -19,6 +21,7 @@ export const mutations = {
         state.cartItems = payload.cartItems;
         state.amount = payload.amount;
         state.total = payload.total;
+        state.subtotal = payload.amount - ((payload.amount * state.tax) / 100).toPrecision(4);
         state.filteredCartItems = payload.filteredCartItems || [];
     },
 
@@ -81,6 +84,7 @@ export const mutations = {
         state.filteredCartItems = [];
         state.amount = 0;
         state.total = 0;
+        state.subtotal = 0;
     },
 
     clearItemInCart: (state, itemList) => {
