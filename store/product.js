@@ -13,7 +13,15 @@ export const state = () => ({
     total: 0
 });
 
+export const getters = {
+    getCartProducts: state => state.cartProducts
+};
+
 export const mutations = {
+    setProduct(state, payload) {
+        state.product = payload;
+    },
+
     setProducts(state, payload) {
         state.products = payload;
     },
@@ -26,10 +34,6 @@ export const mutations = {
     },
     setCompareItems(state, payload) {
         state.compareItems = payload;
-    },
-
-    setProduct(state, payload) {
-        state.product = payload;
     },
 
     setBrands(state, payload) {
@@ -51,48 +55,52 @@ export const mutations = {
 
 export const actions = {
     async getProducts({ commit }, payload) {
-        const reponse = await Repository.get(
-            `${baseUrl}/products?${serializeQuery(payload)}`
-        )
+        return await Repository.get(`${baseUrl}/products?${serializeQuery(payload)}`)
             .then(response => {
                 commit('setProducts', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }));
     },
 
     async getTotalRecords({ commit }, payload) {
-        const reponse = await Repository.get(`${baseUrl}/products/count`)
+        return await Repository.get(`${baseUrl}/products/count`)
             .then(response => {
                 commit('setTotal', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }));
     },
 
     async getProductsById({ commit }, payload) {
-        const reponse = await Repository.get(`${baseUrl}/products/${payload}`)
+        return await Repository.get(`${baseUrl}/products/${payload}`)
             .then(response => {
                 commit('setProduct', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }));
     },
 
     async getProductByKeyword({ commit }, payload) {
-        const reponse = await Repository.get(
-            `${baseUrl}/products?${serializeQuery(payload)}`
-        )
+        return await Repository.get(`${baseUrl}/products?${serializeQuery(payload)}`)
             .then(response => {
                 commit('setSearchResults', response.data);
                 commit('setTotal', response.data.length);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }));
+    },
+
+    async getProductBrands({ commit }, payload) {
+        console.log('🚀 ~ file: product.js ~ getProductBrands---line 121 ~ payload', payload);
     },
 
     async getCartProducts({ commit }, payload) {
@@ -105,24 +113,27 @@ export const actions = {
             }
         });
 
-        const reponse = await Repository.get(`${baseUrl}/products?${query}`)
+        return await Repository.get(`${baseUrl}/products?${query}`)
             .then(response => {
                 commit('setCartProducts', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }));
     },
 
-
     async getProductCategories({ commit }) {
-        const reponse = await Repository.get(`${baseUrl}/product-categories`)
+        return await Repository.get(`${baseUrl}/product-categories`)
             .then(response => {
                 commit('setCategories', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch(error => ({
+                error: JSON.stringify(error)
+            }));
+    },
+
     },
 
    

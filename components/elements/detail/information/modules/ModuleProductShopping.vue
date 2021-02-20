@@ -30,24 +30,24 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'ModuleProductShopping',
     props: {
         product: {
             type: Object,
-            default: () => {},
-        },
+            default: () => {}
+        }
     },
     computed: {
-        ...mapState({
-            cartItems: (state) => state.cart.cartItems,
-        }),
+        ...mapGetters({
+            cartItems: 'cart/getCart'
+        })
     },
     data() {
         return {
-            quantity: 1,
+            quantity: 1
         };
     },
     methods: {
@@ -63,32 +63,34 @@ export default {
 
         handleAddToCart(isBuyNow) {
             const cartItemsOnCookie = this.$cookies.get('cart', {
-                parseJSON: true,
+                parseJSON: true
             });
+
             let existItem;
             if (cartItemsOnCookie) {
                 existItem = cartItemsOnCookie.cartItems.find(
-                    (item) => item.id === this.product.id
+                    item => item.id === this.product.id
                 );
             }
 
-            let item = {
+            const item = {
                 id: this.product.id,
                 quantity: this.quantity,
                 price: this.product.price,
                 url: this.product.images[0].url,
-                name: this.product.name,
+                name: this.product.name
             };
+
             if (existItem !== undefined) {
                 if (this.quantity + existItem.quantity > 10) {
                     this.$notify({
                         group: 'addCartSuccess',
-                        title: 'Waring!',
-                        text: `Can't add more than 10 items`,
+                        title: 'Warning!',
+                        text: `Can't add more than 10 items`
                     });
                     if (isBuyNow && isBuyNow === true) {
                         setTimeout(
-                            function () {
+                            function() {
                                 this.$router.push('/account/checkout');
                             }.bind(this),
                             500
@@ -108,13 +110,13 @@ export default {
             this.$notify({
                 group: 'addCartSuccess',
                 title: 'Success!',
-                text: `${this.product.name} has been added to your cart!`,
+                text: `${this.product.name} has been added to your cart!`
             });
         },
 
         async getCartProduct(products) {
             let listOfIds = [];
-            products.forEach((item) => {
+            products.forEach(item => {
                 listOfIds.push(item.id);
             });
             await this.$store.dispatch('product/getCartProducts', listOfIds);
@@ -122,10 +124,10 @@ export default {
 
         async loadCartProducts() {
             const cartItemsOnCookie = this.$cookies.get('cart', {
-                parseJSON: true,
+                parseJSON: true
             });
             let queries = [];
-            cartItemsOnCookie.cartItems.forEach((item) => {
+            cartItemsOnCookie.cartItems.forEach(item => {
                 queries.push(item.id);
             });
             if (this.cartItems.length > 0) {
@@ -133,8 +135,8 @@ export default {
             } else {
                 this.$store.commit('product/setCartProducts', null);
             }
-        },
-    },
+        }
+    }
 };
 </script>
 
