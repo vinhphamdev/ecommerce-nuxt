@@ -46,7 +46,7 @@
     .ps-product {
         .ps-product__actions {
             li {
-                a {
+                button {
                     &:hover {
                         background-color: $color-autopart;
                         i {

@@ -41,16 +41,15 @@
                     />
                 </div>
             </figure>
-            <a
+            <button
                 class="ps-btn ps-btn--black"
-                href="#"
-                @click.prevent="handleAddToCart"
+                @click="handleAddToCart"
             >
                 Add to cart
-            </a>
-            <a class="ps-btn" href="#" @click.prevent="handleBuyNow">
+            </button>
+            <button class="ps-btn" @click="handleBuyNow">
                 Buy Now
-            </a>
+            </button>
         </div>
     </div>
 </template>
@@ -69,13 +68,15 @@ export default {
     },
     methods: {
         handleAddToCart() {
-            let item = {
+            const item = {
                 id: this.product.id,
                 quantity: 1,
                 price: this.product.price
             };
+
             this.$store.dispatch('cart/addProductToCart', item);
             this.getCartProduct(this.cartItems);
+
             this.$notify({
                 group: 'addCartSuccess',
                 title: 'Success!',
@@ -84,11 +85,13 @@ export default {
         },
 
         handleBuyNow() {
-            let item = {
+            const item = {
                 id: this.product.id,
                 quantity: 1,
                 price: this.product.price
             };
+
+
             this.$store.dispatch('cart/addProductToCart', item);
             this.getCartProduct(this.cartItems);
             this.$notify({
@@ -104,7 +107,7 @@ export default {
             );
         },
         async getCartProduct(products) {
-            let listOfIds = [];
+            const listOfIds = [];
             products.forEach(item => {
                 listOfIds.push(item.id);
             });

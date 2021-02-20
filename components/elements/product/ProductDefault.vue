@@ -10,15 +10,14 @@
             </nuxt-link>
             <ul class="ps-product__actions">
                 <li>
-                    <a
-                        to="#"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Add to cart"
-                        @click.prevent="handleAddToCart"
+                    <button
+                        data-toggle='tooltip'
+                        data-placement='top'
+                        title='Add to cart'
+                        @click='handleAddToCart'
                     >
-                        <i class="icon-bag2"></i>
-                    </a>
+                        <i class='icon-bag2'></i>
+                    </button>
                 </li>
             </ul>
         </div>
@@ -123,7 +122,7 @@ export default {
     },
 };
 </script>
-<style lang="scss" scope>
+<style lang='scss' >
 .thumbnail-product {
     width: 188px;
     height: 188px;

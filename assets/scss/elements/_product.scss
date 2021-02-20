@@ -68,7 +68,7 @@
         li {
             margin-right: 10px;
 
-            a {
+            button {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -364,7 +364,7 @@
                 width: 100%;
                 margin-right: 0;
 
-                a {
+                button {
                     width: auto;
                     height: auto;
                     border-radius: 0;
@@ -896,7 +896,7 @@
         .ps-product__actions {
             margin-right: 0;
 
-            a {
+            button {
                 display: inline-block;
                 margin-right: 20px;
                 font-size: 26px;
@@ -2025,7 +2025,7 @@
         .ps-product__actions {
             border: none;
 
-            a {
+            button {
                 display: block;
                 margin-right: 0;
                 font-size: 14px;
@@ -2176,7 +2176,7 @@
         li {
             margin-right: 10px;
 
-            a {
+            button {
                 display: flex;
                 justify-content: center;
                 align-items: center;
