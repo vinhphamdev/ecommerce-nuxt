@@ -1,5 +1,4 @@
-import Repository from '~/repositories/Repository';
-import { baseUrl } from '~/repositories/Repository';
+import Repository, { baseUrl } from '~/repositories/Repository';
 import Cookies from 'js-cookie';
 
 export const state = () => ({
@@ -11,7 +10,9 @@ export const state = () => ({
 
     orderDetail: {},
 
-    categories: []
+    categories: [],
+
+    listView: true
 });
 
 export const getters = {
@@ -68,6 +69,10 @@ export const mutations = {
         state.categories = payload;
     },
 
+    changeViewMode(state, payload) {
+        if (typeof payload !== 'boolean') return;
+        state.listView = payload;
+    }
 };
 
 export const actions = {

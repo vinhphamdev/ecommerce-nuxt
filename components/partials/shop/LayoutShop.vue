@@ -97,7 +97,8 @@ export default {
         ...mapState({
             products: state => state.product.products,
             total: state => state.product.total,
-            queries: state => state.collection.queries
+            queries: state => state.collection.queries,
+            listView: state => state.shop.listView
         }),
         paginationLength() {
             if (this.total % 12 === 0) {
@@ -109,7 +110,6 @@ export default {
     },
     data() {
         return {
-            listView: true,
             page: 1,
             pageSize: 12,
             sortOptions: sortOptions
@@ -124,7 +124,7 @@ export default {
             await this.$store.dispatch('product/getProducts', params);
         },
         handleChangeViewMode() {
-            this.listView = !this.listView;
+           this.$store.commit('shop/changeViewMode', !this.listView)
         }
     }
 };
