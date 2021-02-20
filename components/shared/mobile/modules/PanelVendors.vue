@@ -39,7 +39,7 @@ export default {
         handleClosePanel(url) {
             this.$store.commit('app/setCurrentDrawerContent', null);
             this.$store.commit('app/setAppDrawer', false);
-            if (url) {
+            if (typeof url === 'string') {
                 this.$router.push(url);
             }
         }
