@@ -72,12 +72,12 @@ export default {
     components: { ProductWide, ProductDefault },
     computed: {
         ...mapState({
-            products: state => state.shop.productsCatalogue
+            products: state => state.shop.productsCatalogue,
+            listView: state => state.shop.listView
         })
     },
     data() {
         return {
-            listView: false,
             page: 1,
             pageSize: 12,
             sortOptions: sortOptions

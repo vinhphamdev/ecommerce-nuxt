@@ -12,7 +12,7 @@ export const state = () => ({
 
     categories: [],
 
-    listView: true
+    listView: false
 });
 
 export const getters = {
@@ -39,8 +39,8 @@ export const mutations = {
         if (name) {
             state.productsCatalogue = state.products.filter(item => {
                 if (item.product_types.length > 0) {
-                    return item.product_types.some(it => {
-                        return it.name === name;
+                    return item.product_types.some(foundItem => {
+                        return foundItem.name === name;
                     });
                 } else {
                     return false;
