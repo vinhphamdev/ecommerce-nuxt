@@ -17,16 +17,15 @@
                 />
             </div>
         </figure>
-        <a
+        <button
             class="ps-btn ps-btn--black"
-            href="#"
-            @click.prevent="handleAddToCart"
+            @click="handleAddToCart"
         >
             Add to cart
-        </a>
-        <a class="ps-btn" href="#" @click.prevent="">
+        </button>
+        <button class="ps-btn" @click="">
             Buy Now
-        </a>
+        </button>
     </div>
 </template>
 
