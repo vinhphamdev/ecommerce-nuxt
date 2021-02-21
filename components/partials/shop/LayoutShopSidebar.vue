@@ -20,12 +20,12 @@
                 <div class="ps-shopping__view">
                     <p>View</p>
                     <ul class="ps-tab-list">
-	                    <li :class="{ 'active': listView}">
+	                    <li :class="{ 'active': !listView}">
 		                    <button @click="handleChangeViewMode">
 			                    <i class="icon-grid"></i>
 		                    </button>
 	                    </li>
-	                    <li :class="{ 'active': !listView}">
+	                    <li :class="{ 'active': listView}">
 		                    <button  @click="handleChangeViewMode">
 			                    <i class="icon-list4"></i>
 		                    </button>
