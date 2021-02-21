@@ -24,6 +24,7 @@
                                     <p>Customer Name: <strong>{{ name }}</strong></p>
                                     <p>Shipping Address: <strong>{{ address }}</strong></p>
                                     <p>Payment method: <strong>{{ parsePaymentMethod(paymentMethod) }}</strong></p>
+                                    <p>Delivery tracking number: <strong>{{ deliveryTrackingNumber }}</strong></p>
                                 </div>
 
                                 <!-- <div class="card">
@@ -139,6 +140,7 @@ export default {
             orderNumber: '',
             status: '',
             createdAt: '',
+            deliveryTrackingNumber: '',
 
             map: null,
             _from: null,
@@ -207,8 +209,6 @@ export default {
         const id = this.$route.params.id;
         await this.$store.dispatch('shop/getOrderDetail', id);
 
-        console.log(this.orderDetail);
-
         this.tableData = this.orderDetail.order_items;
         this.total = this.orderDetail.invoice_amount;
         this.name = this.orderDetail.customer_name;
@@ -217,6 +217,7 @@ export default {
         this.orderNumber = this.orderDetail.order_number;
         this.status = this.orderDetail.order_status;
         this.createdAt = this.orderDetail.createdAt;
+        this.deliveryTrackingNumber = this.orderDetail.delivery_tracking_number;
 
         mapboxgl.accessToken =
             'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
@@ -232,7 +233,6 @@ export default {
 
         this._from = from.body.features[0].center;
 
-        console.log(this._from);
 
         const to = await mapboxClient.geocoding
             .forwardGeocode({

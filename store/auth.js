@@ -90,13 +90,13 @@ export const actions = {
         try {
             const authResponse = await Repository.post(`${baseUrl}/auth/local`, payload)
         
-            // commit('setToken', authResponse.data.jwt);
-            // commit('updateUserId', authResponse.data.id);
-            // const profile = (await getProfile(authResponse.data.user.id, authResponse.data.jwt))[0]
-            // commit('updateCustomerId', profile.id);
-            // commit('updateName', profile.name);
-            // commit('updateAddress', profile.customer_address);
-            // commit('updateEmail', profile.user.email);
+            commit('setToken', authResponse.data.jwt);
+            commit('updateUserId', authResponse.data.id);
+            const profile = (await getProfile(authResponse.data.user.id, authResponse.data.jwt))[0]
+            commit('updateCustomerId', profile.id);
+            commit('updateName', profile.name);
+            commit('updateAddress', profile.customer_address);
+            commit('updateEmail', profile.user.email);
 
             return authResponse.data;
         } catch (error) {

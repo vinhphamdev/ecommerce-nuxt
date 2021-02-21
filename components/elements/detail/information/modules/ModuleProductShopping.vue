@@ -79,6 +79,7 @@ export default {
                 price: this.product.price,
                 url: this.product.images[0].url,
                 name: this.product.name,
+                vendorId: this.product.vendor.id,
             };
             if (existItem !== undefined) {
                 if (this.quantity + existItem.quantity > 10) {

@@ -136,6 +136,10 @@ export default {
             return this.$store.state.auth.userId;
         },
 
+        customerId() {
+            return this.$store.state.auth.customerId;
+        },
+
         userEmail() {
             return this.$store.state.auth.email;
         },
@@ -222,6 +226,10 @@ export default {
 
             if (this.userId != '') {
                 params['user'] = this.userId;
+            }
+
+            if (this.customerId != '') {
+                params['customer'] = this.customerId;
             }
 
             try {
