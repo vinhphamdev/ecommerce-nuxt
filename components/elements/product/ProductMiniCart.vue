@@ -74,11 +74,7 @@ export default {
 	        this.$store.commit('cart/setLoading', false);
         },
         handleRemoveProductFromCart(product) {
-            const cartItem = this.cartItems.find(
-                (item) => item.id === product.id
-            );
-            this.$store.dispatch('cart/removeProductFromCart', cartItem);
-            this.$store.commit('cart/setLoading', true);
+            this.$store.dispatch('cart/removeProductFromCart', product);
             this.loadCartProducts();
         },
     },
