@@ -46,24 +46,8 @@ export default {
             currency: (state) => state.app.currency,
         }),
         quantity() {
-            if (this.cartItems !== null) {
-                const cartItem = this.cartItems.find(
-                    (item) => item.id === this.product.id
-                );
-                if (cartItem !== undefined) {
-                    return cartItem.quantity;
-                } else {
-                    return null;
-                }
-            } else {
-                return null;
-            }
-        },
-        // ...mapGetters({
-        //     cartItems: 'cart/getCart'
-        // }),
-        baseUrl() {
-            return baseUrl;
+            return productId =>
+                this.$store.getters['cart/getProductQuantityById'](productId);
         },
         ...mapGetters({
             cartItems: 'cart/getCart'
@@ -71,22 +55,23 @@ export default {
     },
     methods: {
         async loadCartProducts() {
+	        this.$store.commit('cart/setLoading', true);
             const cookieCart = this.$cookies.get('cart', { parseJSON: true });
             let queries = [];
             cookieCart.cartItems.forEach((item) => {
                 queries.push(item.id);
             });
             if (this.cartItems.length > 0) {
-                const response = await this.$store.dispatch(
+                await this.$store.dispatch(
                     'product/getCartProducts',
                     queries
                 );
-                if (response) {
-                    this.$store.commit('cart/setLoading', false);
-                }
+
             } else {
                 this.$store.commit('product/setCartProducts', null);
             }
+
+	        this.$store.commit('cart/setLoading', false);
         },
         handleRemoveProductFromCart(product) {
             const cartItem = this.cartItems.find(

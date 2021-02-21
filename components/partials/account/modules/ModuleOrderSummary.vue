@@ -46,25 +46,19 @@ export default {
     props: {
         shipping: {
             type: Boolean,
-            default: () => false,
-        },
+            default: () => false
+        }
     },
     computed: {
         ...mapState({
-            filteredCartItems: (state) => state.cart.filteredCartItems,
-            total: (state) => state.cart.total,
-            amount: (state) => {
-                let rs = 0
-                state.cart.filteredCartItems.forEach((item) => {
-                    rs += item.quantity * item.price
-                })
-                return rs
+            filteredCartItems: state => state.cart.filteredCartItems,
             subtotal: state => state.cart.subtotal,
             tax: state => state.cart.tax,
-            },
-            cartProducts: (state) => state.product.cartProducts,
-        }),
-    },
+            total: state => state.cart.total,
+            amount: state => state.cart.amount,
+            cartProducts: state => state.product.cartProducts
+        })
+    }
 };
 </script>
 

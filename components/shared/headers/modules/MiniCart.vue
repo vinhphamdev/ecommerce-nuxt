@@ -59,10 +59,9 @@ export default {
             total: state => state.cart.total,
             amount: state => state.cart.amount,
             loading: state => state.cart.loading,
-            cartProducts: state => state.product.cartProducts
         }),
         ...mapGetters({
-            cartItems: 'cart/getCart'
+	        cartProducts: 'product/getCartProducts'
         }),
     }
 };

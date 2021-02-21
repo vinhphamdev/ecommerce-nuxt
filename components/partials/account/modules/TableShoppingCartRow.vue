@@ -65,27 +65,9 @@ export default {
         }
     },
     methods: {
-        async loadCartProducts() {
-            const cookieCart = this.$cookies.get('cart', { parseJSON: true });
-            let queries = [];
-            cookieCart.cartItems.forEach((item) => {
-                queries.push(item.id);
-            });
-            if (this.cartItems.length > 0) {
-                const response = await this.$store.dispatch(
-                    'product/getCartProducts',
-                    queries
-                );
-                if (response) {
-                    this.$store.commit('cart/setLoading', false);
-                }
-            } else {
-                this.$store.commit('product/setCartProducts', null);
-            }
-        },
         handleRemoveProductFromCart(product) {
             this.$store.dispatch('cart/removeProductFromCart', product);
-            this.loadCartProducts();
+            this.$store.dispatch('product/loadCartProducts')
         },
 
         increaseItemQuantity(itemToIncrease) {

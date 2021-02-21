@@ -57,7 +57,7 @@ export const actions = {
     async getProducts({ commit }, payload) {
         return await Repository.get(`${baseUrl}/products?${serializeQuery(payload)}`)
             .then(response => {
-                commit('setProducts', response.data);
+                commit("setProducts", response.data);
                 return response.data;
             })
             .catch(error => ({
@@ -68,7 +68,8 @@ export const actions = {
     async getTotalRecords({ commit }, payload) {
         return await Repository.get(`${baseUrl}/products/count`)
             .then(response => {
-                commit('setTotal', response.data);
+                console.log("total records: ", response);
+                commit("setTotal", response.data);
                 return response.data;
             })
             .catch(error => ({
@@ -79,7 +80,7 @@ export const actions = {
     async getProductsById({ commit }, payload) {
         return await Repository.get(`${baseUrl}/products/${payload}`)
             .then(response => {
-                commit('setProduct', response.data);
+                commit("setProduct", response.data);
                 return response.data;
             })
             .catch(error => ({
@@ -90,8 +91,8 @@ export const actions = {
     async getProductByKeyword({ commit }, payload) {
         return await Repository.get(`${baseUrl}/products?${serializeQuery(payload)}`)
             .then(response => {
-                commit('setSearchResults', response.data);
-                commit('setTotal', response.data.length);
+                commit("setSearchResults", response.data);
+                commit("setTotal", response.data.length);
                 return response.data;
             })
             .catch(error => ({
@@ -100,13 +101,13 @@ export const actions = {
     },
 
     async getProductBrands({ commit }, payload) {
-        console.log('🚀 ~ file: product.js ~ getProductBrands---line 121 ~ payload', payload);
+        console.log("🚀 ~ file: product.js ~ getProductBrands---line 121 ~ payload", payload);
     },
 
     async getCartProducts({ commit }, payload) {
-        let query = '';
+        let query = "";
         payload.forEach(item => {
-            if (query === '') {
+            if (query === "") {
                 query = `id=${item}`;
             } else {
                 query = query + `&id=${item}`;
@@ -115,7 +116,7 @@ export const actions = {
 
         return await Repository.get(`${baseUrl}/products?${query}`)
             .then(response => {
-                commit('setCartProducts', response.data);
+                commit("setCartProducts", response.data);
                 return response.data;
             })
             .catch(error => ({
@@ -126,7 +127,7 @@ export const actions = {
     async getProductCategories({ commit }) {
         return await Repository.get(`${baseUrl}/product-categories`)
             .then(response => {
-                commit('setCategories', response.data);
+                commit("setCategories", response.data);
                 return response.data;
             })
             .catch(error => ({
@@ -134,8 +135,28 @@ export const actions = {
             }));
     },
 
+    updateCartProduct({ commit }) {
+        commit("setCartProducts", null);
     },
 
-   
+    async loadCartProducts({ commit, dispatch, rootState }) {
+        commit("cart/setLoading", true, { root: true });
 
+        const cartItemsOnCookie = this.$cookies.get("cart", {
+            parseJSON: true
+        });
+
+        const queries = [];
+        cartItemsOnCookie.cartItems.forEach(item => {
+            queries.push(item.id);
+        });
+
+        if (rootState.cart.cartItems.length > 0) {
+            dispatch("getCartProducts", queries);
+        } else {
+            commit("setCartProducts", null);
+        }
+
+        commit("cart/setLoading", false, { root: true });
+    }
 };

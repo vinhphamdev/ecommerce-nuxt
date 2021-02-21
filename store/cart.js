@@ -1,9 +1,11 @@
-import Repository from '~/repositories/Repository';
-import { baseUrl } from '~/repositories/Repository';
+import Cookies from "js-cookie";
+
 const calculateAmount = obj =>
     Object.values(obj)
         .reduce((acc, { quantity, price }) => acc + quantity * price, 0)
         .toFixed(2);
+
+const calculateTotalItems = obj => Object.values(obj).reduce((acc, { quantity }) => acc + quantity, 0);
 
 export const state = () => ({
     amount: 0, // should be total here
@@ -12,7 +14,7 @@ export const state = () => ({
     tax: 19, // in meaning of %
     cartItems: [],
     filteredCartItems: [],
-    selectedVendor: '',
+    selectedVendor: "",
     loading: false
 });
 
@@ -41,58 +43,61 @@ export const mutations = {
         state.cartItems = payload.cartItems;
         state.amount = payload.amount;
         state.total = payload.total;
-        state.subtotal = payload.amount - ((payload.amount * state.tax) / 100).toPrecision(4);
+        state.subtotal = parseFloat(state.amount - (state.amount * state.tax) / 100).toFixed(2);
         state.filteredCartItems = payload.filteredCartItems || [];
     },
 
     addItem(state, payload) {
-        if (state.cartItems !== null) {
-            let existItem = state.cartItems.find(item => item.id === payload.id);
-            if (existItem) {
-                existItem.quantity += payload.quantity;
-            } else {
-                state.cartItems.push(payload);
-            }
-            state.total++;
+        console.log("addItem", payload);
+        let existItem = state.cartItems.find(item => item.id === payload.id);
+        if (existItem) {
+            console.log("item exist");
+            existItem.quantity += payload.quantity;
         } else {
+            console.log("item dont exist");
+
             state.cartItems.push(payload);
-            state.total = 1;
         }
-        state.amount = calculateAmount(state.cartItems);
-        state.filteredCartItems = state.cartItems.filter((item) => item.vendorId === state.selectedVendor)
+        state.total += payload.quantity;
     },
 
     removeItem: (state, payload) => {
-        const index = state.cartItems.findIndex(item => item.id === payload.id);
-        state.total = state.total - payload.quantity;
-        state.cartItems.splice(index, 1);
-        state.amount = calculateAmount(state.cartItems);
-        if (state.cartItems.length === 0) {
-            state.cartItems = [];
-            state.amount = 0;
-            state.total = 0;
+        console.log("🚀 ~ file: cart.js ~ line 77 ~ payload", payload);
+
+        if (payload.quantity) {
+            state.total = state.total - payload.quantity;
         }
-        state.filteredCartItems = state.cartItems.filter((item) => item.vendorId === state.selectedVendor)
+
+        state.cartItems = state.cartItems.filter(item => item.id !== payload.id);
     },
 
     increaseItemQuantity(state, payload) {
         let selectedItem = state.cartItems.find(item => item.id === payload.id);
-        if (selectedItem) {
-            selectedItem.quantity++;
-            state.total++;
-            state.amount = calculateAmount(state.cartItems);
-        }
-        state.filteredCartItems = state.cartItems.filter((item) => item.vendorId === state.selectedVendor)
+        if (!selectedItem) return;
+
+        selectedItem.quantity++;
+        state.total++;
     },
 
     decreaseItemQuantity(state, payload) {
         let selectedItem = state.cartItems.find(item => item.id === payload.id);
-        if (selectedItem && selectedItem.quantity > 1) {
-            selectedItem.quantity--;
-            state.total--;
-            state.amount = calculateAmount(state.cartItems);
+        if (selectedItem && selectedItem.quantity === 1) return;
+
+        if (state.total < payload.quantity) {
+            selectedItem.quantity = 0;
+            state.total = 0;
+            return;
         }
-        state.filteredCartItems = state.cartItems.filter((item) => item.vendorId === state.selectedVendor)
+
+        selectedItem.quantity--;
+        state.total--;
+    },
+
+    changeItemQuantity(state, payload) {
+        // if (!payload || !payload.itemQuantity || payload.itemQuantity < 0) return 0
+
+        let selectedItemIndex = state.cartItems.findIndex(item => item.id === payload.id);
+        state.cartItems[selectedItemIndex].quantity = payload.quantity;
     },
 
     clearCart: state => {
@@ -101,120 +106,104 @@ export const mutations = {
         state.amount = 0;
         state.total = 0;
         state.subtotal = 0;
+        state.loading = false;
     },
 
     clearItemInCart: (state, itemList) => {
-        state.filteredCartItems = []
-        const idList = itemList.map((i) => i.id)
-        let newTotal = state.total
-        state.cartItems = state.cartItems.filter((item) => {
-            const itemToRemove = itemList.find((i) => i.id === item.id)
-            if (itemToRemove) newTotal -= itemToRemove.quantity
-            return !idList.includes(item.id)
-        })
-        state.amount = calculateAmount(state.cartItems);
-        state.total = newTotal
+        state.filteredCartItems = [];
+        const idList = itemList.map(i => i.id);
+        let newTotal = state.total;
+        state.cartItems = state.cartItems.filter(item => {
+            const itemToRemove = itemList.find(i => i.id === item.id);
+            if (itemToRemove) newTotal -= itemToRemove.quantity;
+            return !idList.includes(item.id);
+        });
+
+        state.total = newTotal;
     },
 
     chooseVendor: (state, vendorId) => {
-        state.selectedVendor = vendorId
-        state.filteredCartItems = state.cartItems.filter((item) => {
-            return item.vendorId === vendorId
-        })
+        state.selectedVendor = vendorId;
+        state.filteredCartItems = state.cartItems.filter(item => {
+            return item.vendorId === vendorId;
+        });
+    },
+
+    recalculateAmount: state => {
+        state.amount = calculateAmount(state.cartItems);
+        state.total = calculateTotalItems(state.cartItems);
+        state.subtotal = parseFloat(state.amount - (state.amount * state.tax) / 100).toFixed(2);
+    },
+
+    updateFilteredCartItems: state => {
+        state.filteredCartItems = state.cartItems.filter(item => item.vendorId === state.selectedVendor);
+    },
+
+    updateCookiesStorage: state => {
+        const cookieParams = {
+            total: state.total,
+            amount: state.amount,
+            cartItems: state.cartItems
+        };
+        Cookies.set("cart", cookieParams, {
+            path: "/",
+            expires: 60 * 60 * 24 * 7
+        });
     }
 };
 
 export const actions = {
-    addProductToCart({ commit, state }, payload) {
-        commit('addItem', payload);
-        const cookieParams = {
-            total: state.total,
-            amount: state.amount,
-            cartItems: state.cartItems,
-        };
-
-        this.$cookies.set('cart', cookieParams, {
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7
-        });
+    addProductToCart({ commit }, payload) {
+        if (payload) {
+            commit("addItem", payload);
+            commit("recalculateAmount");
+            commit("updateFilteredCartItems");
+            commit("updateCookiesStorage");
+        }
     },
 
     removeProductFromCart({ commit, state }, payload) {
-        commit('removeItem', payload);
-        const cookieParams = {
-            total: state.total,
-            amount: state.amount,
-            cartItems: state.cartItems
-        };
+        if (state.cartItems.length === 0 || state.amount === 0) {
+            commit("clearCart");
+            return;
+        }
 
-        this.$cookies.set('cart', cookieParams, {
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7
-        });
+        commit("removeItem", payload);
+        commit("recalculateAmount");
+        commit("updateFilteredCartItems");
+        commit("updateCookiesStorage");
     },
 
-    increaseCartItemQuantity({ commit, state }, payload) {
-        commit('increaseItemQuantity', payload);
-        const cookieParams = {
-            total: state.total,
-            amount: state.amount,
-            cartItems: state.cartItems
-        };
-
-        this.$cookies.set('cart', cookieParams, {
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7
-        });
+    increaseCartItemQuantity({ commit }, payload) {
+        commit("increaseItemQuantity", payload);
+        commit("recalculateAmount");
+        commit("updateFilteredCartItems");
+        commit("updateCookiesStorage");
     },
 
-    decreaseCartItemQuantity({ commit, state }, payload) {
-        commit('decreaseItemQuantity', payload);
-        const cookieParams = {
-            total: state.total,
-            amount: state.amount,
-            cartItems: state.cartItems
-        };
+    updateItemQuantity({ commit }, payload) {
+        commit("changeItemQuantity", payload);
+        commit("recalculateAmount");
+        commit("updateFilteredCartItems");
+        commit("updateCookiesStorage");
+    },
 
-        this.$cookies.set('cart', cookieParams, {
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7
-        });
+    decreaseCartItemQuantity({ commit }, payload) {
+        commit("decreaseItemQuantity", payload);
+        commit("recalculateAmount");
+        commit("updateFilteredCartItems");
+        commit("updateCookiesStorage");
     },
 
     clearCart({ commit }) {
-        commit('clearCart');
-        const cookieParams = {
-            total: 0,
-            amount: 0,
-            cartItems: []
-        };
-        this.$cookies.set('cart', cookieParams, {
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7
-        });
-    }, 
-
-    clearItemInCart({ commit, state }, selectedItems) {
-        commit('clearItemInCart', selectedItems)
-        const cookieParams = {
-            total: state.total,
-            amount: state.amount,
-            cartItems: state.cartItems
-        };
-        this.$cookies.set('cart', cookieParams, {
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7
-        });
+        commit("clearCart");
+        commit("recalculateAmount");
+        commit("updateCookiesStorage");
     },
 
-    async getVendorById({ commit, state }, vendorId) {
-        const response = await Repository.get(
-            `${baseUrl}/vendors/${vendorId}`
-        )
-            .then(response => {
-                return response.data;
-            })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return response;
-    },
+    clearItemInCart({ commit }, payload) {
+        commit("clearItemInCart", payload);
+        commit("recalculateAmount");
+        commit("updateCookiesStorage");
+    }
 };

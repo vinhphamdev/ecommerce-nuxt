@@ -12,8 +12,8 @@
                 <input
                     v-model="quantity"
                     class="form-control"
-                    type="text"
                     disabled
+                    type="text"
                 />
             </div>
         </figure>
@@ -81,32 +81,38 @@ export default {
                 name: this.product.name
             };
 
-            if (existItem !== undefined) {
-                if (this.quantity + existItem.quantity > 10) {
-                    this.$notify({
-                        group: 'addCartSuccess',
-                        title: 'Warning!',
-                        text: `Can't add more than 10 items`
-                    });
-                    if (isBuyNow && isBuyNow === true) {
-                        setTimeout(
-                            function() {
-                                this.$router.push('/account/checkout');
-                            }.bind(this),
-                            500
-                        );
-                    }
-                } else {
-                    this.addItemToCart(item);
-                }
-            } else {
-                this.addItemToCart(item);
-            }
+
+	        if (existItem === undefined){
+		        this.addItemToCart(item);
+	        	return
+	        }
+
+	        if (this.quantity + existItem.quantity > 10) {
+
+		        this.$notify({
+			        group: 'addCartSuccess',
+			        title: 'Warning!',
+			        text: `Can't add more than 10 items`
+		        });
+
+		        if (isBuyNow && isBuyNow === true) {
+			        setTimeout(
+				        function() {
+					        this.$router.push('/account/checkout');
+				        }.bind(this),
+				        500
+			        );
+		        }
+	        } else {
+		        this.addItemToCart(item);
+	        }
         },
 
         addItemToCart(payload) {
+
             this.$store.dispatch('cart/addProductToCart', payload);
             this.getCartProduct(this.cartItems);
+
             this.$notify({
                 group: 'addCartSuccess',
                 title: 'Success!',
@@ -115,27 +121,12 @@ export default {
         },
 
         async getCartProduct(products) {
-            let listOfIds = [];
+            const listOfIds = [];
             products.forEach(item => {
                 listOfIds.push(item.id);
             });
             await this.$store.dispatch('product/getCartProducts', listOfIds);
         },
-
-        async loadCartProducts() {
-            const cartItemsOnCookie = this.$cookies.get('cart', {
-                parseJSON: true
-            });
-            let queries = [];
-            cartItemsOnCookie.cartItems.forEach(item => {
-                queries.push(item.id);
-            });
-            if (this.cartItems.length > 0) {
-                await this.$store.dispatch('product/getCartProducts', queries);
-            } else {
-                this.$store.commit('product/setCartProducts', null);
-            }
-        }
     }
 };
 </script>
