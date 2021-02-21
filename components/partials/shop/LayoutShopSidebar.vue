@@ -4,6 +4,7 @@
             <p>
                 <!-- <strong class="mr-2">{{ total }}</strong> -->
                 Products found
+	            sdsdssds
             </p>
             <div class="ps-shopping__actions">
                 <select
@@ -19,16 +20,16 @@
                 <div class="ps-shopping__view">
                     <p>View</p>
                     <ul class="ps-tab-list">
-                        <li :class="listView === true ? 'active' : ''">
-                            <a href="#">
-                                <i class="icon-grid"></i>
-                            </a>
-                        </li>
-                        <li :class="listView !== true ? 'active' : ''">
-                            <a href="#">
-                                <i class="icon-list4"></i>
-                            </a>
-                        </li>
+	                    <li :class="{ 'active': listView}">
+		                    <button @click="handleChangeViewMode">
+			                    <i class="icon-grid"></i>
+		                    </button>
+	                    </li>
+	                    <li :class="{ 'active': !listView}">
+		                    <button  @click="handleChangeViewMode">
+			                    <i class="icon-list4"></i>
+		                    </button>
+	                    </li>
                     </ul>
                 </div>
             </div>
@@ -39,7 +40,7 @@
                     {{ query }}
                 </a>
             </div> -->
-            <div v-if="listView === false" class="ps-shopping-product">
+            <div v-if="!listView" class="ps-shopping-product">
                 <div class="row">
                     <div
                         v-for="product in products"
@@ -83,7 +84,11 @@ export default {
             sortOptions: sortOptions
         };
     },
-    methods: {},
+    methods: {
+	    handleChangeViewMode() {
+		    this.$store.commit('shop/changeViewMode', !this.listView)
+	    }
+    },
     async created() {
         const data = await this.$store.dispatch('shop/getAllProducts');
         console.log('data', data);

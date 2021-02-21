@@ -21,12 +21,12 @@
                 <div class="ps-shopping__view">
                     <p>View</p>
                     <ul class="ps-tab-list">
-                        <li :class="listView !== true ? 'active' : ''">
+	                    <li :class="{ 'active': listView}">
                             <button @click="handleChangeViewMode">
                                 <i class="icon-grid"></i>
                             </button>
                         </li>
-                        <li :class="listView === true ? 'active' : ''">
+                        <li :class="{ 'active': !listView}">
                             <button  @click="handleChangeViewMode">
                                 <i class="icon-list4"></i>
                             </button>
@@ -42,7 +42,7 @@
                 </a>
             </div>
 
-            <div v-if="listView === false" class="ps-shopping-product">
+            <div v-if="!listView" class="ps-shopping-product">
                 <div class="row">
                     <div
                         v-for="product in products"

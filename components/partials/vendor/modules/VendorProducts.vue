@@ -19,22 +19,22 @@
                 <div class="ps-shopping__view">
                     <p>View</p>
                     <ul class="ps-tab-list">
-                        <li :class="gridMode === true ? 'active' : ''">
-                            <a href="#">
-                                <i class="icon-grid"></i>
-                            </a>
-                        </li>
-                        <li :class="gridMode !== true ? 'active' : ''">
-                            <a href="#">
-                                <i class="icon-list4"></i>
-                            </a>
-                        </li>
+	                    <li :class="{ 'active': listView}">
+		                    <button @click="handleChangeViewMode">
+			                    <i class="icon-grid"></i>
+		                    </button>
+	                    </li>
+	                    <li :class="{ 'active': !listView}">
+		                    <button  @click="handleChangeViewMode">
+			                    <i class="icon-list4"></i>
+		                    </button>
+	                    </li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="ps-shopping__content">
-            <div v-if="gridMode === true" class="ps-shopping-product">
+            <div v-if="!listView" class="ps-shopping-product">
                 <div class="row">
                     <div
                         v-for="product in products"
@@ -55,65 +55,71 @@
 <script>
 import ProductDefault from '../../../elements/product/ProductDefault';
 import sortOptions from '~/static/data/sortOptions.json';
+import { mapState } from 'vuex';
+
 
 export default {
-    name: 'VendorProducts',
-    components: { ProductDefault },
-    data() {
-        return {
-            gridMode: true,
-            sortOptions: sortOptions
-        };
-    },
+	name: 'VendorProducts',
+	components: { ProductDefault },
+	data() {
+		return {
+			sortOptions: sortOptions
+		};
+	},
+	computed: {
+		...mapState({
+			listView: state => state.shop.listView
+		}),
+		products() {
+			return this.$store.state.shop.vendorProducts;
+		},
+		vendor() {
+			return this.$store.state.shop.vendor;
+		}
+	},
+	async created() {
+		const vendorId = this.$route.params.id;
+		await this.$store.dispatch('shop/getVendorById', vendorId);
 
-    computed: {
-        products() {
-            return this.$store.state.shop.vendorProducts;
-        },
+		if (this.vendor.address) {
+			mapboxgl.accessToken =
+				'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+			let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
 
-        vendor() {
-            return this.$store.state.shop.vendor;
-        }
-    },
+			mapboxClient.geocoding
+			.forwardGeocode({
+				query: this.vendor.address,
+				autocomplete: false,
+				limit: 1
+			})
+			.send()
+			.then(function(response) {
+				if (
+					response &&
+					response.body &&
+					response.body.features &&
+					response.body.features.length
+				) {
+					let feature = response.body.features[0];
 
-    async created() {
-        const vendorId = this.$route.params.id;
-        await this.$store.dispatch('shop/getVendorById', vendorId);
-
-        if (this.vendor.address) {
-            mapboxgl.accessToken =
-                'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
-            let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
-
-            mapboxClient.geocoding
-                .forwardGeocode({
-                    query: this.vendor.address,
-                    autocomplete: false,
-                    limit: 1
-                })
-                .send()
-                .then(function(response) {
-                    if (
-                        response &&
-                        response.body &&
-                        response.body.features &&
-                        response.body.features.length
-                    ) {
-                        let feature = response.body.features[0];
-
-                        let map = new mapboxgl.Map({
-                            container: 'map',
-                            style: 'mapbox://styles/mapbox/streets-v11',
-                            center: feature.center,
-                            zoom: 15
-                        });
-                        new mapboxgl.Marker()
-                            .setLngLat(feature.center)
-                            .addTo(map);
-                    }
-                });
-        }
-    }
+					let map = new mapboxgl.Map({
+						container: 'map',
+						style: 'mapbox://styles/mapbox/streets-v11',
+						center: feature.center,
+						zoom: 15
+					});
+					new mapboxgl.Marker()
+					.setLngLat(feature.center)
+					.addTo(map);
+				}
+			});
+		}
+	},
+	methods: {
+		handleChangeViewMode() {
+			this.$store.commit('shop/changeViewMode', !this.listView)
+		}
+	}
 };
 </script>
 
