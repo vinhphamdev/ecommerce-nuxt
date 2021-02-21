@@ -13,11 +13,7 @@
             <Loading />
         </tbody>
         <tbody v-else>
-            <TableShoppingCartRow
-                v-for="(item, index) in cartItems"
-                :key="index"
-                :item="item"
-            />
+            <TableShoppingCartRow v-for="(item, index) in cartItems" :key="index" :item="item" />
         </tbody>
     </table>
 </template>
@@ -33,8 +29,8 @@ export default {
     computed: {
         ...mapGetters({
             cartItems: 'cart/getCart',
-            isLoading: 'cart/isLoading'
-        })
-    }
+            isLoading: 'cart/isLoading',
+        }),
+    },
 };
 </script>

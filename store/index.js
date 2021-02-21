@@ -1,10 +1,10 @@
 export const actions = {
     async nuxtServerInit({ commit, dispatch }) {
         const cookieCart = this.$cookies.get('cart', {
-            parseJSON: true
+            parseJSON: true,
         });
         const auth = this.$cookies.get('auth', {
-            parseJSON: true
+            parseJSON: true,
         });
 
         if (cookieCart && cookieCart.cartItems.length > 0) {
@@ -13,12 +13,12 @@ export const actions = {
                 // filteredCartItems: cookieCart.filteredCartItems,
                 total: cookieCart.total,
                 subtotal: cookieCart.subtotal,
-                amount: cookieCart.amount
+                amount: cookieCart.amount,
             });
 
             let query = [];
 
-            cookieCart.cartItems.forEach(item => {
+            cookieCart.cartItems.forEach((item) => {
                 console.log(item);
                 query.push(item.id);
             });
@@ -29,5 +29,5 @@ export const actions = {
         // if (auth) {
         //     commit('auth/setIsLoggedIn', Boolean(auth.isLoggedIn));
         // }
-    }
+    },
 };
