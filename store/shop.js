@@ -12,17 +12,17 @@ export const state = () => ({
 
     categories: [],
 
-    listView: false
+    listView: false,
 });
 
 export const getters = {
-    getAllProducts: state => {
+    getAllProducts: (state) => {
         return state.products;
     },
 
-    getAllVendors: state => {
+    getAllVendors: (state) => {
         return state.vendors;
-    }
+    },
 };
 
 export const mutations = {
@@ -37,9 +37,9 @@ export const mutations = {
 
     filterProduct(state, name) {
         if (name) {
-            state.productsCatalogue = state.products.filter(item => {
+            state.productsCatalogue = state.products.filter((item) => {
                 if (item.product_types.length > 0) {
-                    return item.product_types.some(foundItem => {
+                    return item.product_types.some((foundItem) => {
                         return foundItem.name === name;
                     });
                 } else {
@@ -70,52 +70,52 @@ export const mutations = {
     changeViewMode(state, payload) {
         if (typeof payload !== 'boolean') return;
         state.listView = payload;
-    }
+    },
 };
 
 export const actions = {
     async getAllProducts({ commit }) {
         return await Repository.get(`${baseUrl}/products`)
-            .then(response => {
+            .then((response) => {
                 commit('updateProducts', response.data);
                 return response.data;
             })
-            .catch(error => ({
-                error: JSON.stringify(error)
+            .catch((error) => ({
+                error: JSON.stringify(error),
             }));
     },
 
     async getAllProductsByVendor({ commit }, vendorId) {
         return await Repository.get(`${baseUrl}/products?vendor=${vendorId}`)
-            .then(response => {
+            .then((response) => {
                 // commit('updateProducts', response.data);
                 commit('updateVendorProducts', response.data);
                 return response.data;
             })
-            .catch(error => ({
-                error: JSON.stringify(error)
+            .catch((error) => ({
+                error: JSON.stringify(error),
             }));
     },
 
     async getAllVendors({ commit }) {
         return await Repository.get(`${baseUrl}/vendors?status=ACTIVE`)
-            .then(response => {
+            .then((response) => {
                 commit('updateVendors', response.data);
                 return response.data;
             })
-            .catch(error => ({
-                error: JSON.stringify(error)
+            .catch((error) => ({
+                error: JSON.stringify(error),
             }));
     },
 
     async getVendorById({ commit }, vendorId) {
         return await Repository.get(`${baseUrl}/vendors?id=${vendorId}`)
-            .then(response => {
+            .then((response) => {
                 commit('updateVendor', response.data[0]);
                 return response.data;
             })
-            .catch(error => ({
-                error: JSON.stringify(error)
+            .catch((error) => ({
+                error: JSON.stringify(error),
             }));
     },
 
@@ -123,61 +123,61 @@ export const actions = {
         // const token = Cookies.get('id_token');
         return await Repository.post(`${baseUrl}/orders`, params, {
             headers: {
-                Authorization: `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+            },
         })
-            .then(response => {
+            .then((response) => {
                 return response.data;
             })
-            .catch(error => ({
-                error: JSON.stringify(error)
+            .catch((error) => ({
+                error: JSON.stringify(error),
             }));
     },
 
     async getOrderDetail({ commit }, orderNumber) {
         return await Repository.get(`${baseUrl}/orders?order_number=${orderNumber}`)
-            .then(response => {
+            .then((response) => {
                 commit('updateOrderDetail', response.data[0]);
                 return response.data;
             })
-            .catch(error => ({
-                error: JSON.stringify(error)
+            .catch((error) => ({
+                error: JSON.stringify(error),
             }));
     },
 
     async getListOrder({}, userId) {
         return await Repository.get(`${baseUrl}/orders?user=${userId}`)
-            .then(response => {
+            .then((response) => {
                 return response.data;
             })
-            .catch(error => ({
-                error: JSON.stringify(error)
+            .catch((error) => ({
+                error: JSON.stringify(error),
             }));
     },
 
     async getLandingPage({}) {
         return await Repository.get(`${baseUrl}/pages?slug=landing-page`)
-            .then(response => {
+            .then((response) => {
                 return response.data;
             })
-            .catch(error => ({
-                error: JSON.stringify(error)
+            .catch((error) => ({
+                error: JSON.stringify(error),
             }));
     },
 
     async getProductType({ commit }) {
         return await Repository.get(`${baseUrl}/product-types`)
-            .then(response => {
+            .then((response) => {
                 const allProductsType = {
                     name: 'All products',
-                    id: 'all_products'
+                    id: 'all_products',
                 };
                 const types = [allProductsType].concat(response.data);
                 commit('setCategories', types);
                 return types;
             })
-            .catch(error => ({
-                error: JSON.stringify(error)
+            .catch((error) => ({
+                error: JSON.stringify(error),
             }));
-    }
+    },
 };

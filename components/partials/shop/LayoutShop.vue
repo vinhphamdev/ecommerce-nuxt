@@ -1,33 +1,26 @@
 <template lang="html">
     <div class="ps-shopping">
-        <best-sale-items collectionSlug="shop-best-seller-items" />
-        <recommend-items collectionSlug="shop-recommend-items" />
+        <BestSaleItems collection-slug="shop-best-seller-items" />
+        <RecommendItems collection-slug="shop-recommend-items" />
         <div class="ps-shopping__header">
             <p>
                 <strong class="mr-2">{{ totalProducts }}</strong>
                 Products found
             </p>
             <div class="ps-shopping__actions">
-                <select
-                    class="ps-select form-control"
-                    data-placeholder="Sort Items"
-                >
-                    <option
-                        v-for="(option, index) in sortOptions"
-                        :key="index"
-                        >{{ option }}</option
-                    >
+                <select class="ps-select form-control" data-placeholder="Sort Items">
+                    <option v-for="(option, index) in sortOptions" :key="index">{{ option }}</option>
                 </select>
                 <div class="ps-shopping__view">
                     <p>View</p>
                     <ul class="ps-tab-list">
-	                    <li :class="{ 'active': !listView}">
+                        <li :class="{ active: !listView }">
                             <button @click="handleChangeViewMode">
                                 <i class="icon-grid"></i>
                             </button>
                         </li>
-                        <li :class="{ 'active': listView}">
-                            <button  @click="handleChangeViewMode">
+                        <li :class="{ active: listView }">
+                            <button @click="handleChangeViewMode">
                                 <i class="icon-list4"></i>
                             </button>
                         </li>
@@ -37,7 +30,7 @@
         </div>
         <div class="ps-shopping__content">
             <div v-if="queries" class="ps-shopping__queries">
-                <a v-for="query in queries" href="#" @click.prevent="">
+                <a v-for="(query, index) in queries" :key="index" href="#" @click.prevent="">
                     {{ query }}
                 </a>
             </div>
@@ -47,31 +40,27 @@
                     <div
                         v-for="product in products"
                         :key="product.id"
-                        class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6 "
+                        class="col-xl-2 col-lg-4 col-md-4 col-sm-6 col-6"
                     >
-                        <product-default :product="product" />
+                        <ProductDefault :product="product" />
                     </div>
                 </div>
                 <footer class="mt-30">
                     <v-pagination
+                        v-model="page"
                         color="#fcb800"
                         total-visible="8"
-                        v-model="page"
                         :length="paginationLength"
                         @input="handleChangePagination"
                     />
                 </footer>
             </div>
             <div v-else class="ps-shopping-product">
-                <product-wide
-                    v-for="product in products"
-                    :product="product"
-                    :key="product.id"
-                />
+                <ProductWide v-for="product in products" :key="product.id" :product="product" />
                 <footer class="mt-30">
                     <v-pagination
-                        color="#fcb800"
                         v-model="page"
+                        color="#fcb800"
                         total-visible="8"
                         :length="paginationLength"
                         @input="handleChangePagination"
@@ -93,12 +82,19 @@ import sortOptions from '~/static/data/sortOptions.json';
 export default {
     name: 'LayoutShop',
     components: { ProductWide, BestSaleItems, RecommendItems, ProductDefault },
+    data() {
+        return {
+            page: 1,
+            pageSize: 12,
+            sortOptions: sortOptions,
+        };
+    },
     computed: {
         ...mapState({
-            products: state => state.product.products,
-	        totalProducts: state => state.product.totalProducts,
-            queries: state => state.collection.queries,
-            listView: state => state.shop.listView
+            products: (state) => state.product.products,
+            totalProducts: (state) => state.product.totalProducts,
+            queries: (state) => state.collection.queries,
+            listView: (state) => state.shop.listView,
         }),
         paginationLength() {
             if (this.totalProducts % 12 === 0) {
@@ -106,27 +102,20 @@ export default {
             } else {
                 return parseInt(this.totalProducts / 12 + 1);
             }
-        }
-    },
-    data() {
-        return {
-            page: 1,
-            pageSize: 12,
-            sortOptions: sortOptions
-        };
+        },
     },
     methods: {
         async handleChangePagination(value) {
             const params = {
                 _start: value === 1 ? 0 : (value - 1) * 12,
-                _limit: 12
+                _limit: 12,
             };
             await this.$store.dispatch('product/getProducts', params);
         },
         handleChangeViewMode() {
-           this.$store.commit('shop/changeViewMode', !this.listView)
-        }
-    }
+            this.$store.commit('shop/changeViewMode', !this.listView);
+        },
+    },
 };
 </script>
 
