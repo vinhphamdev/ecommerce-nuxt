@@ -1655,7 +1655,7 @@
                     display: block;
                     margin-right: 0;
 
-                    a {
+                    a, button {
                         display: block;
                         padding: 5px 0;
                         font-size: 18px;
@@ -2254,7 +2254,7 @@
             display: inline-block;
             margin-right: 20px;
 
-            a {
+           a, button {
                 font-weight: 600;
                 color: $color-text;
 
@@ -2264,7 +2264,7 @@
             }
 
             &.active {
-                a {
+               a, button {
                     color: $color-1st;
                 }
             }

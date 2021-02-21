@@ -7,6 +7,7 @@
                     {{ products ? products.length : 0 }}
                 </strong>
                 Products found
+	            {{listView}}
             </p>
             <div class="ps-shopping__actions">
                 <select class="form-control" data-placeholder="Sort Items">
@@ -33,34 +34,40 @@
                 </div>
             </div>
         </div>
-        <div class="ps-shopping__content">
-            <div v-if="!listView" class="ps-shopping-product">
-                <div class="row">
-                    <div
-                        v-for="product in products"
-                        class="col-lg-3 col-md-4 col-sm-6 col-6 "
-                        :key="product.id"
-                    >
-                        <ProductDefault :product="product" />
-                    </div>
-                </div>
-            </div>
-            <div v-else class="ps-shopping-product">
-                <ProductWide product="{product}" key="{product.id}" />
-            </div>
-        </div>
+	    <div class='ps-shopping__content'>
+			    <div v-if='!listView' class='ps-shopping-product'>
+				    <div class='row'>
+				    <div
+					    v-for='product in products'
+					    class='col-lg-3 col-md-4 col-sm-6 col-6 '
+					    :key='product.id'
+				    >
+					    <ProductDefault :product='product' />
+				    </div>
+				    </div>
+			    </div>
+			    <div v-else class='ps-shopping-product'>
+				    <div
+					    v-for='product in products'
+					    :key='product.id'
+				    >
+					    <ProductWide  :product='product' />
+				    </div>
+			    </div>
+	    </div>
     </div>
 </template>
 
 <script>
-import ProductDefault from '../../../elements/product/ProductDefault';
-import sortOptions from '~/static/data/sortOptions.json';
 import { mapState } from 'vuex';
+import ProductDefault from '~/components/elements/product/ProductDefault';
+import ProductWide from '~/components/elements/product/ProductWide';
+import sortOptions from '~/static/data/sortOptions.json';
 
 
 export default {
 	name: 'VendorProducts',
-	components: { ProductDefault },
+	components: { ProductDefault, ProductWide },
 	data() {
 		return {
 			sortOptions: sortOptions

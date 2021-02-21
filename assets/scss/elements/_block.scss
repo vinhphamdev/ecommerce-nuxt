@@ -914,7 +914,7 @@
     }
 
     .ps-tab-list {
-        a {
+        a, button {
             display: block;
             padding: 20px 0;
             text-align: center;
@@ -1044,7 +1044,7 @@
             padding: 0 30px;
 
             .ps-tab-list {
-                a {
+                a, button{
                     border: none;
 
                     i {

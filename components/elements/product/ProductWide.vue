@@ -2,10 +2,11 @@
     <div class="ps-product ps-product--wide">
         <div class="ps-product__thumbnail">
             <nuxt-link :to="`/product/${product.id}`">
-                <img
-                    :src="`${baseUrl}${product.thumbnail.url}`"
-                    alt="martfury"
-                />
+	            <img v-if="product.images.length > 0"
+	                 :src="`${product.images[0].url}`"
+	                 alt="martfury"
+	                 class="thumbnail-product"
+	            />
             </nuxt-link>
         </div>
         <div class="ps-product__container">
@@ -19,7 +20,7 @@
                 <p class="ps-product__vendor">
                     Sold by:
                     <nuxt-link to="/shop">
-                        {{ product.vendor }}
+	                    {{ product.vendor ? product.vendor.name : ''}}
                     </nuxt-link>
                 </p>
                 <ul class="ps-product__desc">
