@@ -52,12 +52,25 @@
                 :error-messages="addressErrors"
                     @input="$v.address.$touch()"
             />
+
+            <button class="ps-btn" style="background:lightgreen;margin-bottom:12px" @click="showRoute">
+                    Show route
+            </button>
         </div>
 
-        <h3 class="ps-form__heading">
+        <label>Select payment method</label>
+            <v-select
+                v-model="selectedMethod"
+                :items="methods"
+                item-text="name"
+                item-value="id"
+                outlined
+            />
+
+        <h3 class="ps-form__heading" v-if="isShowCreditCard">
             Payment
         </h3>
-        <div class="form-group pb24">
+        <div class="form-group pb24" v-if="isShowCreditCard">
             <card
             ref="card-stripe"
             stripe="pk_test_51IDw7QHYRruOoW8HFWgG6rgdEuicAla4kQfpH11fdOwJgS8sqd44yWoX9dpIuuVsg7zhjLzCYNkD1JJkxGAUisub00KzvQ5vKh"
@@ -65,7 +78,7 @@
         />
         </div>
 
-        <div class="ps-form__submit">
+        <div class="ps-form__submit" style="margin-bottom:50px">
             <nuxt-link to="/account/shopping-cart">
                 <i class="icon-arrow-left mr-1"></i>
                 Return to shopping cart
@@ -77,6 +90,9 @@
                 </button>
             </div>
         </div>
+
+        <div id="map"></div>
+
     </div>
 </template>
 
@@ -105,12 +121,14 @@ export default {
                 vendorIdList.push(item.vendorId);
             }
         });
-        
+
         const vendorListPromise = vendorIdList.map((vendorId) => {
             return this.$store.dispatch('cart/getVendorById', vendorId);
-        })
-        const vendorList = await Promise.all(vendorListPromise)
-        this.vendorList = vendorList
+        });
+        const vendorList = await Promise.all(vendorListPromise);
+
+        this.vendorList = vendorList;
+        this.$store.commit('cart/chooseVendor', '');
     },
     computed: {
         nameErrors() {
@@ -159,6 +177,7 @@ export default {
             },
             set(value) {
                 this.$store.commit('cart/chooseVendor', value.id);
+                this.vendorAddress = value.address;
             },
         },
 
@@ -179,10 +198,127 @@ export default {
             customerName: null,
             shippingAddress: null,
             email: null,
-            vendorList: []
+            vendorList: [],
+            vendorAddress: '',
+            map: null,
+            _from: null,
+            _to: null,
+            methods: [
+                { name: 'COD', id: 1 },
+                { name: 'Credit Card', id: 2 },
+            ],
+            selectedMethod: 1,
+            isShowCreditCard: false,
         };
     },
     methods: {
+        async getRoute() {
+            const params = {
+                start1: this._from[0],
+                start2: this._from[1],
+                end1: this._to[0],
+                end2: this._to[1],
+            };
+
+            const response = await this.$store.dispatch('auth/getMap', params);
+
+            var route = response.routes[0].geometry.coordinates;
+            var geojson = {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                    type: 'LineString',
+                    coordinates: route,
+                },
+            };
+            // if the route already exists on the map, reset it using setData
+            if (this.map.getSource('route')) {
+                this.map.getSource('route').setData(geojson);
+            } else {
+                // otherwise, make a new request
+                this.map.addLayer({
+                    id: 'route',
+                    type: 'line',
+                    source: {
+                        type: 'geojson',
+                        data: {
+                            type: 'Feature',
+                            properties: {},
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: route,
+                            },
+                        },
+                    },
+                    layout: {
+                        'line-join': 'round',
+                        'line-cap': 'round',
+                    },
+                    paint: {
+                        'line-color': '#24628c',
+                        'line-width': 3,
+                        'line-opacity': 0.75,
+                    },
+                });
+            }
+        },
+
+        async showRoute() {
+            if (!this.vendorAddress) return false;
+            if (!this.address) return false;
+
+            mapboxgl.accessToken =
+                'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+            let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+
+            const from = await mapboxClient.geocoding
+                .forwardGeocode({
+                    query: this.vendorAddress,
+                    autocomplete: false,
+                    limit: 1,
+                })
+                .send();
+
+            this._from = from.body.features[0].center;
+
+            const to = await mapboxClient.geocoding
+                .forwardGeocode({
+                    query: this.address,
+                    autocomplete: false,
+                    limit: 1,
+                })
+                .send();
+
+            this._to = to.body.features[0].center;
+
+            this.map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v10',
+                center: this._from,
+                zoom: 14,
+            });
+
+            this.map.getCanvasContainer();
+
+            //   Add starting point to the map
+
+            this.map.on('load', () => {
+                this.getRoute();
+
+                new mapboxgl.Marker({
+                    color: '#42f5b6',
+                })
+                    .setLngLat(this._from)
+                    .addTo(this.map);
+
+                new mapboxgl.Marker({
+                    color: '#42f5b6',
+                })
+                    .setLngLat(this._to)
+                    .addTo(this.map);
+            });
+        },
+
         handleToShipping() {
             this.$router.push('/account/shipping');
         },
@@ -203,11 +339,12 @@ export default {
                 quantity: it.quantity,
             }));
 
-
-            let token;
+            let token = null;
             try {
-                const response = await createToken();
-                token = response.token.id;
+                if (this.selectedMethod == 2) {
+                    const response = await createToken();
+                    token = response.token.id;
+                }
             } catch (err) {
                 alert('An error occurred.');
                 this.loading = false;
@@ -219,7 +356,8 @@ export default {
                 customer_name: this.name,
                 shipping_address: this.address,
                 order_items: items,
-                payment_method: 'CREDIT_CARD',
+                payment_method:
+                    this.selectedMethod == 2 ? 'CREDIT_CARD' : 'COD',
                 vendor: this.$store.state.cart.selectedVendor,
                 token,
             };
@@ -255,14 +393,28 @@ export default {
     },
     watch: {
         userEmail(newVal) {
-            this.email = newVal
-        }
-    }
+            this.email = newVal;
+        },
+        selectedMethod(val) {
+            console.log('val', val);
+            if (val == 2) {
+                this.isShowCreditCard = true;
+            } else {
+                this.isShowCreditCard = false;
+            }
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
 .pb24 {
     padding-bottom: 24px;
+}
+
+#map {
+    width: 100%;
+    height: 350px;
+    margin-bottom: 12px;
 }
 </style>
