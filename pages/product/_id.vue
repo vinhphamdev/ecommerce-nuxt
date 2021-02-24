@@ -77,10 +77,7 @@ export default {
             }.bind(this),
             2000
         );
-        const collections = await this.$store.dispatch(
-            'collection/getCollectionsBySlugs',
-            queries
-        );
+
         const product = await this.$store.dispatch(
             'product/getProductsById',
             this.productId
@@ -91,11 +88,11 @@ export default {
                 url: '/',
             },
             {
-                text: 'Shop',
-                url: '/shop',
+                text: 'Marketplace',
+                url: '/marketplace',
             },
             {
-                text: product.title,
+                text: product.name,
             },
         ];
     },
