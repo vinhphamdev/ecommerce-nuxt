@@ -33,11 +33,16 @@
                 </div>
             </div>
         </div>
+        <div style="marginBottom: 20px;" class="product-types-container" v-if="productTypes !== undefined">
+            <span class="product-type-item" v-for="category in productTypes" :key="category.id" @click="filterProduct(category.name)">
+                {{ category.name }}
+            </span>
+        </div>
         <div class="ps-shopping__content">
             <div v-if="gridMode === true" class="ps-shopping-product">
                 <div class="row">
                     <div
-                        v-for="product in products"
+                        v-for="product in filteredProducts"
                         class="col-lg-3 col-md-4 col-sm-6 col-6 "
                         :key="product.id"
                     >
@@ -60,6 +65,9 @@ export default {
     data() {
         return {
             gridMode: true,
+            selectedType: '',
+            productTypes: [],
+            filteredProducts: [],
         };
     },
 
@@ -76,6 +84,21 @@ export default {
     async created() {
         const vendorId = this.$route.params.id;
         await this.$store.dispatch('shop/getVendorById', vendorId);
+        this.filteredProducts = this.products
+        const _types = [
+            {
+                id: 'All products',
+                name: 'All products',
+            }
+        ]
+
+        this.products.forEach((item) => {
+            item.product_types.forEach((type) => {
+                _types.push(type)
+            })
+        })
+
+        this.productTypes = _types
 
         if (this.vendor.address) {
             mapboxgl.accessToken =
@@ -109,6 +132,24 @@ export default {
                 });
         }
     },
+
+    methods: {
+        filterProduct(name) {
+            if (name === 'All products' || name === '') {
+                this.filteredProducts = this.products
+            } else {
+                this.filteredProducts = this.products.filter((item) => {
+                    if (item.product_types.length > 0) {
+                        return item.product_types.some(it => {
+                            return it.name == name;
+                        })
+                    } else {
+                        return false
+                    }
+                })
+            }
+        },
+    }
 };
 </script>
 
@@ -117,5 +158,9 @@ export default {
     width: 100%;
     height: 350px;
     margin-bottom: 12px;
+}
+.product-type-item:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 </style>
