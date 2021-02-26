@@ -1,7 +1,30 @@
-## Martfury Vue 1.3.0
+# Strapi POC user page
 
-#### Verion 1.3.0
-* New: group pages by layouts
-* Fixed: Homepage-default's banner not equal height
-* Fixed: Product wide not working on shop page.
-* Refactor code 
+## Prerequisition
+
+1. NodeJS version 14
+## Developing
+
+1. Install dependencies:
+    ```bash
+    npm install
+    ```
+2. Start dev server:
+    ```bash
+    npm run dev
+    ```
+
+## Production
+
+1. Install dependencies:
+    ```bash
+    npm install
+    ```
+2. Build:
+    ```bash
+    npm run build
+    ```
+3. Start server:
+    ```bash
+    npm start
+    ```
