@@ -59,6 +59,8 @@
 
 <script>
 import ProductDefault from '../../../elements/product/ProductDefault';
+import { mapboxToken } from '~/utilities/common-helpers';
+
 export default {
     name: 'VendorProducts',
     components: { ProductDefault },
@@ -84,25 +86,24 @@ export default {
     async created() {
         const vendorId = this.$route.params.id;
         await this.$store.dispatch('shop/getVendorById', vendorId);
-        this.filteredProducts = this.products
+        this.filteredProducts = this.products;
         const _types = [
             {
                 id: 'All products',
                 name: 'All products',
-            }
-        ]
+            },
+        ];
 
         this.products.forEach((item) => {
             item.product_types.forEach((type) => {
-                _types.push(type)
-            })
-        })
+                _types.push(type);
+            });
+        });
 
-        this.productTypes = _types
+        this.productTypes = _types;
 
         if (this.vendor.address) {
-            mapboxgl.accessToken =
-                'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+            mapboxgl.accessToken = mapboxToken;
             let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
 
             mapboxClient.geocoding
@@ -127,7 +128,9 @@ export default {
                             center: feature.center,
                             zoom: 15,
                         });
-                        new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+                        new mapboxgl.Marker()
+                            .setLngLat(feature.center)
+                            .addTo(map);
                     }
                 });
         }
@@ -136,20 +139,20 @@ export default {
     methods: {
         filterProduct(name) {
             if (name === 'All products' || name === '') {
-                this.filteredProducts = this.products
+                this.filteredProducts = this.products;
             } else {
                 this.filteredProducts = this.products.filter((item) => {
                     if (item.product_types.length > 0) {
-                        return item.product_types.some(it => {
+                        return item.product_types.some((it) => {
                             return it.name == name;
-                        })
+                        });
                     } else {
-                        return false
+                        return false;
                     }
-                })
+                });
             }
         },
-    }
+    },
 };
 </script>
 

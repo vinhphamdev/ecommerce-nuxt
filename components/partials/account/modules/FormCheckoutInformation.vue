@@ -73,7 +73,7 @@
         <div class="form-group pb24" v-if="isShowCreditCard">
             <card
             ref="card-stripe"
-            stripe="pk_test_51IDw7QHYRruOoW8HFWgG6rgdEuicAla4kQfpH11fdOwJgS8sqd44yWoX9dpIuuVsg7zhjLzCYNkD1JJkxGAUisub00KzvQ5vKh"
+            :stripe="stripeToken"
             @change='complete = $event.complete'
         />
         </div>
@@ -101,6 +101,7 @@ import { mapState } from 'vuex';
 import strapi from '~/utilities/Strapi';
 import { Card, createToken } from 'vue-stripe-elements-plus';
 import { email as isEmail, required } from 'vuelidate/lib/validators';
+import { mapboxToken, stripeToken } from '~/utilities/common-helpers';
 
 export default {
     name: 'FormCheckoutInformation',
@@ -209,6 +210,7 @@ export default {
             ],
             selectedMethod: 1,
             isShowCreditCard: false,
+            stripeToken: stripeToken,
         };
     },
     methods: {
@@ -267,8 +269,7 @@ export default {
             if (!this.vendorAddress) return false;
             if (!this.address) return false;
 
-            mapboxgl.accessToken =
-                'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+            mapboxgl.accessToken = mapboxToken;
             let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
 
             const from = await mapboxClient.geocoding
