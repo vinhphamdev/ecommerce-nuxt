@@ -30,10 +30,19 @@
                 </div>
             </div>
         </div>
+        <div style="marginBottom: 20px;" class="product-types-container" v-if="productTypes !== undefined">
+            <span class="product-type-item" v-for="category in productTypes" :key="category.id" @click="filterProduct(category.name)">
+                {{ category.name }}
+            </span>
+        </div>
         <div class="ps-shopping__content">
             <div v-if="!listView" class="ps-shopping-product">
                 <div class="row">
-                    <div v-for="product in products" :key="product.id" class="col-lg-3 col-md-4 col-sm-6 col-6">
+                    <div
+                        v-for="product in filteredProducts"
+                        class="col-lg-3 col-md-4 col-sm-6 col-6 "
+                        :key="product.id"
+                    >
                         <ProductDefault :product="product" />
                     </div>
                 </div>
@@ -48,10 +57,12 @@
 </template>
 
 <script>
+
 import { mapState } from 'vuex';
 import ProductDefault from '~/components/elements/product/ProductDefault';
 import ProductWide from '~/components/elements/product/ProductWide';
 import sortOptions from '~/static/data/sortOptions.json';
+import { mapboxToken } from '~/utilities/common-helpers';
 
 export default {
     name: 'VendorProducts',
@@ -59,6 +70,10 @@ export default {
     data() {
         return {
             sortOptions: sortOptions,
+            gridMode: true,
+            selectedType: '',
+            productTypes: [],
+            filteredProducts: [],
         };
     },
     computed: {
@@ -75,10 +90,24 @@ export default {
     async created() {
         const vendorId = this.$route.params.id;
         await this.$store.dispatch('shop/getVendorById', vendorId);
+        this.filteredProducts = this.products;
+        const _types = [
+            {
+                id: 'All products',
+                name: 'All products',
+            },
+        ];
+
+        this.products.forEach((item) => {
+            item.product_types.forEach((type) => {
+                _types.push(type);
+            });
+        });
+
+        this.productTypes = _types;
 
         if (this.vendor.address) {
-            mapboxgl.accessToken =
-                'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+            mapboxgl.accessToken = mapboxToken;
             let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
 
             mapboxClient.geocoding
@@ -98,14 +127,32 @@ export default {
                             center: feature.center,
                             zoom: 15,
                         });
-                        new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+                        new mapboxgl.Marker()
+                            .setLngLat(feature.center)
+                            .addTo(map);
                     }
                 });
         }
     },
+
     methods: {
         handleChangeViewMode() {
             this.$store.commit('shop/changeViewMode', !this.listView);
+},
+        filterProduct(name) {
+            if (name === 'All products' || name === '') {
+                this.filteredProducts = this.products;
+            } else {
+                this.filteredProducts = this.products.filter((item) => {
+                    if (item.product_types.length > 0) {
+                        return item.product_types.some((it) => {
+                            return it.name == name;
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+            }
         },
     },
 };
@@ -116,5 +163,9 @@ export default {
     width: 100%;
     height: 350px;
     margin-bottom: 12px;
+}
+.product-type-item:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 </style>
