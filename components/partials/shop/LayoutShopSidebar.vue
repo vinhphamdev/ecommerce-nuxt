@@ -6,28 +6,21 @@
                 Products found
             </p>
             <div class="ps-shopping__actions">
-                <select
-                    class="ps-select form-control"
-                    data-placeholder="Sort Items"
-                >
-                    <option>Sort by latest</option>
-                    <option>Sort by popularity</option>
-                    <option>Sort by average rating</option>
-                    <option>Sort by price: low to high</option>
-                    <option>Sort by price: high to low</option>
+                <select class="ps-select form-control" data-placeholder="Sort Items">
+                    <option v-for="(option, index) in sortOptions" :key="index">{{ option }}</option>
                 </select>
                 <div class="ps-shopping__view">
                     <p>View</p>
                     <ul class="ps-tab-list">
-                        <li :class="listView === true ? 'active' : ''">
-                            <a href="#">
+                        <li :class="{ active: !listView }">
+                            <button @click="handleChangeViewMode">
                                 <i class="icon-grid"></i>
-                            </a>
+                            </button>
                         </li>
-                        <li :class="listView !== true ? 'active' : ''">
-                            <a href="#">
+                        <li :class="{ active: listView }">
+                            <button @click="handleChangeViewMode">
                                 <i class="icon-list4"></i>
-                            </a>
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -35,27 +28,23 @@
         </div>
         <div class="ps-shopping__content">
             <!-- <div v-if="queries" class="ps-shopping__queries">
-                <a v-for="query in queries" href="#" @click.prevent="">
-                    {{ query }}
-                </a>
-            </div> -->
-            <div v-if="listView === false" class="ps-shopping-product">
+				<a v-for="query in queries" href="#" @click.prevent="">
+					{{ query }}
+				</a>
+			</div> -->
+            <div v-if="!listView" class="ps-shopping-product">
                 <div class="row">
                     <div
                         v-for="product in products"
-                        class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 "
                         :key="product.id"
+                        class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6"
                     >
-                        <product-default :product="product" />
+                        <ProductDefault :product="product" />
                     </div>
                 </div>
             </div>
             <div v-else class="ps-shopping-product">
-                <product-wide
-                    v-for="product in products"
-                    :product="product"
-                    :key="product.id"
-                />
+                <ProductWide v-for="product in products" :key="product.id" :product="product" />
             </div>
         </div>
     </div>
@@ -65,28 +54,32 @@
 import { mapState } from 'vuex';
 import ProductDefault from '~/components/elements/product/ProductDefault';
 import ProductWide from '~/components/elements/product/ProductWide';
+import sortOptions from '~/static/data/sortOptions.json';
 
 export default {
     name: 'LayoutShopSidebar',
     components: { ProductWide, ProductDefault },
-    computed: {
-        ...mapState({
-            products: state => state.shop.productsCatalogue,
-        }),
-    },
     data() {
         return {
-            listView: false,
             page: 1,
-            pageSize: 12
+            pageSize: 12,
+            sortOptions: sortOptions,
         };
     },
-    methods: {
-
+    computed: {
+        ...mapState({
+            products: (state) => state.shop.productsCatalogue,
+            listView: (state) => state.shop.listView,
+        }),
     },
-    async created () {
+    async created() {
         const data = await this.$store.dispatch('shop/getAllProducts');
         console.log('data', data);
+    },
+    methods: {
+        handleChangeViewMode() {
+            this.$store.commit('shop/changeViewMode', !this.listView);
+        },
     },
 };
 </script>

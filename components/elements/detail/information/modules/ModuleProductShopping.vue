@@ -3,35 +3,22 @@
         <figure>
             <figcaption>Quantity</figcaption>
             <div class="form-group--number">
-                <button class="up" @click.prevent="handleIncreaseQuantity">
+                <button class="up" @click="handleIncreaseQuantity">
                     <i class="fa fa-plus"></i>
                 </button>
-                <button class="down" @click.prevent="handleDescreaseQuantity">
+                <button class="down" @click="handleDecreaseQuantity">
                     <i class="fa fa-minus"></i>
                 </button>
-                <input
-                    v-model="quantity"
-                    class="form-control"
-                    type="text"
-                    disabled
-                />
+                <input v-model="quantity" class="form-control" disabled type="text" />
             </div>
         </figure>
-        <a
-            class="ps-btn ps-btn--black"
-            href="#"
-            @click.prevent="handleAddToCart"
-        >
-            Add to cart
-        </a>
-        <a class="ps-btn" href="#" @click.prevent="">
-            Buy Now
-        </a>
+        <button class="ps-btn ps-btn--black" @click="handleAddToCart">Add to cart</button>
+        <button class="ps-btn">Buy Now</button>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'ModuleProductShopping',
@@ -42,8 +29,8 @@ export default {
         },
     },
     computed: {
-        ...mapState({
-            cartItems: (state) => state.cart.cartItems,
+        ...mapGetters({
+            cartItems: 'cart/getCart',
         }),
     },
     data() {
@@ -56,7 +43,7 @@ export default {
             this.quantity++;
         },
 
-        handleDescreaseQuantity() {
+        handleDecreaseQuantity() {
             if (this.quantity > 1) {
                 this.quantity--;
             }
@@ -66,14 +53,13 @@ export default {
             const cartItemsOnCookie = this.$cookies.get('cart', {
                 parseJSON: true,
             });
+
             let existItem;
             if (cartItemsOnCookie) {
-                existItem = cartItemsOnCookie.cartItems.find(
-                    (item) => item.id === this.product.id
-                );
+                existItem = cartItemsOnCookie.cartItems.find((item) => item.id === this.product.id);
             }
 
-            let item = {
+            const item = {
                 id: this.product.id,
                 quantity: this.quantity,
                 price: this.product.price,
@@ -81,23 +67,26 @@ export default {
                 name: this.product.name,
                 vendorId: this.product.vendor.id,
             };
-            if (existItem !== undefined) {
-                if (this.quantity + existItem.quantity > 10) {
-                    this.$notify({
-                        group: 'addCartSuccess',
-                        title: 'Waring!',
-                        text: `Can't add more than 10 items`,
-                    });
-                    if (isBuyNow && isBuyNow === true) {
-                        setTimeout(
-                            function () {
-                                this.$router.push('/account/checkout');
-                            }.bind(this),
-                            500
-                        );
-                    }
-                } else {
-                    this.addItemToCart(item);
+
+            if (existItem === undefined) {
+                this.addItemToCart(item);
+                return;
+            }
+
+            if (this.quantity + existItem.quantity > 10) {
+                this.$notify({
+                    group: 'addCartSuccess',
+                    title: 'Warning!',
+                    text: `Can't add more than 10 items`,
+                });
+
+                if (isBuyNow && isBuyNow === true) {
+                    setTimeout(
+                        function () {
+                            this.$router.push('/account/checkout');
+                        }.bind(this),
+                        500
+                    );
                 }
             } else {
                 this.addItemToCart(item);
@@ -107,6 +96,7 @@ export default {
         addItemToCart(payload) {
             this.$store.dispatch('cart/addProductToCart', payload);
             this.getCartProduct(this.cartItems);
+
             this.$notify({
                 group: 'addCartSuccess',
                 title: 'Success!',
@@ -115,26 +105,11 @@ export default {
         },
 
         async getCartProduct(products) {
-            let listOfIds = [];
+            const listOfIds = [];
             products.forEach((item) => {
                 listOfIds.push(item.id);
             });
             await this.$store.dispatch('product/getCartProducts', listOfIds);
-        },
-
-        async loadCartProducts() {
-            const cartItemsOnCookie = this.$cookies.get('cart', {
-                parseJSON: true,
-            });
-            let queries = [];
-            cartItemsOnCookie.cartItems.forEach((item) => {
-                queries.push(item.id);
-            });
-            if (this.cartItems.length > 0) {
-                await this.$store.dispatch('product/getCartProducts', queries);
-            } else {
-                this.$store.commit('product/setCartProducts', null);
-            }
         },
     },
 };

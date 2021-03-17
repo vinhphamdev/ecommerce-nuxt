@@ -6,7 +6,7 @@
                 <figure>
                     <figcaption>
                         <strong>Product</strong>
-                        <strong>total</strong>
+                        <strong>Total: $ {{ amount }}</strong>
                     </figcaption>
                 </figure>
                 <figure class="ps-block__items">
@@ -25,8 +25,12 @@
                 </figure>
                 <figure>
                     <figcaption>
-                        <strong>Subtotal</strong>
-                        <small>$ {{ amount }}</small>
+                        <strong>{{ $t('header.miniCart.subTotal') }}</strong>
+                        <small>$ {{ subtotal }}</small>
+                    </figcaption>
+                    <figcaption>
+                        <strong>Tax</strong>
+                        <small>{{ tax }}%</small>
                     </figcaption>
                 </figure>
             </div>
@@ -42,23 +46,19 @@ export default {
     props: {
         shipping: {
             type: Boolean,
-            default: () => false,
-        },
+            default: () => false
+        }
     },
     computed: {
         ...mapState({
-            filteredCartItems: (state) => state.cart.filteredCartItems,
-            total: (state) => state.cart.total,
-            amount: (state) => {
-                let rs = 0
-                state.cart.filteredCartItems.forEach((item) => {
-                    rs += item.quantity * item.price
-                })
-                return rs
-            },
-            cartProducts: (state) => state.product.cartProducts,
-        }),
-    },
+            filteredCartItems: state => state.cart.filteredCartItems,
+            subtotal: state => state.cart.subtotal,
+            tax: state => state.cart.tax,
+            total: state => state.cart.total,
+            amount: state => state.cart.amount,
+            cartProducts: state => state.product.cartProducts
+        })
+    }
 };
 </script>
 

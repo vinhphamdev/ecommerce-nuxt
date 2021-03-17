@@ -7,27 +7,24 @@
                     {{ products ? products.length : 0 }}
                 </strong>
                 Products found
+                {{ listView }}
             </p>
             <div class="ps-shopping__actions">
                 <select class="form-control" data-placeholder="Sort Items">
-                    <option>Sort by latest</option>
-                    <option>Sort by popularity</option>
-                    <option>Sort by average rating</option>
-                    <option>Sort by price: low to high</option>
-                    <option>Sort by price: high to low</option>
+                    <option v-for="(option, index) in sortOptions" :key="index">{{ option }}</option>
                 </select>
                 <div class="ps-shopping__view">
                     <p>View</p>
                     <ul class="ps-tab-list">
-                        <li :class="gridMode === true ? 'active' : ''">
-                            <a href="#">
+                        <li :class="{ active: !listView }">
+                            <button @click="handleChangeViewMode">
                                 <i class="icon-grid"></i>
-                            </a>
+                            </button>
                         </li>
-                        <li :class="gridMode !== true ? 'active' : ''">
-                            <a href="#">
+                        <li :class="{ active: listView }">
+                            <button @click="handleChangeViewMode">
                                 <i class="icon-list4"></i>
-                            </a>
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -39,7 +36,7 @@
             </span>
         </div>
         <div class="ps-shopping__content">
-            <div v-if="gridMode === true" class="ps-shopping-product">
+            <div v-if="!listView" class="ps-shopping-product">
                 <div class="row">
                     <div
                         v-for="product in filteredProducts"
@@ -51,38 +48,45 @@
                 </div>
             </div>
             <div v-else class="ps-shopping-product">
-                <!--<ProductWide product="{product}" key="{product.id}" />-->
+                <div v-for="product in products" :key="product.id">
+                    <ProductWide :product="product" />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import ProductDefault from '../../../elements/product/ProductDefault';
+
+import { mapState } from 'vuex';
+import ProductDefault from '~/components/elements/product/ProductDefault';
+import ProductWide from '~/components/elements/product/ProductWide';
+import sortOptions from '~/static/data/sortOptions.json';
 import { mapboxToken } from '~/utilities/common-helpers';
 
 export default {
     name: 'VendorProducts',
-    components: { ProductDefault },
+    components: { ProductDefault, ProductWide },
     data() {
         return {
+            sortOptions: sortOptions,
             gridMode: true,
             selectedType: '',
             productTypes: [],
             filteredProducts: [],
         };
     },
-
     computed: {
+        ...mapState({
+            listView: (state) => state.shop.listView,
+        }),
         products() {
             return this.$store.state.shop.vendorProducts;
         },
-
         vendor() {
             return this.$store.state.shop.vendor;
         },
     },
-
     async created() {
         const vendorId = this.$route.params.id;
         await this.$store.dispatch('shop/getVendorById', vendorId);
@@ -114,12 +118,7 @@ export default {
                 })
                 .send()
                 .then(function (response) {
-                    if (
-                        response &&
-                        response.body &&
-                        response.body.features &&
-                        response.body.features.length
-                    ) {
+                    if (response && response.body && response.body.features && response.body.features.length) {
                         let feature = response.body.features[0];
 
                         let map = new mapboxgl.Map({
@@ -137,6 +136,9 @@ export default {
     },
 
     methods: {
+        handleChangeViewMode() {
+            this.$store.commit('shop/changeViewMode', !this.listView);
+},
         filterProduct(name) {
             if (name === 'All products' || name === '') {
                 this.filteredProducts = this.products;

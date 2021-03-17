@@ -1,7 +1,7 @@
 export default {
     head: {
-        titleTemplate: 'Martfury - Multi-purpose Ecomerce template with vuejs',
-        title: 'Martfury - Multi-purpose Ecomerce template with vuejs',
+        titleTemplate: 'Martfury - Multi-purpose Ecommerce template with vuejs',
+        title: 'Martfury - Multi-purpose Ecommerce template with vuejs',
         meta: [
             { charset: 'utf-8' },
             {
@@ -11,15 +11,13 @@ export default {
             {
                 hid: 'description',
                 name: 'description',
-                content:
-                    'Martfury - Multipurpose Marketplace Vuejs Ecommerce Template'
+                content: 'Martfury - Multipurpose Marketplace Vuejs Ecommerce Template'
             }
         ],
         link: [
             {
                 rel: 'stylesheet',
-                href:
-                    'https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700&amp;amp;subset=latin-ext'
+                href: 'https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700&amp;amp;subset=latin-ext'
             },
             {
                 rel: 'stylesheet',
@@ -27,9 +25,7 @@ export default {
             }
         ],
 
-        script: [
-            { src: 'https://js.stripe.com/v3' }
-        ]
+        script: [{ src: 'https://js.stripe.com/v3' }]
     },
 
     css: [
@@ -41,7 +37,7 @@ export default {
     ],
 
     plugins: [
-        { src: '~/plugins/vueliate.js', ssr: false },
+        { src: '~/plugins/vuelidate.js', ssr: false },
         { src: '~/plugins/swiper-plugin.js', ssr: false },
         { src: '~/plugins/vue-notification.js', ssr: false },
         { src: '~/plugins/axios.js', ssr: false },
@@ -49,11 +45,7 @@ export default {
         { src: '~/plugins/localStorage.js', ssr: false }
     ],
 
-    buildModules: [
-        '@nuxtjs/vuetify',
-        '@nuxtjs/style-resources',
-        'cookie-universal-nuxt'
-    ],
+    buildModules: ['@nuxtjs/vuetify', '@nuxtjs/style-resources', 'cookie-universal-nuxt'],
 
     styleResources: {
         scss: './assets/scss/env.scss'

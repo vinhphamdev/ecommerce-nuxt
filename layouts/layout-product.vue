@@ -8,7 +8,7 @@
                 <footer-fullwidth />
                 <navigation-list />
                 <mobile-drawer />
-                <notify/>
+                <notify />
             </v-main>
         </v-app>
     </client-only>

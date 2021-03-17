@@ -13,6 +13,7 @@ import ShoppingCart from '~/components/partials/account/ShoppingCart';
 
 export default {
     transition: 'zoom',
+    name: 'AccountShoppingCart',
     components: {
         ShoppingCart,
         Checkout,

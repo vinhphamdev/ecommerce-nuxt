@@ -1,7 +1,7 @@
 export const state = () => ({
     appDrawer: false,
     currentDrawerContent: null,
-    currency: '$'
+    currency: '$',
 });
 
 export const mutations = {
@@ -15,19 +15,19 @@ export const mutations = {
 
     setCurrency(state, payload) {
         state.currency = payload;
-    }
+    },
 };
 
 export const actions = {
     changeCurrency({ commit, state }, payload) {
         commit('setCurrency', payload);
         const cookieParams = {
-            data: state.currency
+            data: state.currency,
         };
 
         this.$cookies.set('currency', cookieParams, {
             path: '/',
-            maxAge: 60 * 60 * 24 * 7
+            maxAge: 60 * 60 * 24 * 7,
         });
-    }
+    },
 };

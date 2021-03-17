@@ -20,7 +20,7 @@
                             {{ $t('header.navigationExtra.sellOnMartfury') }}
                         </nuxt-link>
                     </li>
-                     <li>
+                    <li>
                         <nuxt-link to="/account/order-tracking">
                             {{ $t('header.navigationExtra.trackYourOrder') }}
                         </nuxt-link>
@@ -45,7 +45,7 @@
 
 <script>
 import CurrencyDropdown from './CurrencyDropdown';
-import LanguageSwicher from './LanguageSwicher';
+import LanguageSwitcher from './LanguageSwitcher';
 import MenuDefault from '~/components/shared/menu/MenuDefault';
 import MenuCategories from '~/components/shared/menu/MenuCategories';
 export default {
@@ -53,14 +53,14 @@ export default {
     components: {
         MenuCategories,
         MenuDefault,
-        LanguageSwicher,
-        CurrencyDropdown,
-    },
+        LanguageSwitcher,
+        CurrencyDropdown
+    }
 };
 </script>
 
 <style lang="scss" scoped>
 .navigation {
-    padding: 15px 0px;
+    padding: 15px 0;
 }
 </style>

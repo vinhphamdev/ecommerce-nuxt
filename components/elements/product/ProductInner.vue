@@ -11,48 +11,44 @@
 
             <ul class="ps-product__actions">
                 <li>
-                    <a
-                        to="#"
+                    <button
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Add to cart"
-                        @click.prevent="handleAddToCart"
+                        @click="handleAddToCart"
                     >
                         <i class="icon-bag2"></i>
-                    </a>
+                    </button>
                 </li>
                 <li>
-                    <a
-                        to="#"
+                    <button
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Quick View"
-                        @click.prevent="quickviewDialog = true"
+                        @click="quickviewDialog = true"
                     >
                         <i class="icon-eye"></i>
-                    </a>
+                    </button>
                 </li>
                 <li>
-                    <a
-                        href="#"
+                    <button
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Add to wishlist"
-                        @click.prevent="handleAddItemToWishlist"
+                        @click="handleAddItemToWishlist"
                     >
                         <i class="icon-heart"></i>
-                    </a>
+                    </button>
                 </li>
                 <li>
-                    <a
-                        to="#"
+                    <button
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Compare"
-                        @click.prevent="handleAddItemToCompare"
+                        @click="handleAddItemToCompare"
                     >
                         <i class="icon-chart-bars"></i>
-                    </a>
+                    </button>
                 </li>
             </ul>
         </div>
@@ -81,7 +77,7 @@
                     {{ product.title }}
                 </nuxt-link>
                 <div class="ps-product__rating">
-                    <rating />
+	                <rating :rating='product.ratingCount' />
                     <span>{{ product.ratingCount }}</span>
                 </div>
                 <div class="ps-product__progress-bar ps-progress">
@@ -137,10 +133,8 @@ export default {
             return baseUrl;
         },
         isSale() {
-            if (this.product.is_sale) {
-                return true;
-            }
-            return false;
+            return !!this.product.is_sale;
+
         }
     },
 

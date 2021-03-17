@@ -1,5 +1,4 @@
-import Repository from '~/repositories/Repository';
-import { baseUrl } from '~/repositories/Repository';
+import Repository, { baseUrl, token } from '~/repositories/Repository';
 import Cookies from 'js-cookie';
 
 export const state = () => ({
@@ -11,15 +10,17 @@ export const state = () => ({
 
     orderDetail: {},
 
-    categories: []
+    categories: [],
+
+    listView: false,
 });
 
 export const getters = {
-    getAllProducts: state => {
+    getAllProducts: (state) => {
         return state.products;
     },
 
-    getAllVendors: state => {
+    getAllVendors: (state) => {
         return state.vendors;
     },
 };
@@ -31,22 +32,20 @@ export const mutations = {
     },
 
     updateVendorProducts(state, payload) {
-        state.vendorProducts = payload
+        state.vendorProducts = payload;
     },
 
-    filterProduct(state, name){
+    filterProduct(state, name) {
         if (name) {
-            const arr = state.products.filter((item) => {
+            state.productsCatalogue = state.products.filter((item) => {
                 if (item.product_types.length > 0) {
-                    return item.product_types.some(it => {
-                        return it.name == name;
-                    })
+                    return item.product_types.some((foundItem) => {
+                        return foundItem.name === name;
+                    });
                 } else {
-                    return false
+                    return false;
                 }
             });
-    
-            state.productsCatalogue = arr;
         } else {
             state.productsCatalogue = state.products;
         }
@@ -64,128 +63,121 @@ export const mutations = {
         state.orderDetail = payload;
     },
 
-    setCategories(state, payload){
+    setCategories(state, payload) {
         state.categories = payload;
     },
 
+    changeViewMode(state, payload) {
+        if (typeof payload !== 'boolean') return;
+        state.listView = payload;
+    },
 };
 
 export const actions = {
-
-    async getAllProducts({ commit, state }) {
-        const response = await Repository.get(
-            `${baseUrl}/products`
-        )
-            .then(response => {
+    async getAllProducts({ commit }) {
+        return await Repository.get(`${baseUrl}/products`)
+            .then((response) => {
                 commit('updateProducts', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return response;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
-    async getAllProductsByVendor({ commit, state }, vendorId) {
-        const response = await Repository.get(
-            `${baseUrl}/products?vendor=${vendorId}`
-        )
-            .then(response => {
+    async getAllProductsByVendor({ commit }, vendorId) {
+        return await Repository.get(`${baseUrl}/products?vendor=${vendorId}`)
+            .then((response) => {
                 // commit('updateProducts', response.data);
                 commit('updateVendorProducts', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return response;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
-    async getAllVendors({ commit, state }) {
-        const response = await Repository.get(
-            `${baseUrl}/vendors?status=ACTIVE`
-        )
-            .then(response => {
+    async getAllVendors({ commit }) {
+        return await Repository.get(`${baseUrl}/vendors?status=ACTIVE`)
+            .then((response) => {
                 commit('updateVendors', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return response;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
-    async getVendorById({ commit, state }, vendorId) {
-        const response = await Repository.get(
-            `${baseUrl}/vendors?id=${vendorId}`
-        )
-            .then(response => {
+    async getVendorById({ commit }, vendorId) {
+        return await Repository.get(`${baseUrl}/vendors?id=${vendorId}`)
+            .then((response) => {
                 commit('updateVendor', response.data[0]);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return response;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
-    async createOrder({ commit, state }, params) {
-        const token = Cookies.get('id_token');
-        const response = await Repository.post(
-            `${baseUrl}/orders`, params, {
+    async createOrder({}, params) {
+        // const token = Cookies.get('id_token');
+        return await Repository.post(`${baseUrl}/orders`, params, {
             headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }
-        )
-            .then(response => {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return response;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
-    async getOrderDetail({ commit, state }, orderNumber) {
-        const response = await Repository.get(
-            `${baseUrl}/orders?order_number=${orderNumber}`
-        )
-            .then(response => {
+    async getOrderDetail({ commit }, orderNumber) {
+        return await Repository.get(`${baseUrl}/orders?order_number=${orderNumber}`)
+            .then((response) => {
                 commit('updateOrderDetail', response.data[0]);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return response;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
-    async getListOrder({ commit, state }, userId) {
-        const response = await Repository.get(
-            `${baseUrl}/orders?user=${userId}`
-        )
-            .then(response => {
+    async getListOrder({}, userId) {
+        return await Repository.get(`${baseUrl}/orders?user=${userId}`)
+            .then((response) => {
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return response;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
-    async getLandingPage({ commit, state }) {
-        const response = await Repository.get(
-            `${baseUrl}/pages?slug=landing-page`
-        )
-            .then(response => {
+    async getLandingPage({}) {
+        return await Repository.get(`${baseUrl}/pages?slug=landing-page`)
+            .then((response) => {
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return response;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
-    async getProductType({ commit, state }) {
-        const response = await Repository.get(
-            `${baseUrl}/product-types`
-        )
-            .then(response => {
+    async getProductType({ commit }) {
+        return await Repository.get(`${baseUrl}/product-types`)
+            .then((response) => {
                 const allProductsType = {
                     name: 'All products',
-                    id: 'all_products'
-                }
-                const types = [allProductsType].concat(response.data)
+                    id: 'all_products',
+                };
+                const types = [allProductsType].concat(response.data);
                 commit('setCategories', types);
                 return types;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return response;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
-
 };
