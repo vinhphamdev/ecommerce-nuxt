@@ -9,14 +9,13 @@
             </nuxt-link>
             <ul class="ps-product__actions">
                 <li>
-                    <a
-                        to="#"
+                    <button
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Read More"
                     >
                         <i class="icon-bag2"></i>
-                    </a>
+                    </button>
                 </li>
                 <li>
                     <a
@@ -59,7 +58,7 @@
                     <a class="ps-product__title">{{ product.title }}</a>
                 </nuxt-link>
                 <div class="ps-product__rating">
-                    <Rating />
+	                <rating :rating='product.ratingCount' />
                     <span>{{ product.ratingCount }}</span>
                 </div>
                 <p v-if="product.sale === true" class="ps-product__price sale">

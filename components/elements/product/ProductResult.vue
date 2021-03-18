@@ -13,7 +13,7 @@
                 {{ product.title }}
             </nuxt-link>
             <div class="ps-product__rating">
-                <rating />
+	            <rating :rating='product.ratingCount' />
                 <span>{{ product.ratingCount }}</span>
             </div>
             <p v-if="product.sale === true" class="ps-product__price sale">

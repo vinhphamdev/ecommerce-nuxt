@@ -11,7 +11,12 @@
                                     }}<span> - {{ status }}</span>
                                 </h3>
                             </div>
-                            <p>Created At: <strong>{{ new Date(createdAt).toLocaleString() }}</strong></p>
+                            <p>
+                                Created At:
+                                <strong>{{
+                                    new Date(createdAt).toLocaleString()
+                                }}</strong>
+                            </p>
                             <div
                                 class="row"
                                 style="
@@ -21,9 +26,26 @@
                                 "
                             >
                                 <div class="card">
-                                    <p>Customer Name: <strong>{{ name }}</strong></p>
-                                    <p>Shipping Address: <strong>{{ address }}</strong></p>
-                                    <p>Payment method: <strong>{{ parsePaymentMethod(paymentMethod) }}</strong></p>
+                                    <p>
+                                        Customer Name:
+                                        <strong>{{ name }}</strong>
+                                    </p>
+                                    <p>
+                                        Shipping Address:
+                                        <strong>{{ address }}</strong>
+                                    </p>
+                                    <p>
+                                        Payment method:
+                                        <strong>{{
+                                            parsePaymentMethod(paymentMethod)
+                                        }}</strong>
+                                    </p>
+                                    <p>
+                                        Delivery tracking number:
+                                        <strong>{{
+                                            deliveryTrackingNumber
+                                        }}</strong>
+                                    </p>
                                 </div>
 
                                 <!-- <div class="card">
@@ -109,6 +131,7 @@
 
 <script>
 import AccountLinks from '../../components/partials/account/modules/AccountLinks';
+import { mapboxToken } from '~/utilities/common-helpers';
 
 export default {
     components: { AccountLinks },
@@ -139,6 +162,7 @@ export default {
             orderNumber: '',
             status: '',
             createdAt: '',
+            deliveryTrackingNumber: '',
 
             map: null,
             _from: null,
@@ -198,16 +222,14 @@ export default {
             }
         },
         parsePaymentMethod(code) {
-            if (code === 'CREDIT_CARD') return 'Credit card'
-            return code
-        }
+            if (code === 'CREDIT_CARD') return 'Credit card';
+            return code;
+        },
     },
 
     async created() {
         const id = this.$route.params.id;
         await this.$store.dispatch('shop/getOrderDetail', id);
-
-        console.log(this.orderDetail);
 
         this.tableData = this.orderDetail.order_items;
         this.total = this.orderDetail.invoice_amount;
@@ -217,9 +239,9 @@ export default {
         this.orderNumber = this.orderDetail.order_number;
         this.status = this.orderDetail.order_status;
         this.createdAt = this.orderDetail.createdAt;
+        this.deliveryTrackingNumber = this.orderDetail.delivery_tracking_number;
 
-        mapboxgl.accessToken =
-            'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+        mapboxgl.accessToken = mapboxToken;
         let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
 
         const from = await mapboxClient.geocoding
@@ -231,8 +253,6 @@ export default {
             .send();
 
         this._from = from.body.features[0].center;
-
-        console.log(this._from);
 
         const to = await mapboxClient.geocoding
             .forwardGeocode({
@@ -259,12 +279,16 @@ export default {
             this.getRoute();
 
             new mapboxgl.Marker({
-                color: '#42f5b6'
-            }).setLngLat(this._from).addTo(this.map);
+                color: '#42f5b6',
+            })
+                .setLngLat(this._from)
+                .addTo(this.map);
 
             new mapboxgl.Marker({
-                color: '#42f5b6'
-            }).setLngLat(this._to).addTo(this.map);
+                color: '#42f5b6',
+            })
+                .setLngLat(this._to)
+                .addTo(this.map);
         });
     },
 };
@@ -289,6 +313,6 @@ p {
 #map {
     width: 100%;
     height: 400px;
-    margin:20px 0px
+    margin: 20px 0px;
 }
 </style>

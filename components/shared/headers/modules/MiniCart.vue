@@ -1,27 +1,27 @@
 <template lang="html">
     <div class="ps-cart--mini">
-        <a class="header__extra" href="#">
+        <div class="header__extra">
             <i class="icon-bag2"></i>
             <span>
                 <i>{{ total }}</i>
             </span>
-        </a>
+        </div>
         <div v-if="total > 0" class="ps-cart__content">
             <div class="ps-cart__items">
-                <template v-if="loading === true">
+                <div v-if="loading">
                     <loading />
-                </template>
-                <template v-else>
+                </div>
+                <div v-else>
                     <product-mini-cart
                         v-for="product in cartProducts"
                         :product="product"
                         :key="product.id"
                     />
-                </template>
+                </div>
             </div>
             <div class="ps-cart__footer">
                 <h3>
-                    {{ $t('header.miniCart.subTotal') }}
+                    {{ $t('header.miniCart.total') }}
                     <strong>${{ amount }}</strong>
                 </h3>
                 <figure>
@@ -47,8 +47,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { baseUrl } from '~/repositories/Repository';
+import { mapState, mapGetters } from 'vuex';
 import ProductMiniCart from '~/components/elements/product/ProductMiniCart';
 import Loading from '~/components/elements/commons/Loading';
 
@@ -60,12 +59,10 @@ export default {
             total: state => state.cart.total,
             amount: state => state.cart.amount,
             loading: state => state.cart.loading,
-            cartItems: state => state.cart.cartItems,
-            cartProducts: state => state.product.cartProducts
         }),
-        baseUrl() {
-            return baseUrl;
-        }
+        ...mapGetters({
+	        cartProducts: 'product/getCartProducts'
+        }),
     }
 };
 </script>

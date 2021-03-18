@@ -3,9 +3,7 @@
         <div class="header__top">
             <div class="ps-container">
                 <div class="header__left">
-                    <nuxt-link to="/" class="ps-logo">
-                        <img src="/img/logo_light.png" alt="martfury" />
-                    </nuxt-link>
+                    <AppLogo />
                     <div class="menu--product-categories">
                         <div class="menu__toggle">
                             <i class="icon-menu"></i>
@@ -33,7 +31,10 @@ import SearchHeader from './modules/SearchHeader';
 import HeaderActions from './modules/HeaderActions';
 import NavigationDefault from './modules/NavigationDefault';
 import MenuCategories from '~/components/shared/menu/MenuCategories';
+import AppLogo from '~/components/elements/commons/AppLogo';
+
 import { stickyHeader } from '~/utilities/common-helpers';
+
 export default {
     name: 'HeaderDefault',
     components: {
@@ -41,10 +42,11 @@ export default {
         NavigationDefault,
         HeaderActions,
         SearchHeader,
+        AppLogo
     },
     mounted() {
         window.addEventListener('scroll', stickyHeader);
-    },
+    }
 };
 </script>
 
@@ -55,4 +57,3 @@ export default {
     }
 }
 </style>
-`
