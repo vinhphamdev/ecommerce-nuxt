@@ -35,14 +35,14 @@
                         Buy Now
                     </a>
                     <div class="ps-product__actions">
-                        <a href="#">
+                        <button>
                             <i class="icon-heart mr-2"></i>
                             Add to wishlist
-                        </a>
-                        <a href="#">
+                        </button>
+                        <button>
                             <i class="icon-chart-bars mr-2"></i>
                             Compare
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>

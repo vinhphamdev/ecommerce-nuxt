@@ -10,10 +10,18 @@ export const state = () => ({
     compareItems: null,
     brands: null,
     categories: null,
-    total: 0
+    totalProducts: 0,
 });
 
+export const getters = {
+    getCartProducts: (state) => state.cartProducts,
+};
+
 export const mutations = {
+    setProduct(state, payload) {
+        state.product = payload;
+    },
+
     setProducts(state, payload) {
         state.products = payload;
     },
@@ -26,10 +34,6 @@ export const mutations = {
     },
     setCompareItems(state, payload) {
         state.compareItems = payload;
-    },
-
-    setProduct(state, payload) {
-        state.product = payload;
     },
 
     setBrands(state, payload) {
@@ -45,59 +49,64 @@ export const mutations = {
     },
 
     setTotal(state, payload) {
-        state.total = payload;
-    }
+        state.totalProducts = payload;
+    },
 };
 
 export const actions = {
     async getProducts({ commit }, payload) {
-        const reponse = await Repository.get(
-            `${baseUrl}/products?${serializeQuery(payload)}`
-        )
-            .then(response => {
+        return await Repository.get(`${baseUrl}/products?${serializeQuery(payload)}`)
+            .then((response) => {
                 commit('setProducts', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
     async getTotalRecords({ commit }, payload) {
-        const reponse = await Repository.get(`${baseUrl}/products/count`)
-            .then(response => {
+        return await Repository.get(`${baseUrl}/products/count`)
+            .then((response) => {
+                console.log('total records: ', response);
                 commit('setTotal', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
     async getProductsById({ commit }, payload) {
-        const reponse = await Repository.get(`${baseUrl}/products/${payload}`)
-            .then(response => {
+        return await Repository.get(`${baseUrl}/products/${payload}`)
+            .then((response) => {
                 commit('setProduct', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
     async getProductByKeyword({ commit }, payload) {
-        const reponse = await Repository.get(
-            `${baseUrl}/products?${serializeQuery(payload)}`
-        )
-            .then(response => {
+        return await Repository.get(`${baseUrl}/products?${serializeQuery(payload)}`)
+            .then((response) => {
                 commit('setSearchResults', response.data);
                 commit('setTotal', response.data.length);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
+    },
+
+    async getProductBrands({ commit }, payload) {
+        console.log('🚀 ~ file: product.js ~ getProductBrands---line 121 ~ payload', payload);
     },
 
     async getCartProducts({ commit }, payload) {
         let query = '';
-        payload.forEach(item => {
+        payload.forEach((item) => {
             if (query === '') {
                 query = `id=${item}`;
             } else {
@@ -105,75 +114,49 @@ export const actions = {
             }
         });
 
-        const reponse = await Repository.get(`${baseUrl}/products?${query}`)
-            .then(response => {
+        return await Repository.get(`${baseUrl}/products?${query}`)
+            .then((response) => {
                 commit('setCartProducts', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
-    },
-
-    async getProductBrands({ commit }) {
-        const reponse = await Repository.get(`${baseUrl}/brands`)
-            .then(response => {
-                commit('setBrands', response.data);
-                return response.data;
-            })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
     async getProductCategories({ commit }) {
-        const reponse = await Repository.get(`${baseUrl}/product-categories`)
-            .then(response => {
+        return await Repository.get(`${baseUrl}/product-categories`)
+            .then((response) => {
                 commit('setCategories', response.data);
                 return response.data;
             })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+            .catch((error) => ({
+                error: JSON.stringify(error),
+            }));
     },
 
-    async getProductsByBrands({ commit }, payload) {
-        let query = '';
-        payload.forEach(item => {
-            if (query === '') {
-                query = `slug_in=${item}`;
-            } else {
-                query = query + `&slug_in=${item}`;
-            }
-        });
-        const reponse = await Repository.get(`${baseUrl}/brands?${query}`)
-            .then(response => {
-                if (response.data) {
-                    const brands = response.data;
-                    let products = [];
-                    brands.forEach(brand => {
-                        brand.products.forEach(product => {
-                            products.push(product);
-                        });
-                    });
-                    commit('setProducts', products);
-                    commit('setTotal', products.length);
-                    return products;
-                } else {
-                    return null;
-                }
-            })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
+    updateCartProduct({ commit }) {
+        commit('setCartProducts', null);
     },
-    async getProductsByPriceRange({ commit }, payload) {
-        const reponse = await Repository.get(
-            `${baseUrl}/products?${serializeQuery(payload)}`
-        )
-            .then(response => {
-                commit('setProducts', response.data);
-                commit('setSearchResults', response.data);
-                commit('setTotal', response.data.length);
-                return response.data;
-            })
-            .catch(error => ({ error: JSON.stringify(error) }));
-        return reponse;
-    }
+
+    async loadCartProducts({ commit, dispatch, rootState }) {
+        commit('cart/setLoading', true, { root: true });
+
+        const cartItemsOnCookie = this.$cookies.get('cart', {
+            parseJSON: true,
+        });
+
+        const queries = [];
+        cartItemsOnCookie.cartItems.forEach((item) => {
+            queries.push(item.id);
+        });
+
+        if (rootState.cart.cartItems.length > 0) {
+            dispatch('getCartProducts', queries);
+        } else {
+            commit('setCartProducts', null);
+        }
+
+        commit('cart/setLoading', false, { root: true });
+    },
 };

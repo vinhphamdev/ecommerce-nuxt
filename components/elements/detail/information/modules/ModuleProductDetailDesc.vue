@@ -6,6 +6,9 @@
                 <strong> {{ product.vendor.name }}</strong>
             </nuxt-link>
         </p>
+        <p>
+            Availability: <strong> {{ product.availability }}</strong>
+        </p>
         <div v-html="infoHTML"/>
     </div>
 </template>

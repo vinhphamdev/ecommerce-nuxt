@@ -8,9 +8,9 @@
             Purchase on Amazon
         </a>
         <div class="ps-product__actions">
-            <a href="#">
+            <button >
                 <i class="icon-heart"></i>
-            </a>
+            </button>
             <a href="#">
                 <i class="icon-chart-bars"></i>
             </a>

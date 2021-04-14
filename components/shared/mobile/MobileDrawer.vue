@@ -2,7 +2,7 @@
     <v-navigation-drawer v-model="drawer" width="100%" absolute temporary>
         <panel-shopping-cart v-if="currentDrawerContent === 'cart'" />
         <panel-categories v-if="currentDrawerContent === 'categories'" />
-        <panel-menu v-if="currentDrawerContent === 'menu'" />
+        <panel-vendors v-if="currentDrawerContent === 'vendors'" />
         <panel-search v-if="currentDrawerContent === 'search'" />
     </v-navigation-drawer>
 </template>
@@ -11,12 +11,12 @@
 import { mapState } from 'vuex';
 import PanelShoppingCart from '~/components/shared/mobile/modules/PanelShoppingCart';
 import PanelCategories from '~/components/shared/mobile/modules/PanelCategories';
-import PanelMenu from '~/components/shared/mobile/modules/PanelMenu';
+import PanelVendors from '~/components/shared/mobile/modules/PanelVendors';
 import PanelSearch from '~/components/shared/mobile/modules/PanelSearch';
 
 export default {
     name: 'MobileDrawer',
-    components: { PanelSearch, PanelMenu, PanelCategories, PanelShoppingCart },
+    components: { PanelSearch, PanelVendors, PanelCategories, PanelShoppingCart },
     computed: {
         ...mapState({
             appDrawer: state => state.app.appDrawer,

@@ -4,7 +4,7 @@
             <div class="ps-block--average-rating">
                 <div class="ps-block__header">
                     <h3>4.00</h3>
-                    <rating />
+	                <rating :rating='4' />
                     <span>1 Review</span>
                 </div>
                 <div class="ps-block__star">
@@ -54,7 +54,7 @@
                 </p>
                 <div class="form-group form-group__rating">
                     <label>Your rating of this product</label>
-                    <rating />
+	                <rating :rating='0' />
                 </div>
                 <div class="form-group">
                     <textarea

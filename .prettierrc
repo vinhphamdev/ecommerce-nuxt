@@ -1,7 +1,7 @@
 {
 	"singleQuote": true,
-	"printWidth": 80,
-	"editor.formatOnSave": false,
+	"printWidth": 120,
+	"editor.formatOnSave": true,
 	"proseWrap": "always",
     "tabWidth": 4,
     "indent_size": 4,

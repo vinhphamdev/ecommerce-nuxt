@@ -10,15 +10,14 @@
             </nuxt-link>
             <ul class="ps-product__actions">
                 <li>
-                    <a
-                        to="#"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Add to cart"
-                        @click.prevent="handleAddToCart"
+                    <button
+                        data-toggle='tooltip'
+                        data-placement='top'
+                        title='Add to cart'
+                        @click='handleAddToCart'
                     >
-                        <i class="icon-bag2"></i>
-                    </a>
+                        <i class='icon-bag2'></i>
+                    </button>
                 </li>
             </ul>
         </div>
@@ -34,10 +33,10 @@
                     {{ product.name }}
                 </nuxt-link>
                   <div class="ps-product__rating">
-                    <rating />
+                    <rating :rating='product.ratingCount' />
                     <span>{{ product.ratingCount }}</span>
                 </div>
-          
+
                 <p class="ps-product__price">
                     {{ currency }}{{ product.price }}
                 </p>
@@ -47,18 +46,16 @@
                     <a class="ps-product__title">{{ product.name }}</a>
                 </nuxt-link>
                   <div class="ps-product__rating">
-                    <rating />
+	                  <rating :rating='product.ratingCount' />
                     <span>{{ product.ratingCount }}</span>
                 </div>
-      
                 <p class="ps-product__price">${{ product.price }}</p>
             </div>
         </div>
     </div>
 </template>
 <script>
-import { mapState } from 'vuex';
-import { baseUrl } from '~/repositories/Repository';
+import { mapGetters, mapState } from 'vuex';
 import Rating from '../Rating';
 import ProductQuickview from '~/components/elements/detail/ProductQuickview';
 
@@ -74,23 +71,21 @@ export default {
 
     computed: {
         ...mapState({
-            cartItems: (state) => state.cart.cartItems,
-            currency: (state) => state.app.currency,
+            currency: state => state.app.currency
         }),
-        baseUrl() {
-            return baseUrl;
-        },
+        ...mapGetters({
+            cartItems: 'cart/getCart'
+        })
     },
 
     data: () => ({
-        productRating: 5,
         productModal: false,
         productPreload: true,
-        isImageLoaded: false,
+        isImageLoaded: false
     }),
     methods: {
         handleAddToCart() {
-            let item = {
+            const item = {
                 id: this.product.id,
                 quantity: 1,
                 price: this.product.price,
@@ -123,7 +118,7 @@ export default {
     },
 };
 </script>
-<style lang="scss" scope>
+<style lang='scss' >
 .thumbnail-product {
     width: 188px;
     height: 188px;

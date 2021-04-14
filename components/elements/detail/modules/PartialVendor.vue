@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { mapboxToken } from '~/utilities/common-helpers';
+
 export default {
     name: 'PartialVendor',
     props: {
@@ -15,8 +17,7 @@ export default {
     },
     async created() {
         if (!this.product.vendor.address) return;
-        mapboxgl.accessToken =
-            'pk.eyJ1IjoicGhvbmduaGF0MTkiLCJhIjoiY2traWtzMXRrMjV4dzJvcGE5cHQ3MWJmaiJ9.ohDtLEc_AuCHfk1Ns3t8hA';
+        mapboxgl.accessToken = mapboxToken;
         let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
         mapboxClient.geocoding
             .forwardGeocode({

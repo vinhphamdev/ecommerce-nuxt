@@ -419,7 +419,7 @@
                 vertical-align: top;
                 margin-right: 10px;
 
-                a {
+                a, button {
                     font-size: 24px;
                     color: #999999;
                 }
@@ -429,7 +429,7 @@
                 }
 
                 &.active {
-                    a {
+                    a, button {
                         color: $color-heading;
                     }
                 }
@@ -1857,7 +1857,7 @@
                 margin-right: 0;
                 padding: 20px 15px;
 
-                a {
+                a, button {
                     font-size: 24px;
                     line-height: 1em;
                 }
@@ -1865,7 +1865,7 @@
                 &.active {
                     border-bottom: 2px solid $color-1st;
 
-                    a {
+                   a,  button {
                         color: $color-1st;
                     }
                 }

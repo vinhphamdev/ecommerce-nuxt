@@ -64,7 +64,10 @@
 .header {
     @extend %list-reset;
 
+
+
     .header__extra {
+        cursor: pointer;
         display: inline-block;
         position: relative;
         width: 30px;
@@ -77,13 +80,13 @@
         }
 
         span {
+            cursor: pointer;
             position: absolute;
             bottom: 0;
             right: -6px;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #fff;
             vertical-align: top;
             width: 20px;
             height: 20px;
@@ -135,6 +138,8 @@
 
     .header__top {
         padding: 25px 0;
+        // padding-top: 25px;
+        // padding-bottom: 10px;
         background-color: $color-1st;
         border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 
@@ -707,7 +712,6 @@
 
             i {
                 margin-right: 10px;
-                font-size: 16px;
                 font-size: 20px;
                 color: $color-text;
             }
@@ -720,7 +724,6 @@
             padding: 0 10px;
             i {
                 margin-right: 10px;
-                font-size: 16px;
                 font-size: 20px;
                 color: $color-text;
             }

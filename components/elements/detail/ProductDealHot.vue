@@ -25,7 +25,7 @@
                         ${{ product.price }}
                     </h4>
                     <div class="ps-product__rating">
-                        <rating />
+	                    <rating :rating='product.ratingCount' />
                         <span>(1 review)</span>
                     </div>
                     <div class="ps-product__specification">

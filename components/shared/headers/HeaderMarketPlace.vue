@@ -24,7 +24,7 @@
                             <currency-dropdown />
                         </li>
                         <li>
-                            <language-swicher />
+                            <language-switcher />
                         </li>
                     </ul>
                 </div>
@@ -86,7 +86,7 @@
 
 <script>
 import CurrencyDropdown from '~/components/shared/headers/modules/CurrencyDropdown';
-import LanguageSwicher from '~/components/shared/headers/modules/LanguageSwicher';
+import LanguageSwitcher from '~/components/shared/headers/modules/LanguageSwitcher';
 import MenuDefault from '~/components/shared/menu/MenuDefault';
 import MenuCategories from '~/components/shared/menu/MenuCategories';
 import SearchHeader from '~/components/shared/headers/modules/SearchHeader';
@@ -99,7 +99,7 @@ export default {
         SearchHeader,
         MenuCategories,
         MenuDefault,
-        LanguageSwicher,
+        LanguageSwitcher,
         CurrencyDropdown
     },
     mounted() {

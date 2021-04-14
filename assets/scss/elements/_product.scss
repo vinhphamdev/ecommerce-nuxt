@@ -61,14 +61,14 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        padding: 10px 0;
+        padding: 2px 0;
         background-color: #fff;
         transition: all 0.5s cubic-bezier(0.7, 0, 0.3, 1) 0s;
 
         li {
             margin-right: 10px;
 
-            a {
+            button {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -364,7 +364,7 @@
                 width: 100%;
                 margin-right: 0;
 
-                a {
+                button {
                     width: auto;
                     height: auto;
                     border-radius: 0;
@@ -896,7 +896,7 @@
         .ps-product__actions {
             margin-right: 0;
 
-            a {
+            button {
                 display: inline-block;
                 margin-right: 20px;
                 font-size: 26px;
@@ -1655,7 +1655,7 @@
                     display: block;
                     margin-right: 0;
 
-                    a {
+                    a, button {
                         display: block;
                         padding: 5px 0;
                         font-size: 18px;
@@ -2025,7 +2025,7 @@
         .ps-product__actions {
             border: none;
 
-            a {
+            button {
                 display: block;
                 margin-right: 0;
                 font-size: 14px;
@@ -2115,6 +2115,7 @@
         padding-left: 20px;
 
         .ps-product__remove {
+            cursor: pointer;
             position: absolute;
             top: 0;
             right: 0;
@@ -2175,7 +2176,7 @@
         li {
             margin-right: 10px;
 
-            a {
+            button {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -2253,7 +2254,7 @@
             display: inline-block;
             margin-right: 20px;
 
-            a {
+           a, button {
                 font-weight: 600;
                 color: $color-text;
 
@@ -2263,7 +2264,7 @@
             }
 
             &.active {
-                a {
+               a, button {
                     color: $color-1st;
                 }
             }

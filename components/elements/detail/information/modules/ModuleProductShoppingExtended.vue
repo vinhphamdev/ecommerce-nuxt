@@ -18,16 +18,16 @@
                     />
                 </div>
             </figure>
-            <a class="ps-btn ps-btn--black" href="#">
+            <button class="ps-btn ps-btn--black" @click=''>
                 Add to cart
-            </a>
+            </button>
             <div class="ps-product__actions">
-                <a href="#">
+                <button>
                     <i class="icon-heart"></i>
-                </a>
-                <a href="#">
+                </button>
+                <button>
                     <i class="icon-chart-bars"></i>
-                </a>
+                </button>
             </div>
         </div>
         <a class="ps-btn" href="#">
